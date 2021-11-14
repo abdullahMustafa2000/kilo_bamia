@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
 
 List<Widget> views = [
   WheelWidget(),
-  const CoinWidget(),
+  CoinWidget(),
 ];
 
 class CustomBottomNav extends StatefulWidget {
