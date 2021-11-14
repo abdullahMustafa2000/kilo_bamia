@@ -5,20 +5,22 @@ class WheelWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14),
         decoration: const BoxDecoration(
             gradient:
                 LinearGradient(colors: [MyColors.homeBg, MyColors.white])),
-        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              child: Image.asset('assets/images/spinning_wheel.png'),
+              child: Center(child: Image.asset('assets/images/spinning_wheel.png')),
             ),
             Container(
-              margin: const EdgeInsets.symmetric(vertical: 24),
+              margin: const EdgeInsets.symmetric(vertical: 8),
               child: Stack(
+                alignment: Alignment.center,
                 children: [
+                  Image.asset('assets/images/create_room_bg.png'),
                   Container(
                     alignment: Alignment.center,
                     width: 90,
@@ -33,20 +35,24 @@ class WheelWidget extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(180),
-                      color: MyColors.darkBlue,
-                    ),
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: const Icon(
-                        Icons.add_rounded,
-                        size: 24,
-                        color: MyColors.white,
+                  Positioned(
+                    bottom: 30,
+                    child: Center(
+                      child: Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(180),
+                          color: MyColors.darkBlue,
+                        ),
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: const Icon(
+                            Icons.add_rounded,
+                            size: 28,
+                            color: MyColors.white,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -55,24 +61,16 @@ class WheelWidget extends StatelessWidget {
             ),
 
             /// lasts design
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    gradient: const LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          MyColors.bottomGradient,
-                          MyColors.topGradient
-                        ])),
-                child: Column(
+            SizedBox(
+              height: 110,
+              child: Stack(children: [
+                Image.asset('assets/images/lasts_bg.png', width: double.infinity, fit: BoxFit.fill,),
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Container(
                       child: const Text(
-                        'Lasts : ',
+                        'Last : ',
                         style: TextStyle(fontSize: 24),
                       ),
                       margin: const EdgeInsets.symmetric(
@@ -81,7 +79,7 @@ class WheelWidget extends StatelessWidget {
                     RoomsListWidget()
                   ],
                 ),
-              ),
+              ]),
             )
           ],
         ));
@@ -96,7 +94,7 @@ class RoomsListWidget extends StatelessWidget {
       child: Column(
         children: [
           RoomItem(MyColors.lightRed.withOpacity(.5), 'First Room Name', 20, 4),
-          Container(
+         /* Container(
             width: 220,
             height: 1,
             alignment: Alignment.center,
@@ -104,7 +102,7 @@ class RoomsListWidget extends StatelessWidget {
             color: MyColors.lightBlack.withOpacity(.1),
           ),
           RoomItem(
-              MyColors.darkBlue.withOpacity(.5), 'Second Room Name', 15, 3),
+              MyColors.darkBlue.withOpacity(.5), 'Second Room Name', 15, 3),*/
         ],
       ),
     );
@@ -151,8 +149,11 @@ class RoomItem extends StatelessWidget {
             ),
           ),
         ),
-        const Text('12 Dec',
-            style: TextStyle(fontSize: 14, color: MyColors.lightBlack))
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text('12 Dec',
+              style: TextStyle(fontSize: 14, color: MyColors.lightBlack)),
+        )
       ],
     );
   }
