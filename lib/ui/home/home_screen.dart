@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/btm_nav_provider.dart';
 import 'package:kilo_bamya/ui/home/coin_widget.dart';
+import 'package:kilo_bamya/ui/home/side_menu_widget.dart';
 import 'package:kilo_bamya/ui/home/wheel_widget.dart';
 import 'package:provider/provider.dart';
-
-import 'drawer_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
