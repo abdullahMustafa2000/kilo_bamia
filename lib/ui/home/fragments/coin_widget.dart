@@ -3,8 +3,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
-import 'package:kilo_bamya/ui/home/coin_animation_provider.dart';
-import 'package:provider/provider.dart';
 
 class CoinWidget extends StatefulWidget {
   @override
@@ -17,6 +15,8 @@ class _CoinWidgetState extends State<CoinWidget> with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
   late Timer _timer;
+  var num = Random().nextInt(2);
+  var arr = [45, 50];
   Widget img = Image.asset('assets/images/coin_king.png');
 
   @override
@@ -134,12 +134,11 @@ class _CoinWidgetState extends State<CoinWidget> with TickerProviderStateMixin {
 
   onSpinningEnd() {
     final double mEnd = 360 - verticalSpin >= 180 ? 360 : 0;
-    print(mEnd);
     _animation =
         Tween<double>(begin: verticalSpin, end: mEnd).animate(_controller)
           ..addListener(() {
             setState(() {
-              verticalSpin = _animation.value;
+              verticalSpin = mEnd;
             });
           });
     _controller.forward();
@@ -151,8 +150,9 @@ class _CoinWidgetState extends State<CoinWidget> with TickerProviderStateMixin {
   void startAnimation() {
     _timer = Timer.periodic(const Duration(milliseconds: 132), (timer) {
       counter++;
-
-      if (counter == 45) {
+      if (counter == arr[num > arr.length -1 ? 1: num]) {
+        print(arr[num]);
+        num = Random().nextInt(2);
         onSpinningEnd();
         _timer.cancel();
         return;

@@ -16,6 +16,10 @@ class MyDrawerWidget extends StatefulWidget {
 }
 
 class _MyDrawerWidgetState extends State<MyDrawerWidget> {
+  bool isAboutClicked = false;
+
+  bool isOtherAppsClicked = false;
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -48,62 +52,80 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
                 MenuItem(
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           'About',
                           style: TextStyle(
                               color: MyColors.white,
-                              fontWeight: FontWeight.bold),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
                         ),
-                        Text(
-                          'Kilo Bamia is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.',
-                          style: TextStyle(color: MyColors.white),
-                          textAlign: TextAlign.center,
+                        Offstage(
+                          offstage: isAboutClicked,
+                          child: const Text(
+                            'Kilo Bamia is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.',
+                            style: TextStyle(color: MyColors.white, fontSize: 14),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ],
                     ),
-                    () {}),
+                    onAboutClick),
                 MenuItem(
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           'Other Apps',
                           style: TextStyle(
                               color: MyColors.white,
-                              fontWeight: FontWeight.bold),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
                         ),
-                        Text(
-                          'Alfurqan',
-                          style: TextStyle(color: MyColors.white),
+                        Offstage(
+                          offstage: isOtherAppsClicked,
+                          child: const Text(
+                            'Alfurqan',
+                            style: TextStyle(color: MyColors.white, fontSize: 14),
+                          ),
                         ),
                       ],
                     ),
-                    () {}),
+                    onOtherAppsClick),
                 Expanded(
                   child: MenuItem(Container(), () {}),
                 ),
                 Container(
                   margin: const EdgeInsets.only(bottom: 48),
                   child: Container(
-                decoration: const BoxDecoration(
-                    border: Border(
+                    decoration: const BoxDecoration(
+                        border: Border(
                       top: BorderSide(width: 4, color: MyColors.blueShadowClr),
                     )),
-                child: Row(
-                  children: [
-                    Expanded(child: OurDescription(jobTitle: 'Developer', name: 'Abdullah', onClick: onDeveloperClick,)),
-                    Container(
-                      width: 4,
-                      height: 23,
-                      decoration: BoxDecoration(
-                        color: MyColors.blueShadowClr,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: OurDescription(
+                          jobTitle: 'Developer',
+                          name: 'Abdullah',
+                          onClick: onDeveloperClick,
+                        )),
+                        Container(
+                          width: 4,
+                          height: 23,
+                          decoration: BoxDecoration(
+                            color: MyColors.blueShadowClr,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        Expanded(
+                            child: OurDescription(
+                          jobTitle: 'Designer',
+                          name: 'Obada',
+                          onClick: onDesignerClick,
+                        )),
+                      ],
                     ),
-                    Expanded(child: OurDescription(jobTitle: 'Designer', name: 'Obada', onClick: onDesignerClick,)),
-                  ],
-                ),
                   ),
                 )
               ],
@@ -112,15 +134,25 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
         ),
       ),
     );
-
   }
 
   void onDesignerClick() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => DesignerWidget()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => DesignerWidget()));
   }
 
-  void onDeveloperClick() {
+  void onAboutClick() {
+    setState(() {
+      isAboutClicked = !isAboutClicked;
+    });
+  }
 
+  void onDeveloperClick() {}
+
+  void onOtherAppsClick() {
+    setState(() {
+      isOtherAppsClicked = !isOtherAppsClicked;
+    });
   }
 }
 
@@ -139,6 +171,7 @@ class MenuItem extends StatelessWidget {
       child: ClipPath(
         child: Container(
           margin: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: GlassContainer(
             borderRadiusColor: Colors.transparent,
             contColor: Colors.transparent,
@@ -154,12 +187,13 @@ class OurDescription extends StatelessWidget {
   String jobTitle;
   String name;
   Function onClick;
-  OurDescription({required this.jobTitle, required this.name, required this.onClick});
+  OurDescription(
+      {required this.jobTitle, required this.name, required this.onClick});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         onClick();
       },
       child: Container(
