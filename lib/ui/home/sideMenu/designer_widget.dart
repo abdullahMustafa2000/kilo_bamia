@@ -1,6 +1,5 @@
 // ignore_for_file: use_key_in_widget_constructors
 
-import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
@@ -11,7 +10,7 @@ class DesignerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
+        child: Container(),/*Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -31,7 +30,7 @@ class DesignerWidget extends StatelessWidget {
             ),
             ContactsView(),
           ],
-        ),
+        )*/
       ),
     );
   }
