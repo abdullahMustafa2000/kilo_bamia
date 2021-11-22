@@ -25,6 +25,7 @@ class _MyPageViewControllerState extends State<MyPageViewController> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: PageView(
+          physics: const NeverScrollableScrollPhysics(),
           controller: _controller,
           children: [
             IntroPage(title: 'Kilo Bamya', desc: 'Kilo Bamia is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.', btnTxt: 'Next', view: Image.asset('assets/images/spinning_wheel.png'), onBtnClick: onBtnClick, index: 0),

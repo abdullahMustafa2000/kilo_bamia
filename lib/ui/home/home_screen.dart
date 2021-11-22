@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/btm_nav_provider.dart';
-import 'package:kilo_bamya/ui/home/coin_widget.dart';
-import 'package:kilo_bamya/ui/home/wheel_widget.dart';
+import 'package:kilo_bamya/ui/home/fragments/coin_widget.dart';
+import 'package:kilo_bamya/ui/home/sideMenu/side_menu_widget.dart';
+import 'package:kilo_bamya/ui/home/fragments/wheel_widget.dart';
 import 'package:provider/provider.dart';
 
-import 'drawer_widget.dart';
+import 'aboveWidget/kilo_bamya_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late BtmNavProvider provider;
+  late HomeClicksProvider provider;
   @override
   void initState() {
     super.initState();
@@ -23,12 +24,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    provider = Provider.of<BtmNavProvider>(context);
+    provider = Provider.of<HomeClicksProvider>(context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       drawer: const MyDrawerWidget(),
       appBar: AppBar(
         centerTitle: true,
-        leading: Builder(builder: (context){
+        leading: Builder(builder: (context) {
           return InkWell(
             child: Image.asset('assets/images/menu_ic.png'),
             onTap: () {
@@ -39,30 +41,45 @@ class _HomePageState extends State<HomePage> {
         title: const Center(
           child: Text(
             'Kilo Bamia',
-            style: TextStyle(fontSize: 34),
-            textAlign: TextAlign.center,
           ),
         ),
         backgroundColor: MyColors.darkBlue,
       ),
-      body: views[provider.btmIndex],
-      bottomNavigationBar: CustomBottomNav(),
+      body: Stack(
+        children: [
+          provider.btmIndex == 0
+              ? WheelWidget(onCreateRoomClick: hideShowAboveWidgetListener)
+              : CoinWidget(),
+          Offstage(
+            child: const KioBamayView(),
+            offstage: !aboveWidgetIsVisible,
+          ),
+        ],
+      ),
+      bottomNavigationBar: CustomBottomNav(!aboveWidgetIsVisible),
     );
+  }
+
+  bool aboveWidgetIsVisible = false;
+
+  void hideShowAboveWidgetListener(bool showState) {
+    setState(() {
+      aboveWidgetIsVisible = showState;
+    });
   }
 }
 
-List<Widget> views = [
-  WheelWidget(),
-  CoinWidget(),
-];
-
 class CustomBottomNav extends StatefulWidget {
+  bool isAboveWidgetVisible;
+
+  CustomBottomNav(this.isAboveWidgetVisible);
+
   @override
   State<CustomBottomNav> createState() => _CustomBottomNavState();
 }
 
 class _CustomBottomNavState extends State<CustomBottomNav> {
-  late BtmNavProvider provider;
+  late HomeClicksProvider provider;
   @override
   void initState() {
     super.initState();
@@ -70,39 +87,56 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
 
   @override
   Widget build(BuildContext context) {
-    provider = Provider.of<BtmNavProvider>(context);
+    provider = Provider.of<HomeClicksProvider>(context);
     return Container(
-      height: 62,
-      decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(12),
-            topLeft: Radius.circular(12),
+      child: Stack(children: [
+        Container(
+          height: 62,
+          decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(12),
+                topLeft: Radius.circular(12),
+              ),
+              color: MyColors.lightBlack,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(.2),
+                )
+              ]),
+          child: Row(
+            children: [
+              Expanded(
+                child: wheelOrCoinWidget(
+                    'Wheel',
+                    provider.btmIndex == 0
+                        ? MyColors.darkBlue
+                        : MyColors.white),
+              ),
+              Container(
+                width: 4,
+                decoration: BoxDecoration(
+                    color: MyColors.blueShadowClr,
+                    borderRadius: BorderRadius.circular(6)),
+                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              ),
+              Expanded(
+                child: wheelOrCoinWidget(
+                    'Coin',
+                    provider.btmIndex == 1
+                        ? MyColors.darkOrange
+                        : MyColors.white),
+              ),
+            ],
           ),
-          color: MyColors.lightBlack,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(.2),
-            )
-          ]),
-      child: Row(
-        children: [
-          Expanded(
-            child: wheelOrCoinWidget('Wheel',
-                provider.btmIndex == 0 ? MyColors.darkBlue : MyColors.white),
+        ),
+        Offstage(
+          offstage: widget.isAboveWidgetVisible,
+          child: Container(
+            height: 62,
+            color: MyColors.lightBlack.withOpacity(.89),
           ),
-          Container(
-            width: 4,
-            decoration: BoxDecoration(
-                color: MyColors.blueShadowClr,
-                borderRadius: BorderRadius.circular(6)),
-            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          ),
-          Expanded(
-            child: wheelOrCoinWidget('Coin',
-                provider.btmIndex == 1 ? MyColors.darkOrange : MyColors.white),
-          ),
-        ],
-      ),
+        ),
+      ]),
     );
   }
 
@@ -130,7 +164,7 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
             style: TextStyle(
                 fontSize: 30, fontWeight: FontWeight.bold, color: color),
           ),
-          SizedBox(),
+          const SizedBox(),
         ],
       ),
     );

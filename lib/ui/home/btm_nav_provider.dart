@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class BtmNavProvider extends ChangeNotifier {
+class HomeClicksProvider extends ChangeNotifier {
   late int btmIndex;
 
-  BtmNavProvider() {
+  HomeClicksProvider() {
     btmIndex = 0;
   }
 
