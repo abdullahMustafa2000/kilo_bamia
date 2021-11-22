@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 
 class WheelWidget extends StatelessWidget {
+
+  Function(bool) onCreateRoomClick;
+
+  WheelWidget({required this.onCreateRoomClick});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -15,48 +20,53 @@ class WheelWidget extends StatelessWidget {
             Expanded(
               child: Center(child: Image.asset('assets/images/spinning_wheel.png')),
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Image.asset('assets/images/create_room_bg.png'),
-                  Container(
-                    alignment: Alignment.center,
-                    width: 90,
-                    height: 90,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: MyColors.lightBlack.withOpacity(.07),
+            InkWell(
+              onTap: () {
+                onCreateRoomClick(true);
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Image.asset('assets/images/create_room_bg.png'),
+                    Container(
+                      alignment: Alignment.center,
+                      width: 90,
+                      height: 90,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: MyColors.lightBlack.withOpacity(.07),
+                      ),
+                      child: const Text(
+                        'Create Room',
+                        style: TextStyle(fontSize: 22),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    child: const Text(
-                      'Create Room',
-                      style: TextStyle(fontSize: 22),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 30,
-                    child: Center(
-                      child: Container(
-                        width: 32,
-                        height: 32,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(180),
-                          color: MyColors.darkBlue,
-                        ),
+                    Positioned(
+                      bottom: 30,
+                      child: Center(
                         child: Container(
-                          alignment: Alignment.center,
-                          child: const Icon(
-                            Icons.add_rounded,
-                            size: 28,
-                            color: MyColors.white,
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(180),
+                            color: MyColors.darkBlue,
+                          ),
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: const Icon(
+                              Icons.add_rounded,
+                              size: 28,
+                              color: MyColors.white,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
 
