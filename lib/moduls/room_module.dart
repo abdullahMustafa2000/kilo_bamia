@@ -1,9 +1,10 @@
+
 class RoomModule {
   String roomName;
   int numberOfPlayers;
   int numberOFTeams;
-  DateTime createDate;
-  Map<String, List<String>>? teams;
+  String createDate;
+  List<String>? teams;
 
   RoomModule(
       {required this.roomName,
@@ -11,4 +12,10 @@ class RoomModule {
       required this.numberOFTeams,
       required this.createDate,
       this.teams});
+
+  static const String room_name_prefKey = "RoomName";
+  static const String num_of_players_prefKey = "RoomPlayers";
+  static const String num_of_teams_prefKey = "RoomTeams";
+  static const String create_date_prefKey = "RoomDate";
+  static const String room_teams_list_prefKey = "RoomName";
 }
