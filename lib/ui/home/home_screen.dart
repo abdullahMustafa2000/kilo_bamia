@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
               ? WheelWidget(onCreateRoomClick: hideShowAboveWidgetListener)
               : CoinWidget(),
           Offstage(
-            child: const KioBamayView(),
+            child: KioBamayView(onSaveBtnClick),
             offstage: !aboveWidgetIsVisible,
           ),
         ],
@@ -65,6 +65,12 @@ class _HomePageState extends State<HomePage> {
   void hideShowAboveWidgetListener(bool showState) {
     setState(() {
       aboveWidgetIsVisible = showState;
+    });
+  }
+
+  void onSaveBtnClick() {
+    setState(() {
+      aboveWidgetIsVisible = !aboveWidgetIsVisible;
     });
   }
 }

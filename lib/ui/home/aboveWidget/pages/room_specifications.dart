@@ -1,8 +1,13 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:kilo_bamya/moduls/room_module.dart';
+import 'package:kilo_bamya/shared_pereferences/saved_game.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/pages/page_model.dart';
+import 'package:kilo_bamya/ui/home/aboveWidget/page_model.dart';
+import 'package:kilo_bamya/ui/home/aboveWidget/teams_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RoomSpecifications extends StatelessWidget {
 
@@ -24,8 +29,13 @@ class InputContainer extends StatelessWidget {
 
   InputContainer(this.onBtnClick);
 
+  String? roomNameEt;
+  String? teamsNumEt;
+  static String? playersNumEt;
+  late TeamProvider provider;
   @override
   Widget build(BuildContext context) {
+    provider = Provider.of<TeamProvider>(context);
     var width = MediaQuery.of(context).size.width;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -42,7 +52,11 @@ class InputContainer extends StatelessWidget {
             color: MyColors.textFieldFillClr.withOpacity(.45),
           ),
           child: TextField(
+            onChanged: (txt) {
+              roomNameEt = txt;
+            },
             textAlign: TextAlign.center,
+            textInputAction: TextInputAction.continueAction,
             decoration: InputDecoration(
               border: InputBorder.none,
               hintStyle: Theme.of(context).textTheme.subtitle1,
@@ -61,6 +75,7 @@ class InputContainer extends StatelessWidget {
           width: width * .25,
           child: RaisedButton(
             onPressed: () {
+              saveData();
               onBtnClick();
             },
             shape: RoundedRectangleBorder(
@@ -115,6 +130,8 @@ class InputContainer extends StatelessWidget {
             onChanged: (txt) {
               onTxtChange(txt);
             },
+            textInputAction: TextInputAction.continueAction,
+            keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -127,7 +144,20 @@ class InputContainer extends StatelessWidget {
     );
   }
 
-  void onPlayersTxtChange() {}
+  void onPlayersTxtChange(String txt) {
+    playersNumEt = txt;
+  }
 
-  void onTeamsTxtChange() {}
+  void onTeamsTxtChange(String txt) {
+    teamsNumEt = txt;
+    provider.noOfTeams = int.parse(txt);
+  }
+
+  void saveData() {
+    StorageManager.saveData(RoomModule.room_name_prefKey, roomNameEt);
+    StorageManager.saveData(RoomModule.num_of_teams_prefKey, int.parse(teamsNumEt!));
+    StorageManager.saveData(RoomModule.num_of_players_prefKey, int.parse(playersNumEt!));
+    String date = ('${DateTime.now().month} / ${DateTime.now().day}');
+    StorageManager.saveData(RoomModule.create_date_prefKey, date);
+  }
 }

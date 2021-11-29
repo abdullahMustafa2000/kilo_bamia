@@ -1,10 +1,15 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/pages/page_model.dart';
+import 'package:kilo_bamya/ui/home/aboveWidget/page_model.dart';
+import 'package:provider/provider.dart';
+
+import '../teams_provider.dart';
 
 class ResultPage extends StatefulWidget {
-  const ResultPage({Key? key}) : super(key: key);
+  Function onSaveBtnClick;
+  ResultPage(this.onSaveBtnClick);
 
   @override
   State<ResultPage> createState() => _ResultPageState();
@@ -12,7 +17,13 @@ class ResultPage extends StatefulWidget {
 
 class _ResultPageState extends State<ResultPage> {
   @override
+  void initState() {
+    super.initState();
+  }
+  late TeamProvider provider;
+  @override
   Widget build(BuildContext context) {
+    provider = Provider.of<TeamProvider>(context);
     return MyKiloBamayaPageModel(
       content: SizedBox(
         height: MediaQuery.of(context).size.height * .3,
@@ -26,17 +37,18 @@ class _ResultPageState extends State<ResultPage> {
               margin: const EdgeInsets.all(8),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: 3,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return TeamDesign(
-                      teamMembers: const ['Obada', 'Bsyone', 'Tarek', '3zo', 'Obada', 'Bsyone', 'Tarek', '3zo'],
-                      teamColor: colorsArr[index],
-                      teamIndex: index);
-                },
-              ),
-            ),
+                  child: ListView.builder(
+                    itemCount: provider.teams.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      print(provider.teams);
+                      return TeamDesign(
+                          teamMembers: provider.teams[index].split(','),
+                          teamColor: colorsArr[index],
+                          teamIndex: index);
+                    },
+                  ),
+                ),
             Padding(
               padding: const EdgeInsets.all(8),
               child: Row(
@@ -58,22 +70,29 @@ class _ResultPageState extends State<ResultPage> {
     MyColors.darkBlue,
     MyColors.lightRed,
     MyColors.darkOrange,
+    MyColors.darkYellow,
+    MyColors.bottomGradient,
   ];
 
   Widget saveBtn() {
-    return Container(
-      width: 47,
-      height: 47,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(180),
-        color: MyColors.darkWhite,
+    return InkWell(
+      onTap: () {
+        widget.onSaveBtnClick();
+      },
+      child: Container(
+        width: 47,
+        height: 47,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(180),
+          color: MyColors.darkWhite,
+        ),
+        child: Center(
+            child: Text(
+          'Save',
+          style: Theme.of(context).textTheme.caption,
+        )),
+        margin: const EdgeInsets.only(right: 10),
       ),
-      child: Center(
-          child: Text(
-            'Save',
-            style: Theme.of(context).textTheme.caption,
-          )),
-      margin: const EdgeInsets.only(right: 10),
     );
   }
 
@@ -83,8 +102,7 @@ class _ResultPageState extends State<ResultPage> {
       width: 47,
       height: 47,
       decoration: BoxDecoration(
-        borderRadius:
-        const BorderRadius.all(Radius.circular(180.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(180.0)),
         boxShadow: [
           BoxShadow(
               blurRadius: 22,
@@ -93,9 +111,14 @@ class _ResultPageState extends State<ResultPage> {
         ],
       ),
       child: RaisedButton(
-        onPressed: () {},
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(180.0)),
+        onPressed: () {
+          provider.dividePlayers();
+          setState(() {
+
+          });
+        },
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(180.0)),
         padding: const EdgeInsets.all(0.0),
         child: Ink(
           child: Container(
@@ -107,12 +130,10 @@ class _ResultPageState extends State<ResultPage> {
                       MyColors.lightOrange.withOpacity(.1),
                       MyColors.darkOrange.withOpacity(.3),
                     ]),
-                borderRadius: const BorderRadius.all(
-                    Radius.circular(80.0))),
+                borderRadius: const BorderRadius.all(Radius.circular(80.0))),
             constraints: const BoxConstraints(
                 minWidth: 88.0,
-                minHeight:
-                36.0), // min sizes for Material buttons
+                minHeight: 36.0), // min sizes for Material buttons
             alignment: Alignment.center,
             child: Text('Spin Again',
                 textAlign: TextAlign.center,
@@ -145,7 +166,7 @@ class TeamDesign extends StatelessWidget {
           children: [
             Container(
               child: Text(
-                'Team ${teamIndex+1}',
+                'Team ${teamIndex + 1}',
                 style: TextStyle(color: teamColor, fontSize: 16),
                 textAlign: TextAlign.center,
               ),
@@ -175,3 +196,4 @@ class TeamDesign extends StatelessWidget {
     );
   }
 }
+

@@ -1,10 +1,16 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
+import 'package:kilo_bamya/moduls/room_module.dart';
+import 'package:kilo_bamya/shared_pereferences/saved_game.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/pages/page_model.dart';
+import 'package:kilo_bamya/ui/home/aboveWidget/page_model.dart';
+import 'package:kilo_bamya/ui/home/aboveWidget/pages/room_specifications.dart';
+import 'package:kilo_bamya/ui/home/aboveWidget/teams_provider.dart';
+import 'package:provider/provider.dart';
 
 class RoomPlayers extends StatefulWidget {
   Function onBtnClick;
-
 
   RoomPlayers({required this.onBtnClick});
 
@@ -13,9 +19,9 @@ class RoomPlayers extends StatefulWidget {
 }
 
 class _RoomPlayersState extends State<RoomPlayers> {
-
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<TeamProvider>(context);
     var size = MediaQuery.of(context).size;
     return MyKiloBamayaPageModel(
       content: SizedBox(
@@ -28,13 +34,14 @@ class _RoomPlayersState extends State<RoomPlayers> {
             ),
             Expanded(
               child: GridView.builder(
-                itemCount: 20,
+                itemCount: int.parse(InputContainer.playersNumEt!),
                 itemBuilder: (BuildContext context, int index) {
-                  return const TextInputDesign();
+                  return TextInputDesign(onTextChange, index);
                 },
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 12, childAspectRatio: 1/.5),
+                    crossAxisSpacing: 12,
+                    childAspectRatio: 1 / .5),
               ),
             ),
             Container(
@@ -52,6 +59,10 @@ class _RoomPlayersState extends State<RoomPlayers> {
               ),
               child: RaisedButton(
                 onPressed: () {
+                  StorageManager.saveData(
+                      RoomModule.room_players_names_prefKey, names);
+                  provider.players = names;
+                  provider.dividePlayers();
                   widget.onBtnClick();
                 },
                 shape: RoundedRectangleBorder(
@@ -89,11 +100,17 @@ class _RoomPlayersState extends State<RoomPlayers> {
       ),
     );
   }
+
+  List<String> names = List.filled(int.parse(InputContainer.playersNumEt!), '');
+  onTextChange(String name, int index) {
+    names[index] = name;
+  }
 }
 
 class TextInputDesign extends StatelessWidget {
-  const TextInputDesign({Key? key}) : super(key: key);
-
+  TextInputDesign(this.onTxtChange, this.index);
+  Function(String, int) onTxtChange;
+  int index;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -103,7 +120,14 @@ class TextInputDesign extends StatelessWidget {
         color: MyColors.textFieldFillClr.withOpacity(.45),
       ),
       child: TextField(
+        onChanged: (txt) {
+          onTxtChange(txt, index);
+        },
         textAlign: TextAlign.center,
+        style: const TextStyle(
+          color: MyColors.lightBlack,
+        ),
+        textInputAction: TextInputAction.continueAction,
         decoration: InputDecoration(
           border: InputBorder.none,
           hintStyle: Theme.of(context).textTheme.subtitle1,

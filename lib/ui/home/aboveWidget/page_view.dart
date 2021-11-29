@@ -10,6 +10,10 @@ import 'package:provider/provider.dart';
 import 'pages/take_players_page.dart';
 
 class KiloBamyaPageView extends StatefulWidget {
+  Function onSaveBtnClick;
+
+  KiloBamyaPageView(this.onSaveBtnClick);
+
   @override
   State<KiloBamyaPageView> createState() => _KiloBamyaPageViewState();
 }
@@ -31,7 +35,7 @@ class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
           RoomSpecifications(onMoveToNext),
           LoadingRoomWidget(onLoadingEnd: onMoveToNext,),
           RoomPlayers(onBtnClick: onMoveToNext,),
-          ResultPage(),
+          ResultPage(onSaveBtnClick),
           /*WheelPage(),*/
         ],
       ),
@@ -41,5 +45,9 @@ class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
   onMoveToNext() {
     _controller.animateToPage(provider.moveToNextPage(),
         duration: const Duration(milliseconds: 400), curve: Curves.bounceOut);
+  }
+
+  onSaveBtnClick() {
+    widget.onSaveBtnClick();
   }
 }
