@@ -10,21 +10,17 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RoomSpecifications extends StatelessWidget {
-
   Function onBtnClick;
 
   RoomSpecifications(this.onBtnClick);
 
   @override
   Widget build(BuildContext context) {
-    return MyKiloBamayaPageModel(
-      content: InputContainer(onBtnClick)
-    );
+    return MyKiloBamayaPageModel(content: InputContainer(onBtnClick));
   }
 }
 
 class InputContainer extends StatelessWidget {
-
   Function onBtnClick;
 
   InputContainer(this.onBtnClick);
@@ -54,9 +50,13 @@ class InputContainer extends StatelessWidget {
           child: TextField(
             onChanged: (txt) {
               roomNameEt = txt;
+              provider.roomName = txt;
             },
             textAlign: TextAlign.center,
-            textInputAction: TextInputAction.continueAction,
+            textInputAction: TextInputAction.next,
+            style: const TextStyle(
+              color: MyColors.lightBlack,
+            ),
             decoration: InputDecoration(
               border: InputBorder.none,
               hintStyle: Theme.of(context).textTheme.subtitle1,
@@ -67,7 +67,8 @@ class InputContainer extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            teamsDataTextField('Number of players :', onPlayersTxtChange, context),
+            teamsDataTextField(
+                'Number of players :', onPlayersTxtChange, context),
             teamsDataTextField('Number of teams :', onTeamsTxtChange, context),
           ],
         ),
@@ -75,7 +76,6 @@ class InputContainer extends StatelessWidget {
           width: width * .25,
           child: RaisedButton(
             onPressed: () {
-              saveData();
               onBtnClick();
             },
             shape: RoundedRectangleBorder(
@@ -90,8 +90,7 @@ class InputContainer extends StatelessWidget {
                       MyColors.lightOrange.withOpacity(.1),
                       MyColors.darkOrange.withOpacity(.3),
                     ]),
-                borderRadius:
-                const BorderRadius.all(Radius.circular(80.0)),
+                borderRadius: const BorderRadius.all(Radius.circular(80.0)),
               ),
               child: Container(
                 constraints: const BoxConstraints(
@@ -112,6 +111,7 @@ class InputContainer extends StatelessWidget {
       ],
     );
   }
+
   Widget teamsDataTextField(
       String label, Function onTxtChange, BuildContext context) {
     return Column(
@@ -130,7 +130,7 @@ class InputContainer extends StatelessWidget {
             onChanged: (txt) {
               onTxtChange(txt);
             },
-            textInputAction: TextInputAction.continueAction,
+            textInputAction: TextInputAction.next,
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
             decoration: InputDecoration(
@@ -146,18 +146,11 @@ class InputContainer extends StatelessWidget {
 
   void onPlayersTxtChange(String txt) {
     playersNumEt = txt;
+    provider.noOfPlayers = int.parse(txt);
   }
 
   void onTeamsTxtChange(String txt) {
     teamsNumEt = txt;
     provider.noOfTeams = int.parse(txt);
-  }
-
-  void saveData() {
-    StorageManager.saveData(RoomModule.room_name_prefKey, roomNameEt);
-    StorageManager.saveData(RoomModule.num_of_teams_prefKey, int.parse(teamsNumEt!));
-    StorageManager.saveData(RoomModule.num_of_players_prefKey, int.parse(playersNumEt!));
-    String date = ('${DateTime.now().month} / ${DateTime.now().day}');
-    StorageManager.saveData(RoomModule.create_date_prefKey, date);
   }
 }

@@ -1,7 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:kilo_bamya/moduls/room_module.dart';
+import 'package:kilo_bamya/shared_pereferences/saved_game.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
+import 'package:kilo_bamya/ui/home/aboveWidget/next_page_provider.dart';
 import 'package:kilo_bamya/ui/home/aboveWidget/page_model.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +11,8 @@ import '../teams_provider.dart';
 
 class ResultPage extends StatefulWidget {
   Function onSaveBtnClick;
-  ResultPage(this.onSaveBtnClick);
+  int showResultWidget;
+  ResultPage(this.onSaveBtnClick, this.showResultWidget);
 
   @override
   State<ResultPage> createState() => _ResultPageState();
@@ -20,10 +23,16 @@ class _ResultPageState extends State<ResultPage> {
   void initState() {
     super.initState();
   }
+
   late TeamProvider provider;
+  late NextPageProvider nextPageProvider;
   @override
   Widget build(BuildContext context) {
+
     provider = Provider.of<TeamProvider>(context);
+
+    nextPageProvider = Provider.of<NextPageProvider>(context);
+
     return MyKiloBamayaPageModel(
       content: SizedBox(
         height: MediaQuery.of(context).size.height * .3,
@@ -37,18 +46,22 @@ class _ResultPageState extends State<ResultPage> {
               margin: const EdgeInsets.all(8),
             ),
             Expanded(
-                  child: ListView.builder(
-                    itemCount: provider.teams.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      print(provider.teams);
-                      return TeamDesign(
-                          teamMembers: provider.teams[index].split(','),
-                          teamColor: colorsArr[index],
-                          teamIndex: index);
-                    },
-                  ),
-                ),
+              child: widget.showResultWidget == 1? FutureBuilder<List<String>> (
+                future: getPreferences(),
+                builder: (context, AsyncSnapshot<List<String>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasData) {
+                      provider.teams = snapshot.data!;
+                      return resultListWidget(snapshot.data!);
+                    } else {
+                      return const Center(child: Text('Unknown error accrued'));
+                    }
+                  } else {
+                    return const Center(child: CircularProgressIndicator(),);
+                  }
+                },
+              ): resultListWidget(provider.teams),
+            ),
             Padding(
               padding: const EdgeInsets.all(8),
               child: Row(
@@ -77,6 +90,8 @@ class _ResultPageState extends State<ResultPage> {
   Widget saveBtn() {
     return InkWell(
       onTap: () {
+        saveData();
+
         widget.onSaveBtnClick();
       },
       child: Container(
@@ -93,6 +108,19 @@ class _ResultPageState extends State<ResultPage> {
         )),
         margin: const EdgeInsets.only(right: 10),
       ),
+    );
+  }
+
+  Widget resultListWidget(List<String> list) {
+    return ListView.builder(
+      itemCount: list.length,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (context, index) {
+        return TeamDesign(
+            teamMembers: list[index].split(','),
+            teamColor: colorsArr[index],
+            teamIndex: index);
+      },
     );
   }
 
@@ -113,9 +141,7 @@ class _ResultPageState extends State<ResultPage> {
       child: RaisedButton(
         onPressed: () {
           provider.dividePlayers();
-          setState(() {
-
-          });
+          setState(() {});
         },
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(180.0)),
@@ -142,6 +168,24 @@ class _ResultPageState extends State<ResultPage> {
         ),
       ),
     );
+  }
+
+  void saveData() {
+    StorageManager.saveData(RoomModule.room_name_prefKey, provider.roomName);
+    StorageManager.saveData(
+        RoomModule.num_of_teams_prefKey, provider.noOfTeams);
+    StorageManager.saveData(
+        RoomModule.num_of_players_prefKey, provider.noOfPlayers);
+    String date = ('${DateTime.now().month} / ${DateTime.now().day}');
+    StorageManager.saveData(RoomModule.create_date_prefKey, date);
+    StorageManager.saveData(RoomModule.room_teams_list_prefKey, provider.teams);
+    StorageManager.saveData(
+        RoomModule.room_players_names_prefKey, provider.players);
+    provider.newTeamDivided();
+  }
+
+  Future<List<String>> getPreferences() async {
+    return await StorageManager.readData(RoomModule.room_teams_list_prefKey);
   }
 }
 
@@ -196,4 +240,3 @@ class TeamDesign extends StatelessWidget {
     );
   }
 }
-

@@ -59,10 +59,7 @@ class _RoomPlayersState extends State<RoomPlayers> {
               ),
               child: RaisedButton(
                 onPressed: () {
-                  StorageManager.saveData(
-                      RoomModule.room_players_names_prefKey, names);
                   provider.players = names;
-                  provider.dividePlayers();
                   widget.onBtnClick();
                 },
                 shape: RoundedRectangleBorder(
@@ -127,7 +124,7 @@ class TextInputDesign extends StatelessWidget {
         style: const TextStyle(
           color: MyColors.lightBlack,
         ),
-        textInputAction: TextInputAction.continueAction,
+        textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           border: InputBorder.none,
           hintStyle: Theme.of(context).textTheme.subtitle1,

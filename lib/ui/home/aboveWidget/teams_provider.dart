@@ -6,11 +6,22 @@ import 'package:kilo_bamya/shared_pereferences/saved_game.dart';
 
 class TeamProvider extends ChangeNotifier {
   late List<String> teams;
+
   late List<String> players;
+
+  late int noOfPlayers;
+
   late int noOfTeams;
+
+  late String roomName;
+
+  bool divided = false;
+
   TeamProvider() {
     teams = [];
     noOfTeams = -1;
+    noOfPlayers = -1;
+    roomName = '';
   }
 
   void dividePlayers() async {
@@ -48,4 +59,8 @@ class TeamProvider extends ChangeNotifier {
     return [noOfPlayers ~/ numberOfTeams, noOfPlayers];
   }
 
+  void newTeamDivided() {
+    divided = true;
+    notifyListeners();
+  }
 }

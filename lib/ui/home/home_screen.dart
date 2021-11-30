@@ -48,10 +48,13 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           provider.btmIndex == 0
-              ? WheelWidget(onCreateRoomClick: hideShowAboveWidgetListener)
+              ? WheelWidget(aboveWidgetCall: hideShowAboveWidgetListener)
               : CoinWidget(),
           Offstage(
-            child: KioBamayView(onSaveBtnClick),
+            child: DivideTeamsWidget(
+              onSaveBtnClick: onSaveBtnClick,
+              showResultWidget: callResultWidget,
+            ),
             offstage: !aboveWidgetIsVisible,
           ),
         ],
@@ -61,10 +64,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   bool aboveWidgetIsVisible = false;
+  int callResultWidget = -1;
 
-  void hideShowAboveWidgetListener(bool showState) {
+  void hideShowAboveWidgetListener(int showWidget) {
+    print(showWidget);
+    /// if 0 -> roomSpecificationsWidget, if 1 -> resultWidget
     setState(() {
-      aboveWidgetIsVisible = showState;
+      callResultWidget = showWidget;
+      aboveWidgetIsVisible = true;
     });
   }
 

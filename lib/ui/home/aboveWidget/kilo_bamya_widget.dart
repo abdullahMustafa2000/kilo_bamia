@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/aboveWidget/page_view.dart';
 
-class KioBamayView extends StatelessWidget {
-  KioBamayView(this.onSaveBtnClick);
+class DivideTeamsWidget extends StatelessWidget {
+  DivideTeamsWidget({required this.onSaveBtnClick, required this.showResultWidget});
   Function onSaveBtnClick;
+  int showResultWidget;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -14,7 +15,7 @@ class KioBamayView extends StatelessWidget {
           height: double.infinity,
           color: MyColors.lightBlack.withOpacity(.86),
         ),
-        KiloBamyaPageView(onSaveBtnClick),
+        KiloBamyaPageView(onSaveBtnClick, showResultWidget),
       ],
     );
   }
