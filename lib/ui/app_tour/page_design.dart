@@ -33,6 +33,7 @@ class _IntroPageState extends State<IntroPage> {
     var provider = Provider.of<MyViewPageProvider>(context);
     var _currentPageNotifier = provider.currentPageNotifier;
     var containerWidth = MediaQuery.of(context).size.width;
+    bool isNotFinalPage = widget.btnTxt.contains('x');
     // main view
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -106,13 +107,7 @@ class _IntroPageState extends State<IntroPage> {
                     padding: const EdgeInsets.all(0.0),
                     child: Ink(
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                          MyColors.darkBlue.withOpacity(.1),
-                          MyColors.darkBlue.withOpacity(.3),
-                        ]),
+                        color: isNotFinalPage? MyColors.darkBlue.withOpacity(.1): MyColors.darkBlue,
                         borderRadius: const BorderRadius.all(Radius.circular(80.0)),
                       ),
                       child: Container(
@@ -123,7 +118,7 @@ class _IntroPageState extends State<IntroPage> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 16,
-                            color: MyColors.lightBlack.withOpacity(0.9)
+                            color: isNotFinalPage?MyColors.lightBlack.withOpacity(0.9):MyColors.white
                           ),
                         ),
                       ),

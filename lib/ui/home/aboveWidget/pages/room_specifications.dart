@@ -11,12 +11,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class RoomSpecifications extends StatelessWidget {
   Function onBtnClick;
+  Function onClose;
 
-  RoomSpecifications(this.onBtnClick);
+  RoomSpecifications(this.onBtnClick, {required this.onClose});
 
   @override
   Widget build(BuildContext context) {
-    return MyKiloBamayaPageModel(content: InputContainer(onBtnClick));
+    return MyKiloBamayaPageModel(
+        content: InputContainer(onBtnClick),
+      onPrev: () {},
+      onClose: onClose,
+    );
   }
 }
 
@@ -42,7 +47,6 @@ class InputContainer extends StatelessWidget {
         ),
         Container(
           width: width * .4,
-          margin: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: MyColors.textFieldFillClr.withOpacity(.45),

@@ -21,7 +21,6 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => MyViewPageProvider()),
         ChangeNotifierProvider(create: (_) => HomeClicksProvider()),
-        ChangeNotifierProvider(create: (_) => NextPageProvider()),
         ChangeNotifierProvider(create: (_) => TeamProvider()),
       ],
       child: MaterialApp(

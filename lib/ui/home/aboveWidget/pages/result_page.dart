@@ -12,7 +12,15 @@ import '../teams_provider.dart';
 class ResultPage extends StatefulWidget {
   Function onSaveBtnClick;
   int showResultWidget;
-  ResultPage(this.onSaveBtnClick, this.showResultWidget);
+
+  Function onClose;
+  Function moveToPrev;
+
+  ResultPage(
+      {required this.onSaveBtnClick,
+      required this.showResultWidget,
+      required this.moveToPrev,
+      required this.onClose});
 
   @override
   State<ResultPage> createState() => _ResultPageState();
@@ -22,18 +30,19 @@ class _ResultPageState extends State<ResultPage> {
   @override
   void initState() {
     super.initState();
+    fromPref = widget.showResultWidget;
   }
 
+  late int fromPref;
   late TeamProvider provider;
   late NextPageProvider nextPageProvider;
   @override
   Widget build(BuildContext context) {
-
     provider = Provider.of<TeamProvider>(context);
-
-    nextPageProvider = Provider.of<NextPageProvider>(context);
-
+    nextPageProvider = NextPageProvider();
     return MyKiloBamayaPageModel(
+      onClose: widget.onClose,
+      onPrev: widget.onSaveBtnClick,
       content: SizedBox(
         height: MediaQuery.of(context).size.height * .3,
         child: Column(
@@ -46,21 +55,24 @@ class _ResultPageState extends State<ResultPage> {
               margin: const EdgeInsets.all(8),
             ),
             Expanded(
-              child: widget.showResultWidget == 1? FutureBuilder<List<String>> (
+              child: FutureBuilder(
                 future: getPreferences(),
-                builder: (context, AsyncSnapshot<List<String>> snapshot) {
+                builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasData) {
-                      provider.teams = snapshot.data!;
-                      return resultListWidget(snapshot.data!);
+                      provider.teams = snapshot.data as List<String>;
+                      return resultListWidget(snapshot.data as List<String>);
                     } else {
+                      print(snapshot.error.toString());
                       return const Center(child: Text('Unknown error accrued'));
                     }
                   } else {
-                    return const Center(child: CircularProgressIndicator(),);
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   }
                 },
-              ): resultListWidget(provider.teams),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8),
@@ -91,7 +103,7 @@ class _ResultPageState extends State<ResultPage> {
     return InkWell(
       onTap: () {
         saveData();
-
+        fromPref = -1;
         widget.onSaveBtnClick();
       },
       child: Container(
@@ -140,8 +152,9 @@ class _ResultPageState extends State<ResultPage> {
       ),
       child: RaisedButton(
         onPressed: () {
-          provider.dividePlayers();
-          setState(() {});
+          setState(() {
+            fromPref = 0;
+          });
         },
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(180.0)),
@@ -185,7 +198,18 @@ class _ResultPageState extends State<ResultPage> {
   }
 
   Future<List<String>> getPreferences() async {
-    return await StorageManager.readData(RoomModule.room_teams_list_prefKey);
+    print(fromPref);
+    if (fromPref == 1) {
+      provider.players = await StorageManager.readStringList(
+          RoomModule.room_players_names_prefKey);
+      return await StorageManager.readStringList(
+          RoomModule.room_teams_list_prefKey);
+    } else if (fromPref == 0) {
+      return await provider.dividePlayers();
+    } else {
+      fromPref = widget.showResultWidget;
+      return [];
+    }
   }
 }
 

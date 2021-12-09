@@ -11,8 +11,10 @@ import 'package:provider/provider.dart';
 
 class RoomPlayers extends StatefulWidget {
   Function onBtnClick;
+  Function onClose;
+  Function onPrev;
 
-  RoomPlayers({required this.onBtnClick});
+  RoomPlayers({required this.onBtnClick, required this.onClose, required this.onPrev});
 
   @override
   State<RoomPlayers> createState() => _RoomPlayersState();
@@ -24,6 +26,8 @@ class _RoomPlayersState extends State<RoomPlayers> {
     var provider = Provider.of<TeamProvider>(context);
     var size = MediaQuery.of(context).size;
     return MyKiloBamayaPageModel(
+      onPrev: widget.onPrev,
+      onClose: widget.onClose,
       content: SizedBox(
         height: size.height * .3,
         child: Column(

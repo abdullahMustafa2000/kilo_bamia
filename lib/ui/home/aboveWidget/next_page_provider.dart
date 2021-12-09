@@ -1,10 +1,14 @@
-import 'package:flutter/material.dart';
 
-class NextPageProvider extends ChangeNotifier {
+class NextPageProvider {
   int currentPage = 0;
 
   int moveToNextPage() {
     currentPage += 1;
+    return currentPage;
+  }
+
+  int moveToPrevPage() {
+    currentPage -= 1;
     return currentPage;
   }
 }

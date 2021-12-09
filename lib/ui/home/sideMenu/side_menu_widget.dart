@@ -27,7 +27,7 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
       child: SizedBox(
         width: width * .6,
         child: GlassContainer(
-          contColor: MyColors.lightBlue.withOpacity(.09),
+          contColor: MyColors.lightBlue.withOpacity(.20),
           borderRadiusColor: Colors.transparent,
           contHeight: double.infinity,
           child: Container(

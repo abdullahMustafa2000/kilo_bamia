@@ -33,10 +33,23 @@ class StorageManager {
     return values;
   }
 
-  static Future<dynamic> readData(String key) async {
+  static Future<List<String>> readStringList(String key) async {
     final prefs = await SharedPreferences.getInstance();
-    dynamic obj = prefs.get(key);
+    dynamic obj = prefs.getStringList(key);
     return obj;
+  }
+
+  static Future<T> readData<T>(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    dynamic obj;
+    if (T is String) {
+      obj = prefs.getString(key);
+    } else if (T is int) {
+      obj = prefs.getInt(key);
+    } else if (T is List<String>) {
+      obj = prefs.getStringList(key);
+    }
+    return await obj;
   }
 
   static Future<bool> deleteData(String key) async {

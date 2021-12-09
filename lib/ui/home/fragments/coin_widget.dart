@@ -16,7 +16,7 @@ class _CoinWidgetState extends State<CoinWidget> with TickerProviderStateMixin {
   late Animation<double> _animation;
   late Timer _timer;
   var num = Random().nextInt(2);
-  var arr = [45, 50];
+  var arr = [60, 70];
   Widget img = Image.asset('assets/images/coin_king.png');
 
   @override
@@ -76,8 +76,10 @@ class _CoinWidgetState extends State<CoinWidget> with TickerProviderStateMixin {
                       ),
                       InkWell(
                         onTap: () {
-                          resetAnimation();
-                          startAnimation();
+                          if (counter == 0) {
+                            resetAnimation();
+                            startAnimation();
+                          }
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(180),
@@ -148,7 +150,7 @@ class _CoinWidgetState extends State<CoinWidget> with TickerProviderStateMixin {
   }
 
   void startAnimation() {
-    _timer = Timer.periodic(const Duration(milliseconds: 132), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
       counter++;
       if (counter == arr[num > arr.length -1 ? 1: num]) {
         print(arr[num]);

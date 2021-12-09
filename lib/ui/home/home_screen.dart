@@ -45,20 +45,7 @@ class _HomePageState extends State<HomePage> {
         ),
         backgroundColor: MyColors.darkBlue,
       ),
-      body: Stack(
-        children: [
-          provider.btmIndex == 0
-              ? WheelWidget(aboveWidgetCall: hideShowAboveWidgetListener)
-              : CoinWidget(),
-          Offstage(
-            child: DivideTeamsWidget(
-              onSaveBtnClick: onSaveBtnClick,
-              showResultWidget: callResultWidget,
-            ),
-            offstage: !aboveWidgetIsVisible,
-          ),
-        ],
-      ),
+      body: stackOrHome(),
       bottomNavigationBar: CustomBottomNav(!aboveWidgetIsVisible),
     );
   }
@@ -66,7 +53,7 @@ class _HomePageState extends State<HomePage> {
   bool aboveWidgetIsVisible = false;
   int callResultWidget = -1;
 
-  void hideShowAboveWidgetListener(int showWidget) {
+  void showAboveWidgetListener(int showWidget) {
     print(showWidget);
     /// if 0 -> roomSpecificationsWidget, if 1 -> resultWidget
     setState(() {
@@ -79,6 +66,23 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       aboveWidgetIsVisible = !aboveWidgetIsVisible;
     });
+  }
+
+  Widget stackOrHome() {
+    return Stack(
+      children: [
+        provider.btmIndex == 0
+            ? WheelWidget(aboveWidgetCall: showAboveWidgetListener)
+            : CoinWidget(),
+        Offstage(
+          offstage: !aboveWidgetIsVisible,
+          child: DivideTeamsWidget(
+            onSaveBtnClick: onSaveBtnClick,
+            showResultWidget: callResultWidget,
+          ),
+        )
+      ],
+    );
   }
 }
 

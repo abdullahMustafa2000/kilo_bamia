@@ -20,12 +20,8 @@ class KiloBamyaPageView extends StatefulWidget {
 }
 
 class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
-  var _controller = PageController(
-    keepPage: false
-  );
-
+  final _controller = PageController();
   late NextPageProvider provider;
-
   @override
   void initState() {
     super.initState();
@@ -33,38 +29,50 @@ class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
 
   @override
   Widget build(BuildContext context) {
-    provider = Provider.of<NextPageProvider>(context);
+    provider = NextPageProvider();
     if (widget.showResultWidget == 0) {
-      _controller = PageController(
-        initialPage: 0
-      );
+      _controller.jumpToPage(0);
       provider.currentPage = 0;
-    } else {
-
+    } else if (widget.showResultWidget == 1) {
+      _controller.jumpToPage(4);
+      provider.currentPage = 4;
     }
     return Container(
-      margin: const EdgeInsets.all(42),
+      margin: const EdgeInsets.only(top: 24),
       child: PageView(
         controller: _controller,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          RoomSpecifications(onMoveToNext),
-          LoadingRoomWidget(onLoadingEnd: onMoveToNext,),
-          RoomPlayers(onBtnClick: onMoveToNext,),
+          RoomSpecifications(onMoveToNext, onClose: onSaveBtnClick),
+          RoomPlayers(
+            onBtnClick: onMoveToNext,
+            onClose: onSaveBtnClick,
+            onPrev: onMoveToPrev,
+          ),
           SpinningWheelWidget(onLoadEnd: onMoveToNext),
-          ResultPage(onSaveBtnClick, widget.showResultWidget),
+          ResultPage(
+            onSaveBtnClick: onSaveBtnClick,
+            moveToPrev: onMoveToPrev,
+            onClose: onSaveBtnClick,
+            showResultWidget: widget.showResultWidget,
+          ),
           /*WheelPage(),*/
         ],
       ),
     );
   }
 
-  onMoveToNext() {
+  void onMoveToNext() {
     _controller.animateToPage(provider.moveToNextPage(),
         duration: const Duration(milliseconds: 400), curve: Curves.bounceOut);
   }
 
-  onSaveBtnClick() {
+  void onMoveToPrev() {
+    _controller.animateToPage(provider.moveToPrevPage(),
+        duration: const Duration(milliseconds: 400), curve: Curves.bounceIn);
+  }
+
+  void onSaveBtnClick() {
     widget.onSaveBtnClick();
   }
 }

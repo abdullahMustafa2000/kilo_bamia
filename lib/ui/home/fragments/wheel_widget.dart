@@ -106,6 +106,10 @@ class WheelWidget extends StatelessWidget {
                   ],
                 ),
               ]),
+            ),
+
+            const SizedBox(
+              height: 15,
             )
           ],
         ));
@@ -153,39 +157,39 @@ class _RoomItemState extends State<RoomItem> {
   }
 
   late SharedPreferences pref;
-  Future<void> initiateSharedPref() async {
-    pref = await SharedPreferences.getInstance();
+  Future<SharedPreferences> initiateSharedPref() async {
+    return await SharedPreferences.getInstance();
   }
 
   void getDataFromSharedPreferences() async {
     roomName = pref.getString(RoomModule.room_name_prefKey) ?? '';
     date = pref.getString(RoomModule.create_date_prefKey) ?? '';
-    noOfPlayers = pref.getInt(RoomModule.num_of_players_prefKey) ?? -1;
-    noOfTeams = pref.getInt(RoomModule.num_of_teams_prefKey) ?? -1;
-    print(roomName);
+    noOfPlayers = pref.getInt(RoomModule.num_of_players_prefKey) ?? 0;
+    noOfTeams = pref.getInt(RoomModule.num_of_teams_prefKey) ?? 0;
   }
 
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<TeamProvider>(context);
     if (provider.divided) {
-      getDataFromSharedPreferences();
       setState(() {
         provider.divided = false;
       });
     }
-    return FutureBuilder<void>(
+    return FutureBuilder<SharedPreferences>(
       future: initiateSharedPref(),
-      builder: (context, AsyncSnapshot<void> snapshot) {
+      builder: (context, AsyncSnapshot<SharedPreferences> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasData) {
+            pref = snapshot.data!;
             getDataFromSharedPreferences();
-            return roomRow();
-          } else if (snapshot.hasError) {
-            return Text('${snapshot.error}');
-          } else {
-            return Container();
+            if (noOfPlayers != 0) {
+              return roomRow();
+            } else {
+              return Container();
+            }
           }
+          return Container();
         } else {
           return Container();
         }
@@ -231,8 +235,8 @@ class _RoomItemState extends State<RoomItem> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(date,
-                style: const TextStyle(
-                    fontSize: 14, color: MyColors.lightBlack)),
+                style:
+                    const TextStyle(fontSize: 14, color: MyColors.lightBlack)),
           )
         ],
       ),

@@ -24,7 +24,7 @@ class TeamProvider extends ChangeNotifier {
     roomName = '';
   }
 
-  void dividePlayers() async {
+  Future<List<String>> dividePlayers() async {
     teams = [];
     int noOfPlayers = players.length;
     List<int> list = teamCount(noOfPlayers, noOfTeams);
@@ -46,8 +46,9 @@ class TeamProvider extends ChangeNotifier {
       } while (counter <= noOfPlayersEachTeam);
       teams.add(team);
     }
-    notifyListeners();
+    //notifyListeners();
     StorageManager.saveData(RoomModule.room_teams_list_prefKey, teams);
+    return teams;
   }
 
   List<int> teamCount(int noOfPlayers, int numberOfTeams) {

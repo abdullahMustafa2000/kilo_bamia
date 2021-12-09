@@ -6,8 +6,9 @@ import 'package:kilo_bamya/ui/home/aboveWidget/page_model.dart';
 class LoadingRoomWidget extends StatelessWidget {
 
   Function onLoadingEnd;
+  Function moveToPrev;
 
-  LoadingRoomWidget({required this.onLoadingEnd});
+  LoadingRoomWidget({required this.onLoadingEnd, required this.moveToPrev});
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,8 @@ class LoadingRoomWidget extends StatelessWidget {
       onLoadingEnd();
     });
     return MyKiloBamayaPageModel(
+      onPrev: moveToPrev,
+      onClose: (){},
       content: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
