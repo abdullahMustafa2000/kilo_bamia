@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/page_model.dart';
+import 'package:kilo_bamya/ui/home/teamSelection/page_model.dart';
 
 class LoadingRoomWidget extends StatelessWidget {
 

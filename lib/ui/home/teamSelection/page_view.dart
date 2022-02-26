@@ -1,12 +1,10 @@
 // ignore_for_file: use_key_in_widget_constructors, must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/next_page_provider.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/pages/loading_room_page.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/pages/result_page.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/pages/room_specifications.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/pages/spinning_wheel_page.dart';
-import 'package:provider/provider.dart';
+import 'package:kilo_bamya/ui/home/teamSelection/next_page_provider.dart';
+import 'package:kilo_bamya/ui/home/teamSelection/pages/result_page.dart';
+import 'package:kilo_bamya/ui/home/teamSelection/pages/room_specifications.dart';
+import 'package:kilo_bamya/ui/home/teamSelection/pages/spinning_wheel_page.dart';
 
 import 'pages/take_players_page.dart';
 
@@ -55,11 +53,17 @@ class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
             moveToPrev: onMoveToPrev,
             onClose: onSaveBtnClick,
             showResultWidget: widget.showResultWidget,
+            onBack: onBackBtnPressed,
           ),
           /*WheelPage(),*/
         ],
       ),
     );
+  }
+
+  void onBackBtnPressed(int backCode) {
+    _controller.animateToPage(provider.moveToInitPage(),
+        duration: const Duration(milliseconds: 400), curve: Curves.bounceOut);
   }
 
   void onMoveToNext() {

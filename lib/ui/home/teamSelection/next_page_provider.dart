@@ -11,4 +11,9 @@ class NextPageProvider {
     currentPage -= 1;
     return currentPage;
   }
+
+  int moveToInitPage() {
+    currentPage = 0;
+    return currentPage;
+  }
 }

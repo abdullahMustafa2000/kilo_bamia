@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/moduls/room_module.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/teams_provider.dart';
+import 'package:kilo_bamya/ui/home/teamSelection/teams_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -1,13 +1,11 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
-import 'package:kilo_bamya/moduls/room_module.dart';
-import 'package:kilo_bamya/shared_pereferences/saved_game.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/page_model.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/teams_provider.dart';
+import 'package:kilo_bamya/ui/home/teamSelection/page_model.dart';
+import 'package:kilo_bamya/ui/home/teamSelection/teams_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RoomSpecifications extends StatelessWidget {
   Function onBtnClick;
@@ -18,7 +16,7 @@ class RoomSpecifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MyKiloBamayaPageModel(
-        content: InputContainer(onBtnClick),
+      content: InputContainer(onBtnClick),
       onPrev: () {},
       onClose: onClose,
     );
@@ -34,6 +32,7 @@ class InputContainer extends StatelessWidget {
   String? teamsNumEt;
   static String? playersNumEt;
   late TeamProvider provider;
+
   @override
   Widget build(BuildContext context) {
     provider = Provider.of<TeamProvider>(context);
@@ -80,7 +79,9 @@ class InputContainer extends StatelessWidget {
           width: width * .25,
           child: RaisedButton(
             onPressed: () {
-              onBtnClick();
+              if (acceptedInput()) {
+                onBtnClick();
+              }
             },
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(80.0)),
@@ -156,5 +157,34 @@ class InputContainer extends StatelessWidget {
   void onTeamsTxtChange(String txt) {
     teamsNumEt = txt;
     provider.noOfTeams = int.parse(txt);
+  }
+
+  bool acceptedInput() {
+    // filled text fields,  no zero inputs,  number of players = or > number of teams
+    bool accepted = false;
+    if (teamsNumEt != null &&
+        playersNumEt != null &&
+        roomNameEt != null) {
+      if (int.parse(teamsNumEt!) != 0 && int.parse(playersNumEt!) != 0) {
+        if (int.parse(teamsNumEt!) <= int.parse(playersNumEt!)) {
+          accepted = true;
+        } else {
+          showToast('Number of players should be greater');
+        }
+      } else {
+        showToast('Zero is not accepted');
+      }
+    } else {
+      showToast('Please fill all fields');
+    }
+    return accepted;
+  }
+
+  void showToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        backgroundColor: MyColors.lightRed,
+        timeInSecForIosWeb: 3,
+        gravity: ToastGravity.CENTER);
   }
 }

@@ -24,29 +24,22 @@ class TeamProvider extends ChangeNotifier {
     roomName = '';
   }
 
-  Future<List<String>> dividePlayers() async {
-    teams = [];
-    int noOfPlayers = players.length;
+  List<String> dividePlayers() {
+    teams = List.filled(noOfTeams, '');
+    int noOfPlayers = players.length; //5
+                                            //2
     List<int> list = teamCount(noOfPlayers, noOfTeams);
-    int noOfPlayersEachTeam = list[0];
-    List<String> playersList = List.filled(list[1], '');
-    playersList = players;
-    List<bool> alreadySelected = List.filled(playersList.length, false);
-    for (var i = 0; i < noOfTeams; i++) {
-      String team = '';
-      int counter = 1;
-      do {
-        int randomNumber = Random().nextInt(playersList.length);
-
-        if (!alreadySelected[randomNumber]) {
-          team += '${playersList[randomNumber]},';
-          alreadySelected[randomNumber] = true;
-          counter++;
-        }
-      } while (counter <= noOfPlayersEachTeam);
-      teams.add(team);
+    int noOfPlayersEachTeam = list[0]; //3
+    for (var i = 0; i < noOfPlayers;) {
+      var randomNum = Random().nextInt(noOfTeams);
+      String team = teams[randomNum];
+      print('$randomNum at $team');
+      if(!checkNumOfPlayersFrom(team, noOfPlayersEachTeam)) {
+        teams[randomNum]+='${players[i]},';
+        i++;
+      }
     }
-    //notifyListeners();
+    notifyListeners();
     StorageManager.saveData(RoomModule.room_teams_list_prefKey, teams);
     return teams;
   }
@@ -63,5 +56,9 @@ class TeamProvider extends ChangeNotifier {
   void newTeamDivided() {
     divided = true;
     notifyListeners();
+  }
+
+  bool checkNumOfPlayersFrom(String team, int noOfPlayersEachTeam) {
+    return team.split(',').length-1 == noOfPlayersEachTeam;
   }
 }

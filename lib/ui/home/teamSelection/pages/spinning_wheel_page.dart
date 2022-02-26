@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/teams_provider.dart';
-import 'package:provider/provider.dart';
 
 class SpinningWheelWidget extends StatelessWidget {
   Function onLoadEnd;
@@ -10,8 +8,8 @@ class SpinningWheelWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    var provider = Provider.of<TeamProvider>(context);
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      print('load ended');
       onLoadEnd();
     });
     return Center(child: Image.asset('assets/images/spinning_wheel.png', width: size.width * .4,));

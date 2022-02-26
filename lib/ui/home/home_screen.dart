@@ -6,7 +6,7 @@ import 'package:kilo_bamya/ui/home/sideMenu/side_menu_widget.dart';
 import 'package:kilo_bamya/ui/home/fragments/wheel_widget.dart';
 import 'package:provider/provider.dart';
 
-import 'aboveWidget/kilo_bamya_widget.dart';
+import 'teamSelection//kilo_bamya_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -40,7 +40,8 @@ class _HomePageState extends State<HomePage> {
         }),
         title: const Center(
           child: Text(
-            'Kilo Bamia',
+            'Kilobamya',
+            style: TextStyle(fontSize: 22),
           ),
         ),
         backgroundColor: MyColors.darkBlue,
@@ -54,8 +55,6 @@ class _HomePageState extends State<HomePage> {
   int callResultWidget = -1;
 
   void showAboveWidgetListener(int showWidget) {
-    print(showWidget);
-    /// if 0 -> roomSpecificationsWidget, if 1 -> resultWidget
     setState(() {
       callResultWidget = showWidget;
       aboveWidgetIsVisible = true;

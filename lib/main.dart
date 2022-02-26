@@ -3,8 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/themes/themes.dart';
 import 'package:kilo_bamya/ui/app_tour/view_page_provider.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/next_page_provider.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/teams_provider.dart';
+import 'package:kilo_bamya/ui/home/teamSelection/teams_provider.dart';
 import 'package:kilo_bamya/ui/home/btm_nav_provider.dart';
 import 'package:kilo_bamya/ui/splash/splash_screen.dart';
 import 'package:provider/provider.dart';

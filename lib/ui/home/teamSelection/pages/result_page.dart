@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:kilo_bamya/moduls/room_module.dart';
 import 'package:kilo_bamya/shared_pereferences/saved_game.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/next_page_provider.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/page_model.dart';
+import 'package:kilo_bamya/ui/home/teamSelection/next_page_provider.dart';
+import 'package:kilo_bamya/ui/home/teamSelection/page_model.dart';
 import 'package:provider/provider.dart';
 
 import '../teams_provider.dart';
@@ -14,13 +14,15 @@ class ResultPage extends StatefulWidget {
   int showResultWidget;
 
   Function onClose;
+  Function(int) onBack;
   Function moveToPrev;
 
   ResultPage(
       {required this.onSaveBtnClick,
       required this.showResultWidget,
       required this.moveToPrev,
-      required this.onClose});
+      required this.onClose,
+      required this.onBack});
 
   @override
   State<ResultPage> createState() => _ResultPageState();
@@ -42,7 +44,9 @@ class _ResultPageState extends State<ResultPage> {
     nextPageProvider = NextPageProvider();
     return MyKiloBamayaPageModel(
       onClose: widget.onClose,
-      onPrev: widget.onSaveBtnClick,
+      onPrev: () {
+        widget.onBack(fromPref);
+      },
       content: SizedBox(
         height: MediaQuery.of(context).size.height * .3,
         child: Column(
@@ -63,7 +67,6 @@ class _ResultPageState extends State<ResultPage> {
                       provider.teams = snapshot.data as List<String>;
                       return resultListWidget(snapshot.data as List<String>);
                     } else {
-                      print(snapshot.error.toString());
                       return const Center(child: Text('Unknown error accrued'));
                     }
                   } else {
@@ -124,6 +127,7 @@ class _ResultPageState extends State<ResultPage> {
   }
 
   Widget resultListWidget(List<String> list) {
+    print(list.first);
     return ListView.builder(
       itemCount: list.length,
       scrollDirection: Axis.horizontal,
@@ -205,7 +209,7 @@ class _ResultPageState extends State<ResultPage> {
       return await StorageManager.readStringList(
           RoomModule.room_teams_list_prefKey);
     } else if (fromPref == 0) {
-      return await provider.dividePlayers();
+      return provider.dividePlayers();
     } else {
       fromPref = widget.showResultWidget;
       return [];

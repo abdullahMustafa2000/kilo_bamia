@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/page_view.dart';
+import 'package:kilo_bamya/ui/home/teamSelection/page_view.dart';
 
 class DivideTeamsWidget extends StatelessWidget {
   DivideTeamsWidget({required this.onSaveBtnClick, required this.showResultWidget});

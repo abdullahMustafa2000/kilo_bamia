@@ -1,7 +1,5 @@
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/ui/app_tour/page_view_widget.dart';
-import 'package:kilo_bamya/ui/home/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
