@@ -12,26 +12,29 @@ class MyKiloBamayaPageModel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Stack(children: [
-          Image.asset(
-            'assets/images/spinning_wheel.png',
-            width: width * .6,
-          ),
-          Container(
-            alignment: Alignment.center,
-            child: Image.asset(
-              'assets/images/kitty.png',
-              width: width * .3,
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Stack(children: [
+            Image.asset(
+              'assets/images/spinning_wheel.png',
+              width: width * .5,
             ),
-          )
+            Container(
+              alignment: Alignment.center,
+              child: Image.asset(
+                'assets/images/kitty.png',
+                width: width * .3,
+              ),
+            )
+          ],
+            alignment: Alignment.center,
+          ),
+          MyInputResultBox(content, onClose, onPrev),
         ],
-          alignment: Alignment.center,
-        ),
-        MyInputResultBox(content, onClose, onPrev),
-      ],
+      ),
     );
   }
 }

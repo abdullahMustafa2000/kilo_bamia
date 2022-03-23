@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/btm_nav_provider.dart';
 import 'package:kilo_bamya/ui/home/fragments/coin_widget.dart';
+import 'package:kilo_bamya/ui/home/randomChoice/random_choice_widget.dart';
 import 'package:kilo_bamya/ui/home/sideMenu/side_menu_widget.dart';
 import 'package:kilo_bamya/ui/home/fragments/wheel_widget.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late HomeClicksProvider provider;
+
+  bool callRandomChoiceWidget = false;
   @override
   void initState() {
     super.initState();
@@ -54,16 +57,24 @@ class _HomePageState extends State<HomePage> {
   bool aboveWidgetIsVisible = false;
   int callResultWidget = -1;
 
-  void showAboveWidgetListener(int showWidget) {
-    setState(() {
-      callResultWidget = showWidget;
+  // if random choice is 1 then open randomChoice pageview
+  void showAboveWidgetListener(int showWidget, int randomChoice) {
+      if (randomChoice == 1) {
+        callRandomChoiceWidget = true;
+      } else {
+        callResultWidget = showWidget;
+      }
       aboveWidgetIsVisible = true;
-    });
+      setState(() {
+
+      });
   }
 
   void onSaveBtnClick() {
     setState(() {
       aboveWidgetIsVisible = !aboveWidgetIsVisible;
+      callResultWidget = -1;
+      callRandomChoiceWidget = false;
     });
   }
 
@@ -75,10 +86,12 @@ class _HomePageState extends State<HomePage> {
             : CoinWidget(),
         Offstage(
           offstage: !aboveWidgetIsVisible,
-          child: DivideTeamsWidget(
-            onSaveBtnClick: onSaveBtnClick,
-            showResultWidget: callResultWidget,
-          ),
+          child: callRandomChoiceWidget
+              ? RandomChoiceWidget(onClickClose: onSaveBtnClick,)
+              : DivideTeamsWidget(
+                  onSaveBtnClick: onSaveBtnClick,
+                  showResultWidget: callResultWidget,
+                ),
         )
       ],
     );

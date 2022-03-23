@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WheelWidget extends StatelessWidget {
-  Function(int) aboveWidgetCall;
+  Function(int, int) aboveWidgetCall;
 
   WheelWidget({required this.aboveWidgetCall});
 
@@ -22,11 +22,15 @@ class WheelWidget extends StatelessWidget {
           children: [
             Expanded(
               child: Center(
-                  child: Image.asset('assets/images/spinning_wheel.png')),
+                  child: InkWell(
+                    onTap: (){
+                      aboveWidgetCall(0, 1);
+                    },
+                      child: Image.asset('assets/images/spinning_wheel.png'))),
             ),
             InkWell(
               onTap: () {
-                aboveWidgetCall(0);
+                aboveWidgetCall(0, 0);
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 8),
@@ -98,7 +102,7 @@ class WheelWidget extends StatelessWidget {
                         child: Container(
                       child: RoomItem(
                         onLastClick: () {
-                          aboveWidgetCall(1);
+                          aboveWidgetCall(1, 0);
                         },
                       ),
                       margin: const EdgeInsets.only(left: 32),
