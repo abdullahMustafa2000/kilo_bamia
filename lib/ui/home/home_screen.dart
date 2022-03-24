@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
       }
       aboveWidgetIsVisible = true;
       setState(() {
-
+        print(callRandomChoiceWidget);
       });
   }
 

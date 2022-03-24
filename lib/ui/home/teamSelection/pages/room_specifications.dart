@@ -183,7 +183,7 @@ class InputContainer extends StatelessWidget {
   void showToast(String message) {
     Fluttertoast.showToast(
         msg: message,
-        backgroundColor: MyColors.lightRed,
+        backgroundColor: MyColors.spinnerLightRed,
         timeInSecForIosWeb: 3,
         gravity: ToastGravity.CENTER);
   }

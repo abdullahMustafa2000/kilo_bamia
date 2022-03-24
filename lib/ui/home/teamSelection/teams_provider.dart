@@ -33,7 +33,6 @@ class TeamProvider extends ChangeNotifier {
     for (var i = 0; i < noOfPlayers;) {
       var randomNum = Random().nextInt(noOfTeams);
       String team = teams[randomNum];
-      print('$randomNum at $team');
       if(!checkNumOfPlayersFrom(team, noOfPlayersEachTeam)) {
         teams[randomNum]+='${players[i]},';
         i++;

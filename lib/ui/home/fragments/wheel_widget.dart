@@ -213,7 +213,7 @@ class _RoomItemState extends State<RoomItem> {
             child: Container(
               width: 45,
               height: 45,
-              color: MyColors.lightRed.withOpacity(.5),
+              color: MyColors.spinnerLightRed.withOpacity(.5),
             ),
           ),
           Expanded(

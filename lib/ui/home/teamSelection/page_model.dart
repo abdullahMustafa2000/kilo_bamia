@@ -96,7 +96,7 @@ class MyInputResultBox extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: MyColors.lightRed,
+          color: MyColors.spinnerLightRed,
           borderRadius: BorderRadius.circular(180),
         ),
         width: 25,

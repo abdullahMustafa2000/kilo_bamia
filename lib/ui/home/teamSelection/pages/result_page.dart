@@ -96,7 +96,7 @@ class _ResultPageState extends State<ResultPage> {
 
   var colorsArr = [
     MyColors.darkBlue,
-    MyColors.lightRed,
+    MyColors.spinnerLightRed,
     MyColors.darkOrange,
     MyColors.darkYellow,
     MyColors.bottomGradient,
