@@ -7,7 +7,6 @@ class RandomChoiceWidget extends StatelessWidget {
   Function onClickClose;
   @override
   Widget build(BuildContext context) {
-    print('RandomChoiceWidget');
     return Stack(
       children: [
         Container(

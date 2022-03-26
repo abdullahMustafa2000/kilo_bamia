@@ -9,7 +9,6 @@ class SpinningWheelWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     Future.delayed(const Duration(milliseconds: 1500), () {
-      print('load ended');
       onLoadEnd();
     });
     return Center(child: Image.asset('assets/images/spinning_wheel.png', width: size.width * .4,));

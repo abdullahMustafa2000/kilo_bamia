@@ -6,8 +6,9 @@ import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/page_model.dart';
 
 class EnterChoicesPage extends StatefulWidget {
-  EnterChoicesPage({required this.onCloseClick});
+  EnterChoicesPage({required this.onCloseClick, required this.onSpinningWheelClick});
   Function onCloseClick;
+  Function(List<ChoiceModel>) onSpinningWheelClick;
 
   @override
   State<EnterChoicesPage> createState() => _EnterChoicesPageState();
@@ -42,7 +43,6 @@ class _EnterChoicesPageState extends State<EnterChoicesPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('build func');
     void onTextChange(String text, var index) {
       setState(() {
         choices[index].choiceName = text;
@@ -78,11 +78,16 @@ class _EnterChoicesPageState extends State<EnterChoicesPage> {
                       childAspectRatio: 1 / .4),
                 ),
               ),
-              Container(
-                width: 47,
-                height: 47,
-                margin: const EdgeInsets.all(8),
-                child: Image.asset('assets/images/spinning_wheel.png'),
+              InkWell(
+                onTap: () {
+                  widget.onSpinningWheelClick(choices);
+                },
+                child: Container(
+                  width: 47,
+                  height: 47,
+                  margin: const EdgeInsets.all(8),
+                  child: Image.asset('assets/images/spinning_wheel.png'),
+                ),
               )
             ],
           ),
