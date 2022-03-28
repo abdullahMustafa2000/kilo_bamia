@@ -36,6 +36,7 @@ class _RoomPlayersState extends State<RoomPlayers> {
             ),
             Expanded(
               child: GridView.builder(
+                physics: const BouncingScrollPhysics(),
                 itemCount: int.parse(InputContainer.playersNumEt!),
                 itemBuilder: (BuildContext context, int index) {
                   return TextInputDesign(onTextChange, index);

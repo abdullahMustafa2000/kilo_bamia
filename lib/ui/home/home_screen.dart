@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
   bool aboveWidgetIsVisible = false;
   int callResultWidget = -1;
 
-  // if random choice is 1 then open randomChoice pageview
+  // if random choice is 1 then open randomChoice pageView
   void showAboveWidgetListener(int showWidget, int randomChoice) {
       if (randomChoice == 1) {
         callRandomChoiceWidget = true;

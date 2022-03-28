@@ -1,5 +1,7 @@
+
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:kilo_bamya/moduls/room_module.dart';
 import 'package:kilo_bamya/shared_pereferences/saved_game.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
@@ -18,11 +20,11 @@ class ResultPage extends StatefulWidget {
   Function moveToPrev;
 
   ResultPage(
-      {required this.onSaveBtnClick,
+      {Key? key, required this.onSaveBtnClick,
       required this.showResultWidget,
       required this.moveToPrev,
       required this.onClose,
-      required this.onBack});
+      required this.onBack}) : super(key: key);
 
   @override
   State<ResultPage> createState() => _ResultPageState();
@@ -127,8 +129,8 @@ class _ResultPageState extends State<ResultPage> {
   }
 
   Widget resultListWidget(List<String> list) {
-    print(list.first);
     return ListView.builder(
+      physics: const BouncingScrollPhysics(),
       itemCount: list.length,
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
@@ -154,15 +156,16 @@ class _ResultPageState extends State<ResultPage> {
               spreadRadius: 12)
         ],
       ),
-      child: RaisedButton(
+      child: ElevatedButton(
         onPressed: () {
           setState(() {
             fromPref = 0;
           });
         },
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(180.0)),
-        padding: const EdgeInsets.all(0.0),
+        style:
+            ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(180))
+            ),
         child: Ink(
           child: Container(
             decoration: BoxDecoration(
@@ -202,7 +205,6 @@ class _ResultPageState extends State<ResultPage> {
   }
 
   Future<List<String>> getPreferences() async {
-    print(fromPref);
     if (fromPref == 1) {
       provider.players = await StorageManager.readStringList(
           RoomModule.room_players_names_prefKey);
@@ -223,9 +225,9 @@ class TeamDesign extends StatelessWidget {
   int teamIndex;
 
   TeamDesign(
-      {required this.teamMembers,
+      {Key? key, required this.teamMembers,
       required this.teamColor,
-      required this.teamIndex});
+      required this.teamIndex}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -249,6 +251,7 @@ class TeamDesign extends StatelessWidget {
             /// team list
             Expanded(
               child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
                   itemCount: teamMembers.length,
                   itemBuilder: (context, index) {
                     return Container(

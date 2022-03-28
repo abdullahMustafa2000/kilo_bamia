@@ -135,6 +135,7 @@ class InputContainer extends StatelessWidget {
             onChanged: (txt) {
               onTxtChange(txt);
             },
+            controller: TextEditingController()..text = '',
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
