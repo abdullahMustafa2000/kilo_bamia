@@ -7,7 +7,6 @@ import 'package:kilo_bamya/ui/home/home_screen.dart';
 import 'package:provider/provider.dart';
 
 class MyPageViewController extends StatefulWidget {
-
   @override
   State<MyPageViewController> createState() => _MyPageViewControllerState();
 }
@@ -28,9 +27,41 @@ class _MyPageViewControllerState extends State<MyPageViewController> {
           physics: const NeverScrollableScrollPhysics(),
           controller: _controller,
           children: [
-            IntroPage(title: 'Kilo Bamya', desc: 'Kilo Bamia is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.', btnTxt: 'Next', view: Image.asset('assets/images/spinning_wheel.png'), onBtnClick: onBtnClick, index: 0),
-            IntroPage(title: 'Kilo Bamya', desc: 'Kilo Bamia is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.', btnTxt: 'Next', view: Row(children: [Image.asset('assets/images/spinning_wheel.png', width: 140, height: 140), Image.asset('assets/images/throw_coin.png', width: 140, height: 140,)], mainAxisAlignment: MainAxisAlignment.spaceEvenly,), onBtnClick: onBtnClick, index: 0),
-            IntroPage(title: 'Kilo Bamya', desc: 'Kilo Bamia is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.', btnTxt: 'Start', view: Image.asset('assets/images/kitty.png'), onBtnClick: onBtnClick, index: 0),
+            IntroPage(
+                title: 'Kilo Bamya',
+                desc:
+                    'Kilo Bamia is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.',
+                btnTxt: 'Next',
+                view: Image.asset('assets/images/hands.png'),
+                onBtnClick: onBtnClick,
+                index: 0),
+            IntroPage(
+                title: 'Kilo Bamya',
+                desc:
+                    'Kilo Bamia is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.',
+                btnTxt: 'Next',
+                view: Row(
+                  children: [
+                    Image.asset('assets/images/spinning_wheel.png',
+                        width: 140, height: 140),
+                    Image.asset(
+                      'assets/images/throw_coin.png',
+                      width: 140,
+                      height: 140,
+                    )
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                ),
+                onBtnClick: onBtnClick,
+                index: 0),
+            IntroPage(
+                title: 'Kilo Bamya',
+                desc:
+                    'Kilo Bamia is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.',
+                btnTxt: 'Start',
+                view: Image.asset('assets/images/kitty.png'),
+                onBtnClick: onBtnClick,
+                index: 0),
           ],
         ),
       ),
@@ -43,7 +74,8 @@ class _MyPageViewControllerState extends State<MyPageViewController> {
       _controller.animateToPage(provider.currentPageIndex,
           duration: const Duration(milliseconds: 400), curve: Curves.bounceOut);
     } else {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>const HomePage()));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const HomePage()));
     }
   }
 }

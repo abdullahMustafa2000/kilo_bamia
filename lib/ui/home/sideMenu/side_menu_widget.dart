@@ -27,7 +27,7 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
       child: SizedBox(
         width: width * .6,
         child: GlassContainer(
-          contColor: MyColors.lightBlue.withOpacity(.09),
+          contColor: MyColors.lightBlue.withOpacity(.20),
           borderRadiusColor: Colors.transparent,
           contHeight: double.infinity,
           child: Container(
@@ -64,7 +64,8 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
                           offstage: isAboutClicked,
                           child: const Text(
                             'Kilo Bamia is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.',
-                            style: TextStyle(color: MyColors.white, fontSize: 14),
+                            style:
+                                TextStyle(color: MyColors.white, fontSize: 14),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -86,7 +87,8 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
                           offstage: isOtherAppsClicked,
                           child: const Text(
                             'Alfurqan',
-                            style: TextStyle(color: MyColors.white, fontSize: 14),
+                            style:
+                                TextStyle(color: MyColors.white, fontSize: 14),
                           ),
                         ),
                       ],

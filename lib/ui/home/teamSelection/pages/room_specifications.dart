@@ -1,31 +1,41 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/pages/page_model.dart';
+import 'package:kilo_bamya/ui/home/teamSelection/page_model.dart';
+import 'package:kilo_bamya/ui/home/teamSelection/teams_provider.dart';
+import 'package:provider/provider.dart';
 
 class RoomSpecifications extends StatelessWidget {
-
   Function onBtnClick;
+  Function onClose;
 
-  RoomSpecifications(this.onBtnClick);
+  RoomSpecifications(this.onBtnClick, {required this.onClose});
 
   @override
   Widget build(BuildContext context) {
     return MyKiloBamayaPageModel(
-      content: InputContainer(onBtnClick)
+      content: InputContainer(onBtnClick),
+      onPrev: () {},
+      onClose: onClose,
     );
   }
 }
 
 class InputContainer extends StatelessWidget {
-
   Function onBtnClick;
 
   InputContainer(this.onBtnClick);
 
+  String? roomNameEt;
+  String? teamsNumEt;
+  static String? playersNumEt;
+  late TeamProvider provider;
+
   @override
   Widget build(BuildContext context) {
+    provider = Provider.of<TeamProvider>(context);
     var width = MediaQuery.of(context).size.width;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -36,13 +46,20 @@ class InputContainer extends StatelessWidget {
         ),
         Container(
           width: width * .4,
-          margin: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: MyColors.textFieldFillClr.withOpacity(.45),
           ),
           child: TextField(
+            onChanged: (txt) {
+              roomNameEt = txt;
+              provider.roomName = txt;
+            },
             textAlign: TextAlign.center,
+            textInputAction: TextInputAction.done,
+            style: const TextStyle(
+              color: MyColors.lightBlack,
+            ),
             decoration: InputDecoration(
               border: InputBorder.none,
               hintStyle: Theme.of(context).textTheme.subtitle1,
@@ -53,7 +70,8 @@ class InputContainer extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            teamsDataTextField('Number of players :', onPlayersTxtChange, context),
+            teamsDataTextField(
+                'Number of players :', onPlayersTxtChange, context),
             teamsDataTextField('Number of teams :', onTeamsTxtChange, context),
           ],
         ),
@@ -61,7 +79,9 @@ class InputContainer extends StatelessWidget {
           width: width * .25,
           child: RaisedButton(
             onPressed: () {
-              onBtnClick();
+              if (acceptedInput()) {
+                onBtnClick();
+              }
             },
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(80.0)),
@@ -75,8 +95,7 @@ class InputContainer extends StatelessWidget {
                       MyColors.lightOrange.withOpacity(.1),
                       MyColors.darkOrange.withOpacity(.3),
                     ]),
-                borderRadius:
-                const BorderRadius.all(Radius.circular(80.0)),
+                borderRadius: const BorderRadius.all(Radius.circular(80.0)),
               ),
               child: Container(
                 constraints: const BoxConstraints(
@@ -97,6 +116,7 @@ class InputContainer extends StatelessWidget {
       ],
     );
   }
+
   Widget teamsDataTextField(
       String label, Function onTxtChange, BuildContext context) {
     return Column(
@@ -115,6 +135,8 @@ class InputContainer extends StatelessWidget {
             onChanged: (txt) {
               onTxtChange(txt);
             },
+            textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -127,7 +149,42 @@ class InputContainer extends StatelessWidget {
     );
   }
 
-  void onPlayersTxtChange() {}
+  void onPlayersTxtChange(String txt) {
+    playersNumEt = txt;
+    provider.noOfPlayers = int.parse(txt);
+  }
 
-  void onTeamsTxtChange() {}
+  void onTeamsTxtChange(String txt) {
+    teamsNumEt = txt;
+    provider.noOfTeams = int.parse(txt);
+  }
+
+  bool acceptedInput() {
+    // filled text fields,  no zero inputs,  number of players = or > number of teams
+    bool accepted = false;
+    if (teamsNumEt != null &&
+        playersNumEt != null &&
+        roomNameEt != null) {
+      if (int.parse(teamsNumEt!) != 0 && int.parse(playersNumEt!) != 0) {
+        if (int.parse(teamsNumEt!) <= int.parse(playersNumEt!)) {
+          accepted = true;
+        } else {
+          showToast('Number of players should be greater');
+        }
+      } else {
+        showToast('Zero is not accepted');
+      }
+    } else {
+      showToast('Please fill all fields');
+    }
+    return accepted;
+  }
+
+  void showToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        backgroundColor: MyColors.spinnerLightRed,
+        timeInSecForIosWeb: 3,
+        gravity: ToastGravity.CENTER);
+  }
 }

@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/btm_nav_provider.dart';
 import 'package:kilo_bamya/ui/home/fragments/coin_widget.dart';
+import 'package:kilo_bamya/ui/home/randomChoice/random_choice_widget.dart';
 import 'package:kilo_bamya/ui/home/sideMenu/side_menu_widget.dart';
 import 'package:kilo_bamya/ui/home/fragments/wheel_widget.dart';
 import 'package:provider/provider.dart';
 
-import 'aboveWidget/kilo_bamya_widget.dart';
+import 'teamSelection//kilo_bamya_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,6 +18,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late HomeClicksProvider provider;
+
+  bool callRandomChoiceWidget = false;
   @override
   void initState() {
     super.initState();
@@ -29,43 +32,85 @@ class _HomePageState extends State<HomePage> {
       resizeToAvoidBottomInset: false,
       drawer: const MyDrawerWidget(),
       appBar: AppBar(
-        centerTitle: true,
-        leading: Builder(builder: (context) {
+        /*leading: Builder(builder: (context) {
           return InkWell(
             child: Image.asset('assets/images/menu_ic.png'),
             onTap: () {
               Scaffold.of(context).openDrawer();
             },
           );
-        }),
-        title: const Center(
-          child: Text(
-            'Kilo Bamia',
-          ),
+        }),*/
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Align(
+              child: Builder(builder: (context) {
+                return InkWell(
+                  child: Image.asset('assets/images/menu_ic.png'),
+                  onTap: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                );
+              }),
+            ),
+            const Center(
+              child: Text(
+                'Kilobamyous',
+                style: TextStyle(fontSize: 22),
+              ),
+            ),
+            SizedBox()
+          ],
         ),
         backgroundColor: MyColors.darkBlue,
       ),
-      body: Stack(
-        children: [
-          provider.btmIndex == 0
-              ? WheelWidget(onCreateRoomClick: hideShowAboveWidgetListener)
-              : CoinWidget(),
-          Offstage(
-            child: const KioBamayView(),
-            offstage: !aboveWidgetIsVisible,
-          ),
-        ],
-      ),
+      body: stackOrHome(),
       bottomNavigationBar: CustomBottomNav(!aboveWidgetIsVisible),
     );
   }
 
   bool aboveWidgetIsVisible = false;
+  int callResultWidget = -1;
 
-  void hideShowAboveWidgetListener(bool showState) {
+  // if random choice is 1 then open randomChoice pageView
+  void showAboveWidgetListener(int showWidget, int randomChoice) {
+    if (randomChoice == 1) {
+      callRandomChoiceWidget = true;
+    } else {
+      callResultWidget = showWidget;
+    }
+    aboveWidgetIsVisible = true;
+    setState(() {});
+  }
+
+  void onSaveBtnClick() {
     setState(() {
-      aboveWidgetIsVisible = showState;
+      aboveWidgetIsVisible = !aboveWidgetIsVisible;
+      callResultWidget = -1;
+      callRandomChoiceWidget = false;
     });
+  }
+
+  Widget stackOrHome() {
+    return Stack(
+      children: [
+        provider.btmIndex == 0
+            ? WheelWidget(aboveWidgetCall: showAboveWidgetListener)
+            : CoinWidget(),
+        Offstage(
+          offstage: !aboveWidgetIsVisible,
+          child: callRandomChoiceWidget
+              ? RandomChoiceWidget(
+                  onClickClose: onSaveBtnClick,
+                )
+              : DivideTeamsWidget(
+                  onSaveBtnClick: onSaveBtnClick,
+                  showResultWidget: callResultWidget,
+                ),
+        )
+      ],
+    );
   }
 }
 

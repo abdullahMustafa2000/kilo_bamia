@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
-import 'package:kilo_bamya/ui/home/aboveWidget/page_view.dart';
+import 'package:kilo_bamya/ui/home/randomChoice/random_choice_pageview.dart';
 
-class KioBamayView extends StatelessWidget {
-  const KioBamayView({Key? key}) : super(key: key);
-
+class RandomChoiceWidget extends StatelessWidget {
+  RandomChoiceWidget({required this.onClickClose});
+  Function onClickClose;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -14,8 +14,9 @@ class KioBamayView extends StatelessWidget {
           height: double.infinity,
           color: MyColors.lightBlack.withOpacity(.86),
         ),
-        KiloBamyaPageView(),
+        RandomChoicePageView(onCloseClick: onClickClose,),
       ],
+
     );
   }
 }
