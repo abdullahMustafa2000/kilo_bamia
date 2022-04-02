@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/moduls/room_module.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
+import 'package:kilo_bamya/ui/home/randomChoice/pages/spinning_wheel_page.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/teams_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,12 +22,11 @@ class WheelWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              child: Center(
-                  child: InkWell(
-                    onTap: (){
-                      aboveWidgetCall(0, 1);
-                    },
-                      child: Image.asset('assets/images/spinning_wheel.png'))),
+              child: Center(child: InkWell(child: AnimatedWheelRow(
+                onWidgetClick: () {
+                  aboveWidgetCall(0, 1);
+                },
+              ))),
             ),
             InkWell(
               onTap: () {

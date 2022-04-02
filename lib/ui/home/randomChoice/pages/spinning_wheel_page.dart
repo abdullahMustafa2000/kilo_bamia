@@ -30,23 +30,29 @@ class AnimationPage extends StatelessWidget {
 }
 
 class AnimatedWheelRow extends StatelessWidget {
+  Function? onWidgetClick;
+  AnimatedWheelRow({this.onWidgetClick});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Center(
-      child: Container(
-        width: MediaQuery.of(context).size.width * .6,
-        height: MediaQuery.of(context).size.height * .3,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Image.asset('assets/images/spinning_wheel.png'),
-            Image.asset(
-              'assets/images/kitty.png',
-              width: 96,
-              height: 96,
-            ),
-          ],
+      child: InkWell(
+        onTap: () {
+          onWidgetClick!();
+        },
+        child: Container(
+          height: MediaQuery.of(context).size.height * .3,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Image.asset('assets/images/spinning_wheel.png'),
+              Image.asset(
+                'assets/images/kitty.png',
+                width: 96,
+                height: 96,
+              ),
+            ],
+          ),
         ),
       ),
     );

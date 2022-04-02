@@ -56,7 +56,7 @@ class InputContainer extends StatelessWidget {
               provider.roomName = txt;
             },
             textAlign: TextAlign.center,
-            textInputAction: TextInputAction.next,
+            textInputAction: TextInputAction.done,
             style: const TextStyle(
               color: MyColors.lightBlack,
             ),
@@ -135,7 +135,6 @@ class InputContainer extends StatelessWidget {
             onChanged: (txt) {
               onTxtChange(txt);
             },
-            controller: TextEditingController()..text = '',
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,

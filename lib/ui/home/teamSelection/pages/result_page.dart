@@ -156,16 +156,15 @@ class _ResultPageState extends State<ResultPage> {
               spreadRadius: 12)
         ],
       ),
-      child: ElevatedButton(
+      child: RaisedButton(
         onPressed: () {
           setState(() {
             fromPref = 0;
           });
         },
-        style:
-            ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(180))
-            ),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(180.0)),
+        padding: const EdgeInsets.all(0.0),
         child: Ink(
           child: Container(
             decoration: BoxDecoration(

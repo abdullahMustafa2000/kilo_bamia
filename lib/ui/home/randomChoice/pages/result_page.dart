@@ -31,8 +31,11 @@ class _ChoiceResultPageState extends State<ChoiceResultPage> {
 
   @override
   Widget build(BuildContext context) {
+    var randomNum = Random().nextInt(choices.length);
     var element =
-        choices.elementAt(Random().nextInt(choices.length - 1));
+        choices.elementAt(randomNum);
+
+    print(choices.length);
     return Center(
       child: MyColumnWidget(
         onCloseClick: widget.onCloseClick,
@@ -87,15 +90,21 @@ class _MyColumnWidgetState extends State<MyColumnWidget> {
   }
 }
 
-class SpinAgainRow extends StatelessWidget {
+class SpinAgainRow extends StatefulWidget {
   Function onSpinClick;
   SpinAgainRow({required this.onSpinClick});
+
+  @override
+  State<SpinAgainRow> createState() => _SpinAgainRowState();
+}
+
+class _SpinAgainRowState extends State<SpinAgainRow> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return InkWell(
       onTap: () {
-        onSpinClick();
+        widget.onSpinClick();
       },
       child: CircularContainer(
           contentColor: MyColors.spinnerOrange,

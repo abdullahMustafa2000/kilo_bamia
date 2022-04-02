@@ -32,20 +32,36 @@ class _HomePageState extends State<HomePage> {
       resizeToAvoidBottomInset: false,
       drawer: const MyDrawerWidget(),
       appBar: AppBar(
-        centerTitle: true,
-        leading: Builder(builder: (context) {
+        /*leading: Builder(builder: (context) {
           return InkWell(
             child: Image.asset('assets/images/menu_ic.png'),
             onTap: () {
               Scaffold.of(context).openDrawer();
             },
           );
-        }),
-        title: const Center(
-          child: Text(
-            'Kilobamya',
-            style: TextStyle(fontSize: 22),
-          ),
+        }),*/
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Align(
+              child: Builder(builder: (context) {
+                return InkWell(
+                  child: Image.asset('assets/images/menu_ic.png'),
+                  onTap: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                );
+              }),
+            ),
+            const Center(
+              child: Text(
+                'Kilobamyous',
+                style: TextStyle(fontSize: 22),
+              ),
+            ),
+            SizedBox()
+          ],
         ),
         backgroundColor: MyColors.darkBlue,
       ),
@@ -59,14 +75,13 @@ class _HomePageState extends State<HomePage> {
 
   // if random choice is 1 then open randomChoice pageView
   void showAboveWidgetListener(int showWidget, int randomChoice) {
-      if (randomChoice == 1) {
-        callRandomChoiceWidget = true;
-      } else {
-        callResultWidget = showWidget;
-      }
-      aboveWidgetIsVisible = true;
-      setState(() {
-      });
+    if (randomChoice == 1) {
+      callRandomChoiceWidget = true;
+    } else {
+      callResultWidget = showWidget;
+    }
+    aboveWidgetIsVisible = true;
+    setState(() {});
   }
 
   void onSaveBtnClick() {
@@ -86,7 +101,9 @@ class _HomePageState extends State<HomePage> {
         Offstage(
           offstage: !aboveWidgetIsVisible,
           child: callRandomChoiceWidget
-              ? RandomChoiceWidget(onClickClose: onSaveBtnClick,)
+              ? RandomChoiceWidget(
+                  onClickClose: onSaveBtnClick,
+                )
               : DivideTeamsWidget(
                   onSaveBtnClick: onSaveBtnClick,
                   showResultWidget: callResultWidget,
