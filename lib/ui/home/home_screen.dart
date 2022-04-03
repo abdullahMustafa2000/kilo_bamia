@@ -57,10 +57,21 @@ class _HomePageState extends State<HomePage> {
             const Center(
               child: Text(
                 'Kilobamyous',
+                textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 22),
               ),
             ),
-            SizedBox()
+            Visibility(
+              visible: true,
+              child: Align(
+                child: Builder(builder: (context) {
+                  return Image.asset(
+                    'assets/images/menu_ic.png',
+                    color: MyColors.darkBlue,
+                  );
+                }),
+              ),
+            )
           ],
         ),
         backgroundColor: MyColors.darkBlue,
