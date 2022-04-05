@@ -16,6 +16,7 @@ class LoadingRoomWidget extends StatelessWidget {
       onLoadingEnd();
     });
     return MyKiloBamayaPageModel(
+      showBackBtn: false,
       onPrev: moveToPrev,
       onClose: (){},
       content: Column(

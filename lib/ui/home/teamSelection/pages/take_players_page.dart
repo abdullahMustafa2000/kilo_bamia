@@ -12,7 +12,8 @@ class RoomPlayers extends StatefulWidget {
   Function onClose;
   Function onPrev;
 
-  RoomPlayers({required this.onBtnClick, required this.onClose, required this.onPrev});
+  RoomPlayers(
+      {required this.onBtnClick, required this.onClose, required this.onPrev});
 
   @override
   State<RoomPlayers> createState() => _RoomPlayersState();
@@ -24,6 +25,7 @@ class _RoomPlayersState extends State<RoomPlayers> {
     var provider = Provider.of<TeamProvider>(context);
     var size = MediaQuery.of(context).size;
     return MyKiloBamayaPageModel(
+      showBackBtn: true,
       onPrev: widget.onPrev,
       onClose: widget.onClose,
       content: SizedBox(
@@ -35,16 +37,18 @@ class _RoomPlayersState extends State<RoomPlayers> {
               style: Theme.of(context).textTheme.headline4,
             ),
             Expanded(
-              child: GridView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: int.parse(InputContainer.playersNumEt!),
-                itemBuilder: (BuildContext context, int index) {
-                  return TextInputDesign(onTextChange, index);
-                },
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              child: Form(
+                child: GridView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: int.parse(InputContainer.playersNumEt!),
+                  itemBuilder: (BuildContext context, int index) {
+                    return TextInputDesign(onTextChange, index);
+                  },
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 12,
-                    childAspectRatio: 1 / .5),
+                    childAspectRatio: 3,
+                  ),
+                ),
               ),
             ),
             Container(
@@ -105,12 +109,19 @@ class _RoomPlayersState extends State<RoomPlayers> {
   onTextChange(String name, int index) {
     names[index] = name;
   }
+
 }
 
-class TextInputDesign extends StatelessWidget {
+class TextInputDesign extends StatefulWidget {
   TextInputDesign(this.onTxtChange, this.index);
   Function(String, int) onTxtChange;
   int index;
+
+  @override
+  State<TextInputDesign> createState() => _TextInputDesignState();
+}
+
+class _TextInputDesignState extends State<TextInputDesign> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -119,15 +130,16 @@ class TextInputDesign extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         color: MyColors.textFieldFillClr.withOpacity(.45),
       ),
-      child: TextField(
+      child: TextFormField(
         onChanged: (txt) {
-          onTxtChange(txt, index);
+          widget.onTxtChange(txt, widget.index);
         },
         textAlign: TextAlign.center,
         style: const TextStyle(
           color: MyColors.lightBlack,
         ),
         textInputAction: TextInputAction.next,
+        autofocus: true,
         decoration: InputDecoration(
           border: InputBorder.none,
           hintStyle: Theme.of(context).textTheme.subtitle1,

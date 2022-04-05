@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:glass_container/glass_container.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 
-import 'designer_widget.dart';
-
 class MyDrawerWidget extends StatefulWidget {
   const MyDrawerWidget({Key? key}) : super(key: key);
 
@@ -104,30 +102,6 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
                         border: Border(
                       top: BorderSide(width: 4, color: MyColors.blueShadowClr),
                     )),
-                    child: Row(
-                      children: [
-                        Expanded(
-                            child: OurDescription(
-                          jobTitle: 'Developer',
-                          name: 'Abdullah',
-                          onClick: onDeveloperClick,
-                        )),
-                        Container(
-                          width: 4,
-                          height: 23,
-                          decoration: BoxDecoration(
-                            color: MyColors.blueShadowClr,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        Expanded(
-                            child: OurDescription(
-                          jobTitle: 'Designer',
-                          name: 'Obada',
-                          onClick: onDesignerClick,
-                        )),
-                      ],
-                    ),
                   ),
                 )
               ],
@@ -136,11 +110,6 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
         ),
       ),
     );
-  }
-
-  void onDesignerClick() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => DesignerWidget()));
   }
 
   void onAboutClick() {

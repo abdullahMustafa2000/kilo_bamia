@@ -50,6 +50,7 @@ class _EnterChoicesPageState extends State<EnterChoicesPage> {
     }
     return Container(
       child: MyKiloBamayaPageModel(
+        showBackBtn: false,
         content: SizedBox(
           height: MediaQuery.of(context).size.height * .3,
           child: Column(

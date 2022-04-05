@@ -38,7 +38,7 @@ class TeamProvider extends ChangeNotifier {
         i++;
       }
     }
-    notifyListeners();
+    //notifyListeners();
     StorageManager.saveData(RoomModule.room_teams_list_prefKey, teams);
     return teams;
   }

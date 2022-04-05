@@ -45,7 +45,10 @@ class _ResultPageState extends State<ResultPage> {
     provider = Provider.of<TeamProvider>(context);
     nextPageProvider = NextPageProvider();
     return MyKiloBamayaPageModel(
-      onClose: widget.onClose,
+      showBackBtn: false,
+      onClose: () {
+        widget.onClose();
+      },
       onPrev: () {
         widget.onBack(fromPref);
       },

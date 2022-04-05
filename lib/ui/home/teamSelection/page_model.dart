@@ -7,7 +7,8 @@ class MyKiloBamayaPageModel extends StatelessWidget {
   Widget content;
   Function onClose;
   Function onPrev;
-  MyKiloBamayaPageModel({required this.content, required this.onClose, required this.onPrev});
+  bool showBackBtn;
+  MyKiloBamayaPageModel({required this.content, required this.onClose, required this.onPrev, required this.showBackBtn});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class MyKiloBamayaPageModel extends StatelessWidget {
           ],
             alignment: Alignment.center,
           ),
-          MyInputResultBox(content, onClose, onPrev),
+          MyInputResultBox(content, onClose, onPrev, showBackBtn),
         ],
       ),
     );
@@ -43,8 +44,9 @@ class MyInputResultBox extends StatelessWidget {
   Widget content;
   Function onClose;
   Function onPrev;
+  bool showBackBtn;
 
-  MyInputResultBox(this.content, this.onClose, this.onPrev);
+  MyInputResultBox(this.content, this.onClose, this.onPrev, this.showBackBtn);
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +64,10 @@ class MyInputResultBox extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              backBtn(),
+              Visibility(
+                  child: backBtn(),
+                visible: showBackBtn,
+              ),
               closeBtn(),
             ],
           ),

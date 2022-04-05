@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/page_model.dart';
@@ -16,6 +17,7 @@ class RoomSpecifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MyKiloBamayaPageModel(
+      showBackBtn: false,
       content: InputContainer(onBtnClick),
       onPrev: () {},
       onClose: onClose,
@@ -135,6 +137,7 @@ class InputContainer extends StatelessWidget {
             onChanged: (txt) {
               onTxtChange(txt);
             },
+            inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]")),],
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
@@ -150,13 +153,17 @@ class InputContainer extends StatelessWidget {
   }
 
   void onPlayersTxtChange(String txt) {
-    playersNumEt = txt;
-    provider.noOfPlayers = int.parse(txt);
+    if (txt.isNotEmpty) {
+      playersNumEt = txt;
+      provider.noOfPlayers = int.parse(txt);
+    }
   }
 
   void onTeamsTxtChange(String txt) {
-    teamsNumEt = txt;
-    provider.noOfTeams = int.parse(txt);
+    if (txt.isNotEmpty) {
+      teamsNumEt = txt;
+      provider.noOfTeams = int.parse(txt);
+    }
   }
 
   bool acceptedInput() {

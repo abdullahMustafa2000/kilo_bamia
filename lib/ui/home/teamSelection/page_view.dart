@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:kilo_bamya/ads/ad_initializer.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/next_page_provider.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/pages/result_page.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/pages/room_specifications.dart';
@@ -20,6 +21,8 @@ class KiloBamyaPageView extends StatefulWidget {
 class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
   final _controller = PageController();
   late NextPageProvider provider;
+  late AdInitializer _adInitializer;
+
   @override
   void initState() {
     super.initState();
@@ -27,6 +30,7 @@ class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
 
   @override
   Widget build(BuildContext context) {
+    _adInitializer = AdInitializer();
     provider = NextPageProvider();
     if (widget.showResultWidget == 0) {
       _controller.jumpToPage(0);
@@ -47,7 +51,7 @@ class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
             onClose: onSaveBtnClick,
             onPrev: onMoveToPrev,
           ),
-          SpinningWheelWidget(onLoadEnd: onMoveToNext),
+          SpinningWheelWidget(onLoadEnd: onMoveToNext, adInitializer: _adInitializer,),
           ResultPage(
             onSaveBtnClick: onSaveBtnClick,
             moveToPrev: onMoveToPrev,
@@ -55,7 +59,6 @@ class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
             showResultWidget: widget.showResultWidget,
             onBack: onBackBtnPressed,
           ),
-          /*WheelPage(),*/
         ],
       ),
     );
