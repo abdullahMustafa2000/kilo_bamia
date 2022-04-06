@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:kilo_bamya/ads/ad_initializer.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 
 import '../../../../moduls/choice_class_model.dart';
@@ -9,12 +10,14 @@ class AnimationPage extends StatelessWidget {
   AnimationPage(
       {required this.onCloseClick,
       required this.onBackClick,
-      required this.onMoveToNext});
+      required this.onMoveToNext, required this.adInitializer});
   Function onBackClick, onCloseClick;
+  AdInitializer adInitializer;
   Function(List<ChoiceModel>) onMoveToNext;
   @override
   Widget build(BuildContext context) {
     Timer(const Duration(seconds: 3), () {
+      adInitializer.showInterstitialAd();
       onMoveToNext([]);
     });
     return Column(
