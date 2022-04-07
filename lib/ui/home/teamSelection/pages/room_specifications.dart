@@ -137,10 +137,12 @@ class InputContainer extends StatelessWidget {
             onChanged: (txt) {
               onTxtChange(txt);
             },
+            style: const TextStyle(color: Colors.black),
             inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]")),],
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
+            cursorColor: MyColors.spinnerLightRed,
             decoration: InputDecoration(
               border: InputBorder.none,
               hintStyle: Theme.of(context).textTheme.subtitle1,

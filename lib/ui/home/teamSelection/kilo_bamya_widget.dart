@@ -8,15 +8,18 @@ class DivideTeamsWidget extends StatelessWidget {
   int showResultWidget;
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          width: double.infinity,
-          height: double.infinity,
-          color: MyColors.lightBlack.withOpacity(.86),
-        ),
-        KiloBamyaPageView(onSaveBtnClick, showResultWidget),
-      ],
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: MyColors.lightBlack.withOpacity(.86),
+          ),
+          KiloBamyaPageView(onSaveBtnClick, showResultWidget),
+        ],
+      ),
     );
   }
 }
