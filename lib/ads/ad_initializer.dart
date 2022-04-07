@@ -3,14 +3,12 @@ import 'dart:io';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class AdInitializer {
-
-
   AdInitializer() {
     _createInterstitialAd();
   }
   int _interstitialLoadAttempt = 0;
   InterstitialAd? _interstitialAd;
-  static String get interstitialAdUnitId {
+  String get interstitialAdUnitId {
     if (Platform.isAndroid) {
       //return 'ca-app-pub-5492091545098636/8932816118';
       return 'ca-app-pub-3940256099942544/1033173712';
@@ -32,16 +30,15 @@ class AdInitializer {
     InterstitialAd.load(
         adUnitId: interstitialAdUnitId,
         request: const AdRequest(),
-        adLoadCallback: InterstitialAdLoadCallback(
-            onAdLoaded: (ad) {
-              _interstitialAd = ad;
-              _interstitialLoadAttempt = 0;
-            }, onAdFailedToLoad: (error) {
-              _interstitialAd = null;
-              _interstitialLoadAttempt++;
-              if (_interstitialLoadAttempt <= 2) {
-                _createInterstitialAd();
-              }
+        adLoadCallback: InterstitialAdLoadCallback(onAdLoaded: (ad) {
+          _interstitialAd = ad;
+          _interstitialLoadAttempt = 0;
+        }, onAdFailedToLoad: (error) {
+          _interstitialAd = null;
+          _interstitialLoadAttempt++;
+          if (_interstitialLoadAttempt <= 2) {
+            _createInterstitialAd();
+          }
         }));
   }
 
