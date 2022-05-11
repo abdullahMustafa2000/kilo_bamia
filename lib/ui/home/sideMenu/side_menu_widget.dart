@@ -3,8 +3,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:glass_container/glass_container.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
+import 'package:kilo_bamya/ui/home/sideMenu/custom_border.dart';
 
 class MyDrawerWidget extends StatefulWidget {
   const MyDrawerWidget({Key? key}) : super(key: key);
@@ -23,88 +23,93 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
     var width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: SizedBox(
-        width: width * .6,
-        child: GlassContainer(
-          contColor: MyColors.lightBlue.withOpacity(.20),
-          borderRadiusColor: Colors.transparent,
-          contHeight: double.infinity,
-          child: Container(
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30),
-              bottomRight: Radius.circular(30),
-            )),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(8),
-                  child: Center(
-                    child: Image.asset(
-                      'assets/images/kitty.png',
-                      width: 42,
-                      height: 46,
+        width: width * .5,
+        child: ClipRRect(
+          borderRadius: BorderRadius.zero,
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+            child: Container(
+              decoration: BoxDecoration(
+                color: MyColors.blueShadowClr.withOpacity(.4),
+                  borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+              )),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.all(8),
+                    child: Center(
+                      child: Image.asset(
+                        'assets/images/kitty.png',
+                        width: 42,
+                        height: 46,
+                      ),
                     ),
                   ),
-                ),
-                MenuItem(
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'About',
-                          style: TextStyle(
-                              color: MyColors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
-                        ),
-                        Offstage(
-                          offstage: isAboutClicked,
-                          child: const Text(
-                            'Kilo Bamia is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.',
-                            style:
-                                TextStyle(color: MyColors.white, fontSize: 14),
-                            textAlign: TextAlign.center,
+                  MenuItem(
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const Center(
+                            child: Text(
+                              'About',
+                              style: TextStyle(
+                                  color: MyColors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    onAboutClick),
-                MenuItem(
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Other Apps',
-                          style: TextStyle(
-                              color: MyColors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
-                        ),
-                        Offstage(
-                          offstage: isOtherAppsClicked,
-                          child: const Text(
-                            'Alfurqan',
-                            style:
-                                TextStyle(color: MyColors.white, fontSize: 14),
+                          Offstage(
+                            offstage: isAboutClicked,
+                            child: const Center(
+                              child: Text(
+                                'Kilo Bamia is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.',
+                                style:
+                                    TextStyle(color: MyColors.white, fontSize: 14),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                      onAboutClick),
+                  MenuItem(
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                           const Center(
+                            child: Text(
+                              'Other Apps',
+                              style: TextStyle(
+                                  color: MyColors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            ),
+                          ),
+                          Offstage(
+                            offstage: isOtherAppsClicked,
+                            child: const Center(
+                              child: Text(
+                                'Alfurqan',
+                                style:
+                                    TextStyle(color: MyColors.white, fontSize: 14),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      onOtherAppsClick),
+                  Expanded(
+                    child: ClipPath(
+                      clipper: MyUpCustomClipper(),
                     ),
-                    onOtherAppsClick),
-                Expanded(
-                  child: MenuItem(Container(), () {}),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 48),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                        border: Border(
-                      top: BorderSide(width: 4, color: MyColors.blueShadowClr),
-                    )),
                   ),
-                )
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -139,15 +144,22 @@ class MenuItem extends StatelessWidget {
       onTap: () {
         onClick();
       },
-      child: ClipPath(
-        child: Container(
-          margin: const EdgeInsets.all(8),
-          padding: const EdgeInsets.all(8),
-          child: GlassContainer(
-            borderRadiusColor: Colors.transparent,
-            contColor: Colors.transparent,
-            child: content,
-          ),
+      child: Center(
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: content,
+            ),
+            Positioned.fill(
+                child: ClipPath(
+              clipper: MyCustomClipper(),
+              child: Container(
+                color: MyColors.blueShadowClr,
+              ),
+            ))
+          ],
         ),
       ),
     );
@@ -167,30 +179,33 @@ class OurDescription extends StatelessWidget {
       onTap: () {
         onClick();
       },
-      child: Container(
-        margin: const EdgeInsets.only(top: 8),
-        child: Column(
-          children: [
-            Text(
-              jobTitle,
-              style: const TextStyle(fontSize: 12, color: MyColors.lightBlack),
-              textAlign: TextAlign.center,
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 4),
-              child: Text(
-                name,
-                style: const TextStyle(
-                    fontSize: 10,
-                    fontStyle: FontStyle.italic,
-                    decoration: TextDecoration.underline,
-                    color: MyColors.darkBlue),
+      child: Row(children: [
+        Container(
+          margin: const EdgeInsets.only(top: 8),
+          child: Column(
+            children: [
+              Text(
+                jobTitle,
+                style:
+                    const TextStyle(fontSize: 12, color: MyColors.lightBlack),
                 textAlign: TextAlign.center,
               ),
-            ),
-          ],
+              Container(
+                margin: const EdgeInsets.only(top: 4),
+                child: Text(
+                  name,
+                  style: const TextStyle(
+                      fontSize: 10,
+                      fontStyle: FontStyle.italic,
+                      decoration: TextDecoration.underline,
+                      color: MyColors.darkBlue),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
+      ]),
     );
   }
 }

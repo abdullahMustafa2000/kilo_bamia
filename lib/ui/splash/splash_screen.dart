@@ -47,7 +47,6 @@ class _SplashScreenState extends State<SplashScreen> {
 class BottomScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Expanded(
         child: Container(
       color: MyColors.lightBlack,
@@ -100,7 +99,6 @@ class DADName extends StatelessWidget {
   DADName(this.developerName);
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Center(
       child: Text(
         '-$developerName',
@@ -116,7 +114,6 @@ class MidScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       width: double.infinity,
       height: screenSize.height * .03,
@@ -130,7 +127,6 @@ class TopScreen extends StatelessWidget {
   TopScreen(this.screenSize);
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
         height: screenSize.height * .4,
         width: double.infinity,
