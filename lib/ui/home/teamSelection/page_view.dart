@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/ads/ad_initializer.dart';
+import 'package:kilo_bamya/local_db/game_model.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/next_page_provider.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/pages/result_page.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/pages/room_specifications.dart';
@@ -12,7 +13,9 @@ import 'pages/take_players_page.dart';
 class KiloBamyaPageView extends StatefulWidget {
   Function onSaveBtnClick;
   int showResultWidget;
-  KiloBamyaPageView(this.onSaveBtnClick, this.showResultWidget);
+  GameModel? gameModel;
+  KiloBamyaPageView(this.onSaveBtnClick, this.showResultWidget,
+      {this.gameModel});
 
   @override
   State<KiloBamyaPageView> createState() => _KiloBamyaPageViewState();
@@ -45,19 +48,24 @@ class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
         controller: _controller,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          RoomSpecifications(onMoveToNext, onClose: onSaveBtnClick),
+          RoomSpecifications(onMoveToNext, widget.gameModel,
+              onClose: onSaveBtnClick),
           RoomPlayers(
-            onBtnClick: onMoveToNext,
-            onClose: onSaveBtnClick,
-            onPrev: onMoveToPrev,
+              onBtnClick: onMoveToNext,
+              onClose: onSaveBtnClick,
+              onPrev: onMoveToPrev,
+              gameModel: widget.gameModel),
+          SpinningWheelWidget(
+            onLoadEnd: onMoveToNext,
+            adInitializer: _adInitializer,
           ),
-          SpinningWheelWidget(onLoadEnd: onMoveToNext, adInitializer: _adInitializer,),
           ResultPage(
             onSaveBtnClick: onSaveBtnClick,
             moveToPrev: onMoveToPrev,
             onClose: onSaveBtnClick,
             showResultWidget: widget.showResultWidget,
             onBack: onBackBtnPressed,
+            clickedRecent: widget.gameModel,
           ),
         ],
       ),

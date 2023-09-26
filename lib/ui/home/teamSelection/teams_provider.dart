@@ -1,8 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:kilo_bamya/moduls/room_module.dart';
-import 'package:kilo_bamya/shared_pereferences/saved_game.dart';
+import 'package:kilo_bamya/local_db/game_model.dart';
 
 class TeamProvider extends ChangeNotifier {
   late List<String> teams;
@@ -24,10 +23,9 @@ class TeamProvider extends ChangeNotifier {
     roomName = '';
   }
 
-  List<String> dividePlayers() {
+  List<String> dividePlayers(GameModel gameModel) {
     teams = List.filled(noOfTeams, '');
     int noOfPlayers = players.length; //5
-                                            //2
     List<int> list = teamCount(noOfPlayers, noOfTeams);
     int noOfPlayersEachTeam = list[0]; //3
     for (var i = 0; i < noOfPlayers;) {
@@ -38,8 +36,7 @@ class TeamProvider extends ChangeNotifier {
         i++;
       }
     }
-    //notifyListeners();
-    StorageManager.saveData(RoomModule.room_teams_list_prefKey, teams);
+    gameModel.result = teams;
     return teams;
   }
 

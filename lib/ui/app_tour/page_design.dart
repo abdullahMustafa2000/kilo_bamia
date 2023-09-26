@@ -99,12 +99,10 @@ class _IntroPageState extends State<IntroPage> {
                 Container(
                   margin: const EdgeInsets.only(top: 24),
                   width: containerWidth * .3,
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () {
                       widget.onBtnClick(widget.btnTxt);
                     },
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                    padding: const EdgeInsets.all(0.0),
                     child: Ink(
                       decoration: BoxDecoration(
                         color: isNotFinalPage? MyColors.darkBlue.withOpacity(.1): MyColors.darkBlue,

@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:kilo_bamya/local_db/game_model.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/page_model.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/pages/room_specifications.dart';
@@ -11,9 +12,9 @@ class RoomPlayers extends StatefulWidget {
   Function onBtnClick;
   Function onClose;
   Function onPrev;
-
+  GameModel? gameModel;
   RoomPlayers(
-      {required this.onBtnClick, required this.onClose, required this.onPrev});
+      {required this.onBtnClick, required this.onClose, required this.onPrev, this.gameModel});
 
   @override
   State<RoomPlayers> createState() => _RoomPlayersState();
@@ -40,7 +41,7 @@ class _RoomPlayersState extends State<RoomPlayers> {
               child: Form(
                 child: GridView.builder(
                   physics: const BouncingScrollPhysics(),
-                  itemCount: int.parse(InputContainer.playersNumEt!),
+                  itemCount: widget.gameModel?.noOfPlayers,
                   itemBuilder: (BuildContext context, int index) {
                     return TextInputDesign(onTextChange, index);
                   },
@@ -64,40 +65,40 @@ class _RoomPlayersState extends State<RoomPlayers> {
                       spreadRadius: 12)
                 ],
               ),
-              child: RaisedButton(
-                onPressed: () {
-                  provider.players = names;
-                  widget.onBtnClick();
-                },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(180.0)),
-                padding: const EdgeInsets.all(0.0),
-                child: Ink(
-                  child: Container(
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              MyColors.lightOrange.withOpacity(.1),
-                              MyColors.darkOrange.withOpacity(.3),
-                            ]),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(80.0))),
-                    constraints: const BoxConstraints(
-                        minWidth: 88.0,
-                        minHeight: 36.0), // min sizes for Material buttons
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Spin!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: MyColors.lightBlack.withOpacity(0.9)),
-                    ),
-                  ),
-                ),
-              ),
+              // child: RaisedButton(
+              //   onPressed: () {
+              //     provider.players = names;
+              //     widget.onBtnClick();
+              //   },
+              //   shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(180.0)),
+              //   padding: const EdgeInsets.all(0.0),
+              //   child: Ink(
+              //     child: Container(
+              //       decoration: BoxDecoration(
+              //           gradient: LinearGradient(
+              //               begin: Alignment.topCenter,
+              //               end: Alignment.bottomCenter,
+              //               colors: [
+              //                 MyColors.lightOrange.withOpacity(.1),
+              //                 MyColors.darkOrange.withOpacity(.3),
+              //               ]),
+              //           borderRadius:
+              //               const BorderRadius.all(Radius.circular(80.0))),
+              //       constraints: const BoxConstraints(
+              //           minWidth: 88.0,
+              //           minHeight: 36.0), // min sizes for Material buttons
+              //       alignment: Alignment.center,
+              //       child: Text(
+              //         'Spin!',
+              //         textAlign: TextAlign.center,
+              //         style: TextStyle(
+              //             fontSize: 16,
+              //             color: MyColors.lightBlack.withOpacity(0.9)),
+              //       ),
+              //     ),
+              //   ),
+              // ),
             )
           ],
         ),

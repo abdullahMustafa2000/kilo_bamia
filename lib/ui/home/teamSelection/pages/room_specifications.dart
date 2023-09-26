@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:kilo_bamya/local_db/game_model.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/page_model.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/teams_provider.dart';
@@ -11,14 +12,14 @@ import 'package:provider/provider.dart';
 class RoomSpecifications extends StatelessWidget {
   Function onBtnClick;
   Function onClose;
-
-  RoomSpecifications(this.onBtnClick, {required this.onClose});
+  GameModel? gameModel;
+  RoomSpecifications(this.onBtnClick, this.gameModel, {required this.onClose});
 
   @override
   Widget build(BuildContext context) {
     return MyKiloBamayaPageModel(
       showBackBtn: false,
-      content: InputContainer(onBtnClick),
+      content: InputContainer(onBtnClick, gameModel),
       onPrev: () {},
       onClose: onClose,
     );
@@ -27,8 +28,8 @@ class RoomSpecifications extends StatelessWidget {
 
 class InputContainer extends StatelessWidget {
   Function onBtnClick;
-
-  InputContainer(this.onBtnClick);
+  GameModel? gameModel;
+  InputContainer(this.onBtnClick, this.gameModel);
 
   String? roomNameEt;
   String? teamsNumEt;
@@ -53,6 +54,8 @@ class InputContainer extends StatelessWidget {
             color: MyColors.textFieldFillClr.withOpacity(.45),
           ),
           child: TextField(
+            controller: TextEditingController()
+              ..text = "",
             onChanged: (txt) {
               roomNameEt = txt;
               provider.roomName = txt;
@@ -72,55 +75,56 @@ class InputContainer extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            teamsDataTextField(
-                'Number of players :', onPlayersTxtChange, context),
-            teamsDataTextField('Number of teams :', onTeamsTxtChange, context),
+            teamsDataTextField('Number of players :', onPlayersTxtChange,
+                context, gameModel?.noOfPlayers),
+            teamsDataTextField('Number of teams :', onTeamsTxtChange, context,
+                gameModel?.noOfTeams),
           ],
         ),
-        SizedBox(
-          width: width * .25,
-          child: RaisedButton(
-            onPressed: () {
-              if (acceptedInput()) {
-                onBtnClick();
-              }
-            },
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(80.0)),
-            padding: const EdgeInsets.all(0.0),
-            child: Ink(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      MyColors.lightOrange.withOpacity(.1),
-                      MyColors.darkOrange.withOpacity(.3),
-                    ]),
-                borderRadius: const BorderRadius.all(Radius.circular(80.0)),
-              ),
-              child: Container(
-                constraints: const BoxConstraints(
-                    minWidth: 88.0,
-                    minHeight: 36.0), // min sizes for Material buttons
-                alignment: Alignment.center,
-                child: Text(
-                  'Create',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: MyColors.lightBlack.withOpacity(0.9)),
-                ),
-              ),
-            ),
-          ),
-        )
+        // SizedBox(
+        //   width: width * .25,
+        //   child: ElevatedButton(
+        //     onPressed: () {
+        //       if (acceptedInput()) {
+        //         onBtnClick();
+        //       }
+        //     },
+        //     shape: RoundedRectangleBorder(
+        //         borderRadius: BorderRadius.circular(80.0)),
+        //     padding: const EdgeInsets.all(0.0),
+        //     child: Ink(
+        //       decoration: BoxDecoration(
+        //         gradient: LinearGradient(
+        //             begin: Alignment.topCenter,
+        //             end: Alignment.bottomCenter,
+        //             colors: [
+        //               MyColors.lightOrange.withOpacity(.1),
+        //               MyColors.darkOrange.withOpacity(.3),
+        //             ]),
+        //         borderRadius: const BorderRadius.all(Radius.circular(80.0)),
+        //       ),
+        //       child: Container(
+        //         constraints: const BoxConstraints(
+        //             minWidth: 88.0,
+        //             minHeight: 36.0), // min sizes for Material buttons
+        //         alignment: Alignment.center,
+        //         child: Text(
+        //           'Create',
+        //           textAlign: TextAlign.center,
+        //           style: TextStyle(
+        //               fontSize: 16,
+        //               color: MyColors.lightBlack.withOpacity(0.9)),
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // )
       ],
     );
   }
 
   Widget teamsDataTextField(
-      String label, Function onTxtChange, BuildContext context) {
+      String label, Function onTxtChange, BuildContext context, int? number) {
     return Column(
       children: [
         Text(
@@ -134,11 +138,14 @@ class InputContainer extends StatelessWidget {
             color: MyColors.textFieldFillClr.withOpacity(.45),
           ),
           child: TextField(
+            controller: TextEditingController()..text = number.toString(),
             onChanged: (txt) {
               onTxtChange(txt);
             },
             style: const TextStyle(color: Colors.black),
-            inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]")),],
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+            ],
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
@@ -171,9 +178,7 @@ class InputContainer extends StatelessWidget {
   bool acceptedInput() {
     // filled text fields,  no zero inputs,  number of players = or > number of teams
     bool accepted = false;
-    if (teamsNumEt != null &&
-        playersNumEt != null &&
-        roomNameEt != null) {
+    if (teamsNumEt != null && playersNumEt != null && roomNameEt != null) {
       if (int.parse(teamsNumEt!) != 0 && int.parse(playersNumEt!) != 0) {
         if (int.parse(teamsNumEt!) <= int.parse(playersNumEt!)) {
           accepted = true;

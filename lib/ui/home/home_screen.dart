@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kilo_bamya/generated/l10n.dart';
+import 'package:kilo_bamya/local_db/game_model.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/btm_nav_provider.dart';
 import 'package:kilo_bamya/ui/home/fragments/coin_widget.dart';
@@ -18,8 +20,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late HomeClicksProvider provider;
-
   bool callRandomChoiceWidget = false;
+
   @override
   void initState() {
     super.initState();
@@ -54,11 +56,11 @@ class _HomePageState extends State<HomePage> {
                 );
               }),
             ),
-            const Center(
+            Center(
               child: Text(
-                'Kilobamyous',
+                S().appName,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 22),
+                style: const TextStyle(fontSize: 22),
               ),
             ),
             Visibility(
@@ -83,13 +85,15 @@ class _HomePageState extends State<HomePage> {
 
   bool aboveWidgetIsVisible = false;
   int callResultWidget = -1;
-
+  GameModel? clickedRecent;
   // if random choice is 1 then open randomChoice pageView
-  void showAboveWidgetListener(int showWidget, int randomChoice) {
+  void showAboveWidgetListener(int showWidget, int randomChoice,
+      {GameModel? gameModel}) {
     if (randomChoice == 1) {
       callRandomChoiceWidget = true;
     } else {
       callResultWidget = showWidget;
+      clickedRecent = gameModel;
     }
     aboveWidgetIsVisible = true;
     setState(() {});
@@ -144,56 +148,54 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
   @override
   Widget build(BuildContext context) {
     provider = Provider.of<HomeClicksProvider>(context);
-    return Container(
-      child: Stack(children: [
-        Container(
+    return Stack(children: [
+      Container(
+        height: 62,
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(12),
+              topLeft: Radius.circular(12),
+            ),
+            color: MyColors.lightBlack,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(.2),
+              )
+            ]),
+        child: Row(
+          children: [
+            Expanded(
+              child: wheelOrCoinWidget(
+                  'Wheel',
+                  provider.btmIndex == 0
+                      ? MyColors.darkBlue
+                      : MyColors.white),
+            ),
+            Container(
+              width: 4,
+              decoration: BoxDecoration(
+                  color: MyColors.blueShadowClr,
+                  borderRadius: BorderRadius.circular(6)),
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+            ),
+            Expanded(
+              child: wheelOrCoinWidget(
+                  'Coin',
+                  provider.btmIndex == 1
+                      ? MyColors.darkOrange
+                      : MyColors.white),
+            ),
+          ],
+        ),
+      ),
+      Offstage(
+        offstage: widget.isAboveWidgetVisible,
+        child: Container(
           height: 62,
-          decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(12),
-                topLeft: Radius.circular(12),
-              ),
-              color: MyColors.lightBlack,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(.2),
-                )
-              ]),
-          child: Row(
-            children: [
-              Expanded(
-                child: wheelOrCoinWidget(
-                    'Wheel',
-                    provider.btmIndex == 0
-                        ? MyColors.darkBlue
-                        : MyColors.white),
-              ),
-              Container(
-                width: 4,
-                decoration: BoxDecoration(
-                    color: MyColors.blueShadowClr,
-                    borderRadius: BorderRadius.circular(6)),
-                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-              ),
-              Expanded(
-                child: wheelOrCoinWidget(
-                    'Coin',
-                    provider.btmIndex == 1
-                        ? MyColors.darkOrange
-                        : MyColors.white),
-              ),
-            ],
-          ),
+          color: MyColors.lightBlack.withOpacity(.89),
         ),
-        Offstage(
-          offstage: widget.isAboveWidgetVisible,
-          child: Container(
-            height: 62,
-            color: MyColors.lightBlack.withOpacity(.89),
-          ),
-        ),
-      ]),
-    );
+      ),
+    ]);
   }
 
   Widget wheelOrCoinWidget(String title, Color color) {

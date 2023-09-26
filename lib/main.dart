@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         locale: const Locale(
           'en',
+          'ar'
         ),
         supportedLocales: S.delegate.supportedLocales,
         localizationsDelegates: const [

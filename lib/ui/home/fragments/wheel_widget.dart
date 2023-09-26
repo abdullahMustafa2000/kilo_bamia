@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:kilo_bamya/moduls/room_module.dart';
+import 'package:kilo_bamya/generated/l10n.dart';
+import 'package:kilo_bamya/local_db/database.dart';
+import 'package:kilo_bamya/local_db/game_model.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/randomChoice/pages/spinning_wheel_page.dart';
-import 'package:kilo_bamya/ui/home/teamSelection/teams_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class WheelWidget extends StatelessWidget {
-  Function(int, int) aboveWidgetCall;
+  Function(int, int, {GameModel gameModel}) aboveWidgetCall;
 
   WheelWidget({required this.aboveWidgetCall});
+  List<GameModel>? recentList;
+  void refreshRecent() async {
+    recentList = await GamesDatabase.instance.readAll();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +49,9 @@ class WheelWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                         color: MyColors.lightBlack.withOpacity(.07),
                       ),
-                      child: const Text(
-                        'Create Game',
-                        style: TextStyle(fontSize: 22),
+                      child: Text(
+                        S().btnCreateGame,
+                        style: const TextStyle(fontSize: 22),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -91,22 +94,18 @@ class WheelWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Container(
-                      child: const Text(
-                        'Last : ',
-                        style: TextStyle(fontSize: 24),
+                      child: Text(
+                        S().titleRecent,
+                        style: const TextStyle(fontSize: 24),
                       ),
                       margin: const EdgeInsets.symmetric(
                           horizontal: 24, vertical: 8),
                     ),
-                    Expanded(
-                        child: Container(
-                      child: RoomItem(
-                        onLastClick: () {
-                          aboveWidgetCall(1, 0);
-                        },
-                      ),
-                      margin: const EdgeInsets.only(left: 32),
-                    ))
+                    RecentListWidget(
+                        gameModels: recentList??[],
+                        onItemClick: (gameModel) {
+                          aboveWidgetCall(1, 0, gameModel: gameModel);
+                        })
                   ],
                 ),
               ]),
@@ -120,130 +119,70 @@ class WheelWidget extends StatelessWidget {
   }
 }
 
-/*
-class RoomsListWidget extends StatelessWidget {
+class RecentListWidget extends StatelessWidget {
+  Function(GameModel) onItemClick;
+  List<GameModel> gameModels;
+  RecentListWidget(
+      {required this.gameModels,
+      required this.onItemClick,});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(left: 32),
-      child: InkWell(
-        onTap: () {
-
-        },
-        child: RoomItem(),
+    return Expanded(
+      child: ListView.builder(
+        itemBuilder: (context, index) =>
+            RecentsItem(gameModel: gameModels[index], onItemClick: onItemClick),
+        itemCount: gameModels.length,
       ),
     );
   }
 }
-*/
 
-class RoomItem extends StatefulWidget {
-  Function onLastClick;
-
-  RoomItem({required this.onLastClick});
-
-  @override
-  State<RoomItem> createState() => _RoomItemState();
-}
-
-class _RoomItemState extends State<RoomItem> {
-  var roomName;
-
-  var noOfPlayers;
-
-  var noOfTeams;
-
-  var date;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  late SharedPreferences pref;
-  Future<SharedPreferences> initiateSharedPref() async {
-    return await SharedPreferences.getInstance();
-  }
-
-  void getDataFromSharedPreferences() async {
-    roomName = pref.getString(RoomModule.room_name_prefKey) ?? '';
-    date = pref.getString(RoomModule.create_date_prefKey) ?? '';
-    noOfPlayers = pref.getInt(RoomModule.num_of_players_prefKey) ?? 0;
-    noOfTeams = pref.getInt(RoomModule.num_of_teams_prefKey) ?? 0;
-  }
-
+class RecentsItem extends StatelessWidget {
+  Function(GameModel) onItemClick;
+  GameModel gameModel;
+  RecentsItem({required this.gameModel, required this.onItemClick});
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<TeamProvider>(context);
-    if (provider.divided) {
-      setState(() {
-        provider.divided = false;
-      });
-    }
-    return FutureBuilder<SharedPreferences>(
-      future: initiateSharedPref(),
-      builder: (context, AsyncSnapshot<SharedPreferences> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasData) {
-            pref = snapshot.data!;
-            getDataFromSharedPreferences();
-            if (noOfPlayers != 0) {
-              return roomRow();
-            } else {
-              return Container();
-            }
-          }
-          return Container();
-        } else {
-          return Container();
-        }
-      },
-    );
-  }
-
-  Widget roomRow() {
     return InkWell(
       onTap: () {
-        widget.onLastClick();
+        onItemClick(gameModel);
       },
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(180),
-            child: Container(
-              width: 45,
-              height: 45,
-              color: MyColors.spinnerLightRed.withOpacity(.5),
-            ),
-          ),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    roomName,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  Text(
-                    '$noOfPlayers Players , $noOfTeams Teams',
-                    style: const TextStyle(
-                        fontSize: 14, color: MyColors.lightBlack),
-                  ),
-                ],
+          Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(180),
+                child: Container(
+                  width: 45,
+                  height: 45,
+                  color: MyColors.spinnerColorsArray[0],
+                ),
               ),
-            ),
+              Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: Text(gameModel.roomName!),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                        '${gameModel.noOfPlayers} Players , ${gameModel.noOfTeams} Teams'),
+                  )
+                ],
+              )
+            ],
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(date,
-                style:
-                    const TextStyle(fontSize: 14, color: MyColors.lightBlack)),
+            child: Text(gameModel.time.toString()),
           )
         ],
       ),
     );
   }
 }
+
+

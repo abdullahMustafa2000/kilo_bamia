@@ -10,7 +10,8 @@ class AnimationPage extends StatelessWidget {
   AnimationPage(
       {required this.onCloseClick,
       required this.onBackClick,
-      required this.onMoveToNext, required this.adInitializer});
+      required this.onMoveToNext,
+      required this.adInitializer});
   Function onBackClick, onCloseClick;
   AdInitializer adInitializer;
   Function(List<ChoiceModel>) onMoveToNext;
@@ -37,13 +38,12 @@ class AnimatedWheelRow extends StatelessWidget {
   AnimatedWheelRow({this.onWidgetClick});
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Center(
       child: InkWell(
         onTap: () {
           onWidgetClick!();
         },
-        child: Container(
+        child: SizedBox(
           height: MediaQuery.of(context).size.height * .3,
           child: Stack(
             alignment: Alignment.center,
@@ -71,7 +71,6 @@ class CircularContainer extends StatelessWidget {
       required this.content});
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       width: 60,
       height: 60,
