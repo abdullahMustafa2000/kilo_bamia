@@ -1,10 +1,11 @@
-
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/local_db/database.dart';
 import 'package:kilo_bamya/local_db/game_model.dart';
+import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
+import 'package:kilo_bamya/ui/home/randomChoice/pages/spinning_wheel_page.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/next_page_provider.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/page_model.dart';
 import 'package:provider/provider.dart';
@@ -19,13 +20,16 @@ class ResultPage extends StatefulWidget {
   Function(int) onBack;
   Function moveToPrev;
 
-  GameModel? clickedRecent;
+  GameModel? teams;
   ResultPage(
-      {Key? key, required this.onSaveBtnClick,
+      {Key? key,
+      required this.onSaveBtnClick,
       required this.showResultWidget,
       required this.moveToPrev,
       required this.onClose,
-      required this.onBack, this.clickedRecent}) : super(key: key);
+      required this.onBack,
+      this.teams})
+      : super(key: key);
 
   @override
   State<ResultPage> createState() => _ResultPageState();
@@ -62,7 +66,7 @@ class _ResultPageState extends State<ResultPage> {
           children: [
             Container(
               child: Text(
-                'Result',
+                getLocalization(context).splitResult,
                 style: Theme.of(context).textTheme.headline4,
               ),
               margin: const EdgeInsets.all(8),
@@ -163,54 +167,39 @@ class _ResultPageState extends State<ResultPage> {
               spreadRadius: 12)
         ],
       ),
-      // child: RaisedButton(
-      //   onPressed: () {
-      //     setState(() {
-      //       fromPref = 0;
-      //     });
-      //   },
-      //   shape:
-      //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(180.0)),
-      //   padding: const EdgeInsets.all(0.0),
-      //   child: Ink(
-      //     child: Container(
-      //       decoration: BoxDecoration(
-      //           gradient: LinearGradient(
-      //               begin: Alignment.topCenter,
-      //               end: Alignment.bottomCenter,
-      //               colors: [
-      //                 MyColors.lightOrange.withOpacity(.1),
-      //                 MyColors.darkOrange.withOpacity(.3),
-      //               ]),
-      //           borderRadius: const BorderRadius.all(Radius.circular(80.0))),
-      //       constraints: const BoxConstraints(
-      //           minWidth: 88.0,
-      //           minHeight: 36.0), // min sizes for Material buttons
-      //       alignment: Alignment.center,
-      //       child: Text('Spin Again',
-      //           textAlign: TextAlign.center,
-      //           style: Theme.of(context).textTheme.caption),
-      //     ),
-      //   ),
-      // ),
+      child: SizedBox(
+        width: 46,
+        height: 46,
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              fromPref = 0;
+            });
+          },
+          child: CircularContainer(
+              contentColor: MyColors.someOrange,
+              shadowColor: MyColors.darkOrange,
+              content: const Icon(Icons.refresh)),
+        ),
+      ),
     );
   }
 
   void saveData() {
     if (fromRecent) {
-      database.update(widget.clickedRecent!);
+      database.update(widget.teams!);
     } else {
-      database.create(widget.clickedRecent!);
+      database.create(widget.teams!);
     }
     provider.newTeamDivided();
   }
 
   Future<List<String>> getPreferences() async {
     if (fromPref == 1) {
-      provider.players = widget.clickedRecent!.players!;
-      return widget.clickedRecent!.result!;
+      provider.players = widget.teams!.players!;
+      return widget.teams!.result!;
     } else if (fromPref == 0) {
-      return provider.dividePlayers(widget.clickedRecent!);
+      return provider.splitPlayers(widget.teams?.players ?? provider.players);
     } else {
       fromPref = widget.showResultWidget;
       return [];
@@ -224,9 +213,11 @@ class TeamDesign extends StatelessWidget {
   int teamIndex;
 
   TeamDesign(
-      {Key? key, required this.teamMembers,
+      {Key? key,
+      required this.teamMembers,
       required this.teamColor,
-      required this.teamIndex}) : super(key: key);
+      required this.teamIndex})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

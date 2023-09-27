@@ -1,0 +1,19 @@
+{
+  "appName": "Kilo Bamia",
+  "btnCreateRoom": "Let's Split",
+  "enterChoicesNames": "Confused between what?",
+  "recentListTitle": "Recent Splits",
+  "emptyListMessage": "The most 2 recent Splits will appear here.",
+  "wheelTabName": "Wheel",
+  "coinTabName": "Coin",
+  "throwCoin": "Flip",
+  "nameTheSplit": "Name it :",
+  "splitNameHint": "Ex: PlayStation",
+  "numberOfParticipants": "People :",
+  "numberOfTeams": "Teams :",
+  "createSplit": "Next",
+  "enterPeople": "Enter People :",
+  "splitPeopleBtn": "Split",
+  "splitResult": "Result"
+
+}

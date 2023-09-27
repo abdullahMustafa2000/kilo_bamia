@@ -65,7 +65,7 @@ class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
             onClose: onSaveBtnClick,
             showResultWidget: widget.showResultWidget,
             onBack: onBackBtnPressed,
-            clickedRecent: widget.gameModel,
+            teams: widget.gameModel,
           ),
         ],
       ),

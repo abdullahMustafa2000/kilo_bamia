@@ -1,9 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:kilo_bamya/moduls/choice_class_model.dart';
+import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/page_model.dart';
+
+import '../../../../models/choice_class_model.dart';
 
 class EnterChoicesPage extends StatefulWidget {
   EnterChoicesPage({required this.onCloseClick, required this.onSpinningWheelClick});
@@ -48,56 +50,55 @@ class _EnterChoicesPageState extends State<EnterChoicesPage> {
         choices[index].choiceName = text;
       });
     }
-    return Container(
-      child: MyKiloBamayaPageModel(
-        showBackBtn: false,
-        content: SizedBox(
-          height: MediaQuery.of(context).size.height * .3,
-          child: Column(
-            children: [
-              Text(
-                'Enter names :',
-                style: Theme.of(context).textTheme.headline4,
-              ),
-              Expanded(
-                child: GridView.builder(
-                  itemCount: choices.length < maxInput? choices.length + 1 : choices.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index == colorsArray.length) {
-                      return TextInputDesign(onTextChange, index, choices[index].choiceColor);
-                    } else if (index == choices.length) {
-                      return AddButtonWidget(onAddBtnClick, colorsArray[index]!);
-                    }
-                    else {
-                      return TextInputDesign(onTextChange, index,
-                          choices[index].choiceColor);
-                    }
-                  },
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      childAspectRatio: 1 / .4),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  widget.onSpinningWheelClick(choices);
+    return MyKiloBamayaPageModel(
+      showBackBtn: false,
+      content: SizedBox(
+        height: MediaQuery.of(context).size.height * .3,
+        child: Column(
+          children: [
+            Text(
+              getLocalization(context).enterChoicesNames,
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+            Expanded(
+              child: GridView.builder(
+                itemCount: choices.length < maxInput? choices.length + 1 : choices.length,
+                itemBuilder: (BuildContext context, int index) {
+                  if (index == colorsArray.length) {
+                    return TextInputDesign(onTextChange, index, choices[index].choiceColor);
+                  } else if (index == choices.length) {
+                    return AddButtonWidget(onAddBtnClick, colorsArray[index]!);
+                  }
+                  else {
+                    return TextInputDesign(onTextChange, index,
+                        choices[index].choiceColor);
+                  }
                 },
-                child: Container(
-                  width: 47,
-                  height: 47,
-                  margin: const EdgeInsets.all(8),
-                  child: Image.asset('assets/images/spinning_wheel.png'),
-                ),
-              )
-            ],
-          ),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 12,
+                    childAspectRatio: 1 / .4),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                widget.onSpinningWheelClick(choices);
+              },
+              child: Container(
+                width: 47,
+                height: 47,
+                margin: const EdgeInsets.all(8),
+                child: Image.asset('assets/images/spinning_wheel.png'),
+              ),
+            )
+          ],
         ),
-        onClose: () {
-          widget.onCloseClick();
-        },
-        onPrev: () {},
       ),
+      onClose: () {
+        widget.onCloseClick();
+      },
+      onPrev: () {},
     );
   }
 

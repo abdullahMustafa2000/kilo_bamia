@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kilo_bamya/generated/l10n.dart';
 import 'package:kilo_bamya/local_db/database.dart';
 import 'package:kilo_bamya/local_db/game_model.dart';
+import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/randomChoice/pages/spinning_wheel_page.dart';
 
@@ -50,7 +51,7 @@ class WheelWidget extends StatelessWidget {
                         color: MyColors.lightBlack.withOpacity(.07),
                       ),
                       child: Text(
-                        S().btnCreateGame,
+                        getLocalization(context).btnCreateRoom,
                         style: const TextStyle(fontSize: 22),
                         textAlign: TextAlign.center,
                       ),
@@ -95,14 +96,14 @@ class WheelWidget extends StatelessWidget {
                   children: [
                     Container(
                       child: Text(
-                        S().titleRecent,
+                        getLocalization(context).recentListTitle,
                         style: const TextStyle(fontSize: 24),
                       ),
                       margin: const EdgeInsets.symmetric(
                           horizontal: 24, vertical: 8),
                     ),
                     RecentListWidget(
-                        gameModels: recentList??[],
+                        gameModels: recentList ?? [],
                         onItemClick: (gameModel) {
                           aboveWidgetCall(1, 0, gameModel: gameModel);
                         })
@@ -122,25 +123,28 @@ class WheelWidget extends StatelessWidget {
 class RecentListWidget extends StatelessWidget {
   Function(GameModel) onItemClick;
   List<GameModel> gameModels;
-  RecentListWidget(
-      {required this.gameModels,
-      required this.onItemClick,});
+  RecentListWidget({
+    required this.gameModels,
+    required this.onItemClick,
+  });
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView.builder(
-        itemBuilder: (context, index) =>
-            RecentsItem(gameModel: gameModels[index], onItemClick: onItemClick),
-        itemCount: gameModels.length,
-      ),
+      child: gameModels.isEmpty
+          ? Center(child: Text(getLocalization(context).emptyListMessage))
+          : ListView.builder(
+              itemBuilder: (context, index) => RecentItem(
+                  gameModel: gameModels[index], onItemClick: onItemClick),
+              itemCount: gameModels.length,
+            ),
     );
   }
 }
 
-class RecentsItem extends StatelessWidget {
+class RecentItem extends StatelessWidget {
   Function(GameModel) onItemClick;
   GameModel gameModel;
-  RecentsItem({required this.gameModel, required this.onItemClick});
+  RecentItem({required this.gameModel, required this.onItemClick});
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -163,7 +167,7 @@ class RecentsItem extends StatelessWidget {
               Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(4.0),
+                    padding: const EdgeInsets.all(4.0),
                     child: Text(gameModel.roomName!),
                   ),
                   Padding(
@@ -184,5 +188,3 @@ class RecentsItem extends StatelessWidget {
     );
   }
 }
-
-

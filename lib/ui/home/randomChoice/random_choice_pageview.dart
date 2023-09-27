@@ -4,7 +4,7 @@ import 'package:kilo_bamya/ui/home/randomChoice/pages/enter_choices_page.dart';
 import 'package:kilo_bamya/ui/home/randomChoice/pages/result_page.dart';
 import 'package:kilo_bamya/ui/home/randomChoice/pages/spinning_wheel_page.dart';
 
-import '../../../moduls/choice_class_model.dart';
+import '../../../models/choice_class_model.dart';
 
 class RandomChoicePageView extends StatelessWidget {
   RandomChoicePageView({required this.onCloseClick});

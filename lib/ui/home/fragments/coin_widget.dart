@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 
 class CoinWidget extends StatefulWidget {
@@ -93,10 +94,10 @@ class _CoinWidgetState extends State<CoinWidget> with TickerProviderStateMixin {
                             width: width * .22,
                             height: width * .22,
                             color: MyColors.darkOrange,
-                            child: const Center(
+                            child: Center(
                                 child: Text(
-                              'Throw!',
-                              style: TextStyle(
+                              getLocalization(context).throwCoin,
+                              style: const TextStyle(
                                   fontStyle: FontStyle.italic,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,

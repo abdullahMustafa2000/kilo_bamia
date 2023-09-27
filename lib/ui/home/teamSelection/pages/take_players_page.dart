@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/local_db/game_model.dart';
+import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/page_model.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/pages/room_specifications.dart';
@@ -34,14 +35,14 @@ class _RoomPlayersState extends State<RoomPlayers> {
         child: Column(
           children: [
             Text(
-              'Enter names :',
+              getLocalization(context).enterPeople,
               style: Theme.of(context).textTheme.headline4,
             ),
             Expanded(
               child: Form(
                 child: GridView.builder(
                   physics: const BouncingScrollPhysics(),
-                  itemCount: widget.gameModel?.noOfPlayers,
+                  itemCount: widget.gameModel?.noOfPlayers ?? provider.noOfPlayers,
                   itemBuilder: (BuildContext context, int index) {
                     return TextInputDesign(onTextChange, index);
                   },
@@ -65,40 +66,26 @@ class _RoomPlayersState extends State<RoomPlayers> {
                       spreadRadius: 12)
                 ],
               ),
-              // child: RaisedButton(
-              //   onPressed: () {
-              //     provider.players = names;
-              //     widget.onBtnClick();
-              //   },
-              //   shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(180.0)),
-              //   padding: const EdgeInsets.all(0.0),
-              //   child: Ink(
-              //     child: Container(
-              //       decoration: BoxDecoration(
-              //           gradient: LinearGradient(
-              //               begin: Alignment.topCenter,
-              //               end: Alignment.bottomCenter,
-              //               colors: [
-              //                 MyColors.lightOrange.withOpacity(.1),
-              //                 MyColors.darkOrange.withOpacity(.3),
-              //               ]),
-              //           borderRadius:
-              //               const BorderRadius.all(Radius.circular(80.0))),
-              //       constraints: const BoxConstraints(
-              //           minWidth: 88.0,
-              //           minHeight: 36.0), // min sizes for Material buttons
-              //       alignment: Alignment.center,
-              //       child: Text(
-              //         'Spin!',
-              //         textAlign: TextAlign.center,
-              //         style: TextStyle(
-              //             fontSize: 16,
-              //             color: MyColors.lightBlack.withOpacity(0.9)),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              child: ElevatedButton(
+                onPressed: () {
+                  allNamesInserted(names);
+                  provider.players = names;
+                  widget.onBtnClick();
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  backgroundColor: MyColors.lightOrange,
+                ),
+                child: Text(
+                  getLocalization(context).splitPeopleBtn,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 10,
+                      color: MyColors.lightBlack.withOpacity(0.9)),
+                ),
+              ),
             )
           ],
         ),
@@ -109,6 +96,13 @@ class _RoomPlayersState extends State<RoomPlayers> {
   List<String> names = List.filled(int.parse(InputContainer.playersNumEt!), '');
   onTextChange(String name, int index) {
     names[index] = name;
+  }
+
+  void allNamesInserted(List<String?> names) {
+    for (var element in names) {
+      if (element == null || element.isEmpty) {
+      element = "-";
+    }}
   }
 
 }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:kilo_bamya/ads/ad_initializer.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 
-import '../../../../moduls/choice_class_model.dart';
+import '../../../../models/choice_class_model.dart';
 
 class AnimationPage extends StatelessWidget {
   AnimationPage(

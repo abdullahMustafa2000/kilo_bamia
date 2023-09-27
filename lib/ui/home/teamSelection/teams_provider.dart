@@ -23,7 +23,9 @@ class TeamProvider extends ChangeNotifier {
     roomName = '';
   }
 
-  List<String> dividePlayers(GameModel gameModel) {
+
+
+  List<String> splitPlayers(List<String> unOrderedTeams) {
     teams = List.filled(noOfTeams, '');
     int noOfPlayers = players.length; //5
     List<int> list = teamCount(noOfPlayers, noOfTeams);
@@ -36,7 +38,6 @@ class TeamProvider extends ChangeNotifier {
         i++;
       }
     }
-    gameModel.result = teams;
     return teams;
   }
 

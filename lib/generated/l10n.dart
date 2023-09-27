@@ -50,281 +50,41 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `kilobamyos`
+  /// `كيلو باميه`
   String get appName {
     return Intl.message(
-      'kilobamyos',
+      'كيلو باميه',
       name: 'appName',
       desc: '',
       args: [],
     );
   }
 
-  /// ``
-  String get descAppTourPage1 {
-    return Intl.message(
-      '',
-      name: 'descAppTourPage1',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get descAppTourPage2 {
-    return Intl.message(
-      '',
-      name: 'descAppTourPage2',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get descAppTourPage3 {
-    return Intl.message(
-      '',
-      name: 'descAppTourPage3',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get btnNextAppTour {
-    return Intl.message(
-      '',
-      name: 'btnNextAppTour',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get btnDoneAppTour {
-    return Intl.message(
-      '',
-      name: 'btnDoneAppTour',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get btnCreateGame {
-    return Intl.message(
-      '',
-      name: 'btnCreateGame',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
+  /// `يلا نقسم`
   String get btnCreateRoom {
     return Intl.message(
-      '',
+      'يلا نقسم',
       name: 'btnCreateRoom',
       desc: '',
       args: [],
     );
   }
 
-  /// ``
-  String get btnSpin {
+  /// `ايه اللي محيرك؟`
+  String get enterChoicesNames {
     return Intl.message(
-      '',
-      name: 'btnSpin',
+      'ايه اللي محيرك؟',
+      name: 'enterChoicesNames',
       desc: '',
       args: [],
     );
   }
 
-  /// ``
-  String get btnSpinAgain {
+  /// `اخر تقسيمه`
+  String get recentListTitle {
     return Intl.message(
-      '',
-      name: 'btnSpinAgain',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get btnSave {
-    return Intl.message(
-      '',
-      name: 'btnSave',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get titleRecent {
-    return Intl.message(
-      '',
-      name: 'titleRecent',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get descRecentPlayer {
-    return Intl.message(
-      '',
-      name: 'descRecentPlayer',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get descRecentTeam {
-    return Intl.message(
-      '',
-      name: 'descRecentTeam',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get titleLabelRoomName {
-    return Intl.message(
-      '',
-      name: 'titleLabelRoomName',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get titleLabelResult {
-    return Intl.message(
-      '',
-      name: 'titleLabelResult',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get titleLabelEnterNoTeams {
-    return Intl.message(
-      '',
-      name: 'titleLabelEnterNoTeams',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get titleLabelEnterNoPlayers {
-    return Intl.message(
-      '',
-      name: 'titleLabelEnterNoPlayers',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get titleLabelEnterPlayersNames {
-    return Intl.message(
-      '',
-      name: 'titleLabelEnterPlayersNames',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get hintEnterName {
-    return Intl.message(
-      '',
-      name: 'hintEnterName',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get numOf {
-    return Intl.message(
-      '',
-      name: 'numOf',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get toastFillFieldsError {
-    return Intl.message(
-      '',
-      name: 'toastFillFieldsError',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get titleBtmNavWheel {
-    return Intl.message(
-      '',
-      name: 'titleBtmNavWheel',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get titleBtmNavCoin {
-    return Intl.message(
-      '',
-      name: 'titleBtmNavCoin',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get btnThrowCoin {
-    return Intl.message(
-      '',
-      name: 'btnThrowCoin',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get titleAbout {
-    return Intl.message(
-      '',
-      name: 'titleAbout',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get titleOtherApps {
-    return Intl.message(
-      '',
-      name: 'titleOtherApps',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get descAbout {
-    return Intl.message(
-      '',
-      name: 'descAbout',
+      'اخر تقسيمه',
+      name: 'recentListTitle',
       desc: '',
       args: [],
     );

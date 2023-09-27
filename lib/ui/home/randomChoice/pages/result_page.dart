@@ -1,11 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:kilo_bamya/moduls/choice_class_model.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/randomChoice/pages/enter_choices_page.dart';
 import 'package:kilo_bamya/ui/home/randomChoice/pages/spinning_wheel_page.dart';
 import 'package:kilo_bamya/ui/home/randomChoice/random_choice_pageview.dart';
+
+import '../../../../models/choice_class_model.dart';
 
 class ChoiceResultPage extends StatefulWidget {
   late Function onCloseClick;

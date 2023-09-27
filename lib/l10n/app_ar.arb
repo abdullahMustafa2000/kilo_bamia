@@ -1,0 +1,18 @@
+{
+  "appName": "كيلو باميه",
+  "btnCreateRoom": "يلا نقسم",
+  "enterChoicesNames": "محتار بين ايه؟",
+  "recentListTitle": "اخر تقسيمه",
+  "emptyListMessage": "اخر تقسيمتين هيظهروا هنا",
+  "wheelTabName": "العجلة",
+  "coinTabName": "العملة",
+  "throwCoin": "ارمي",
+  "nameTheSplit": "سمي التقسيمه :",
+  "splitNameHint": "مثلا:كوره، افلام...",
+  "numberOfParticipants": "عدد الناس :",
+  "numberOfTeams": "كام فرقه :",
+  "createSplit": "اللي بعده",
+  "enterPeople": "اللاعيبه :",
+  "splitPeopleBtn": "وزع",
+  "splitResult": "التقسيمة"
+}

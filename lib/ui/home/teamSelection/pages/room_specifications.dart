@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kilo_bamya/local_db/game_model.dart';
+import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/page_model.dart';
 import 'package:kilo_bamya/ui/home/teamSelection/teams_provider.dart';
@@ -44,9 +45,10 @@ class InputContainer extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Text(
-          'Room name :',
+          getLocalization(context).nameTheSplit,
           style: Theme.of(context).textTheme.headline4,
         ),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 2)),
         Container(
           width: width * .4,
           decoration: BoxDecoration(
@@ -54,8 +56,7 @@ class InputContainer extends StatelessWidget {
             color: MyColors.textFieldFillClr.withOpacity(.45),
           ),
           child: TextField(
-            controller: TextEditingController()
-              ..text = "",
+            controller: TextEditingController()..text = "",
             onChanged: (txt) {
               roomNameEt = txt;
               provider.roomName = txt;
@@ -68,69 +69,55 @@ class InputContainer extends StatelessWidget {
             decoration: InputDecoration(
               border: InputBorder.none,
               hintStyle: Theme.of(context).textTheme.subtitle1,
-              hintText: 'Enter name',
+              hintText: getLocalization(context).splitNameHint,
             ),
           ),
         ),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            teamsDataTextField('Number of players :', onPlayersTxtChange,
-                context, gameModel?.noOfPlayers),
-            teamsDataTextField('Number of teams :', onTeamsTxtChange, context,
-                gameModel?.noOfTeams),
+            teamsDataTextField(getLocalization(context).numberOfParticipants,
+                onPlayersTxtChange, context, gameModel?.noOfPlayers ?? 0),
+            teamsDataTextField(getLocalization(context).numberOfTeams,
+                onTeamsTxtChange, context, gameModel?.noOfTeams ?? 0),
           ],
         ),
-        // SizedBox(
-        //   width: width * .25,
-        //   child: ElevatedButton(
-        //     onPressed: () {
-        //       if (acceptedInput()) {
-        //         onBtnClick();
-        //       }
-        //     },
-        //     shape: RoundedRectangleBorder(
-        //         borderRadius: BorderRadius.circular(80.0)),
-        //     padding: const EdgeInsets.all(0.0),
-        //     child: Ink(
-        //       decoration: BoxDecoration(
-        //         gradient: LinearGradient(
-        //             begin: Alignment.topCenter,
-        //             end: Alignment.bottomCenter,
-        //             colors: [
-        //               MyColors.lightOrange.withOpacity(.1),
-        //               MyColors.darkOrange.withOpacity(.3),
-        //             ]),
-        //         borderRadius: const BorderRadius.all(Radius.circular(80.0)),
-        //       ),
-        //       child: Container(
-        //         constraints: const BoxConstraints(
-        //             minWidth: 88.0,
-        //             minHeight: 36.0), // min sizes for Material buttons
-        //         alignment: Alignment.center,
-        //         child: Text(
-        //           'Create',
-        //           textAlign: TextAlign.center,
-        //           style: TextStyle(
-        //               fontSize: 16,
-        //               color: MyColors.lightBlack.withOpacity(0.9)),
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // )
+        const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+        SizedBox(
+          width: width * .25,
+          child: ElevatedButton(
+            onPressed: () {
+              if (acceptedInput()) {
+                onBtnClick();
+              }
+            },
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20))),
+              backgroundColor: MaterialStateProperty.all(MyColors.someOrange),
+            ),
+            child: Text(
+              getLocalization(context).createSplit,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 16, color: MyColors.lightBlack.withOpacity(0.9)),
+            ),
+          ),
+        ),
       ],
     );
   }
 
   Widget teamsDataTextField(
-      String label, Function onTxtChange, BuildContext context, int? number) {
+      String label, Function onTxtChange, BuildContext context, int number) {
     return Column(
       children: [
         Text(
           label,
           style: Theme.of(context).textTheme.caption,
         ),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
         Container(
           width: MediaQuery.of(context).size.width * .16,
           decoration: BoxDecoration(

@@ -22,33 +22,10 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "appName": MessageLookupByLibrary.simpleMessage("كيلوباميوس"),
-        "btnCreateGame": MessageLookupByLibrary.simpleMessage(""),
-        "btnCreateRoom": MessageLookupByLibrary.simpleMessage("بدا لعبه"),
-        "btnDoneAppTour": MessageLookupByLibrary.simpleMessage(""),
-        "btnNextAppTour": MessageLookupByLibrary.simpleMessage(""),
-        "btnSave": MessageLookupByLibrary.simpleMessage(""),
-        "btnSpin": MessageLookupByLibrary.simpleMessage(""),
-        "btnSpinAgain": MessageLookupByLibrary.simpleMessage(""),
-        "btnThrowCoin": MessageLookupByLibrary.simpleMessage(""),
-        "descAbout": MessageLookupByLibrary.simpleMessage(""),
-        "descAppTourPage1": MessageLookupByLibrary.simpleMessage(""),
-        "descAppTourPage2": MessageLookupByLibrary.simpleMessage(""),
-        "descAppTourPage3": MessageLookupByLibrary.simpleMessage(""),
-        "descRecentPlayer": MessageLookupByLibrary.simpleMessage(""),
-        "descRecentTeam": MessageLookupByLibrary.simpleMessage(""),
-        "hintEnterName": MessageLookupByLibrary.simpleMessage(""),
-        "numOf": MessageLookupByLibrary.simpleMessage(""),
-        "titleAbout": MessageLookupByLibrary.simpleMessage(""),
-        "titleBtmNavCoin": MessageLookupByLibrary.simpleMessage(""),
-        "titleBtmNavWheel": MessageLookupByLibrary.simpleMessage(""),
-        "titleLabelEnterNoPlayers": MessageLookupByLibrary.simpleMessage(""),
-        "titleLabelEnterNoTeams": MessageLookupByLibrary.simpleMessage(""),
-        "titleLabelEnterPlayersNames": MessageLookupByLibrary.simpleMessage(""),
-        "titleLabelResult": MessageLookupByLibrary.simpleMessage(""),
-        "titleLabelRoomName": MessageLookupByLibrary.simpleMessage(""),
-        "titleOtherApps": MessageLookupByLibrary.simpleMessage(""),
-        "titleRecent": MessageLookupByLibrary.simpleMessage(""),
-        "toastFillFieldsError": MessageLookupByLibrary.simpleMessage("")
+        "appName": MessageLookupByLibrary.simpleMessage("كيلو باميه"),
+        "btnCreateRoom": MessageLookupByLibrary.simpleMessage("يلا نقسم"),
+        "enterChoicesNames":
+            MessageLookupByLibrary.simpleMessage("ايه اللي محيرك؟"),
+        "recentListTitle": MessageLookupByLibrary.simpleMessage("اخر تقسيمه")
       };
 }

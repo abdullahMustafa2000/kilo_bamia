@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kilo_bamya/generated/l10n.dart';
 import 'package:kilo_bamya/local_db/game_model.dart';
+import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/btm_nav_provider.dart';
 import 'package:kilo_bamya/ui/home/fragments/coin_widget.dart';
@@ -58,9 +60,11 @@ class _HomePageState extends State<HomePage> {
             ),
             Center(
               child: Text(
-                S().appName,
+                getLocalization(context).appName,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 22),
+                style: GoogleFonts.k2d(
+                    textStyle: const TextStyle(
+                        fontSize: 22, fontWeight: FontWeight.w900)),
               ),
             ),
             Visibility(
@@ -165,11 +169,8 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
         child: Row(
           children: [
             Expanded(
-              child: wheelOrCoinWidget(
-                  'Wheel',
-                  provider.btmIndex == 0
-                      ? MyColors.darkBlue
-                      : MyColors.white),
+              child: wheelOrCoinWidget(getLocalization(context).wheelTabName,
+                  provider.btmIndex == 0 ? MyColors.darkBlue : MyColors.white),
             ),
             Container(
               width: 4,
@@ -180,7 +181,7 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
             ),
             Expanded(
               child: wheelOrCoinWidget(
-                  'Coin',
+                  getLocalization(context).coinTabName,
                   provider.btmIndex == 1
                       ? MyColors.darkOrange
                       : MyColors.white),
