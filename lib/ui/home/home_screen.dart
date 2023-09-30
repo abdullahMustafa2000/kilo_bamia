@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kilo_bamya/generated/l10n.dart';
 import 'package:kilo_bamya/local_db/game_model.dart';
 import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/btm_nav_provider.dart';
 import 'package:kilo_bamya/ui/home/fragments/coin_widget.dart';
-import 'package:kilo_bamya/ui/home/randomChoice/random_choice_widget.dart';
+import 'package:kilo_bamya/ui/home/randomChoice/random_choice_screen.dart';
 import 'package:kilo_bamya/ui/home/sideMenu/side_menu_widget.dart';
 import 'package:kilo_bamya/ui/home/fragments/wheel_widget.dart';
 import 'package:provider/provider.dart';
 
-import 'teamSelection//kilo_bamya_widget.dart';
+import 'team_split//split_teams_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

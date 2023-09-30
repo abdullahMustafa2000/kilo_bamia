@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:kilo_bamya/local_db/game_model.dart';
 import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
-import 'package:kilo_bamya/ui/home/teamSelection/page_model.dart';
-import 'package:kilo_bamya/ui/home/teamSelection/pages/room_specifications.dart';
-import 'package:kilo_bamya/ui/home/teamSelection/teams_provider.dart';
+import 'package:kilo_bamya/ui/elements/page_model.dart';
+import 'package:kilo_bamya/ui/home/team_split/pages/room_specifications.dart';
+import 'package:kilo_bamya/ui/home/team_split/teams_provider.dart';
 import 'package:provider/provider.dart';
 
 class RoomPlayers extends StatefulWidget {

@@ -50,41 +50,161 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `كيلو باميه`
+  /// `Kilo Bamia`
   String get appName {
     return Intl.message(
-      'كيلو باميه',
+      'Kilo Bamia',
       name: 'appName',
       desc: '',
       args: [],
     );
   }
 
-  /// `يلا نقسم`
+  /// `Let's Split`
   String get btnCreateRoom {
     return Intl.message(
-      'يلا نقسم',
+      'Let\'s Split',
       name: 'btnCreateRoom',
       desc: '',
       args: [],
     );
   }
 
-  /// `ايه اللي محيرك؟`
+  /// `Confused between what?`
   String get enterChoicesNames {
     return Intl.message(
-      'ايه اللي محيرك؟',
+      'Confused between what?',
       name: 'enterChoicesNames',
       desc: '',
       args: [],
     );
   }
 
-  /// `اخر تقسيمه`
+  /// `Recent Splits`
   String get recentListTitle {
     return Intl.message(
-      'اخر تقسيمه',
+      'Recent Splits',
       name: 'recentListTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The most 2 recent Splits will appear here.`
+  String get emptyListMessage {
+    return Intl.message(
+      'The most 2 recent Splits will appear here.',
+      name: 'emptyListMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wheel`
+  String get wheelTabName {
+    return Intl.message(
+      'Wheel',
+      name: 'wheelTabName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Coin`
+  String get coinTabName {
+    return Intl.message(
+      'Coin',
+      name: 'coinTabName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Flip`
+  String get throwCoin {
+    return Intl.message(
+      'Flip',
+      name: 'throwCoin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name it :`
+  String get nameTheSplit {
+    return Intl.message(
+      'Name it :',
+      name: 'nameTheSplit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ex: PlayStation`
+  String get splitNameHint {
+    return Intl.message(
+      'Ex: PlayStation',
+      name: 'splitNameHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `People :`
+  String get numberOfParticipants {
+    return Intl.message(
+      'People :',
+      name: 'numberOfParticipants',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Teams :`
+  String get numberOfTeams {
+    return Intl.message(
+      'Teams :',
+      name: 'numberOfTeams',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next`
+  String get createSplit {
+    return Intl.message(
+      'Next',
+      name: 'createSplit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter People :`
+  String get enterPeople {
+    return Intl.message(
+      'Enter People :',
+      name: 'enterPeople',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Split`
+  String get splitPeopleBtn {
+    return Intl.message(
+      'Split',
+      name: 'splitPeopleBtn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Result`
+  String get splitResult {
+    return Intl.message(
+      'Result',
+      name: 'splitResult',
       desc: '',
       args: [],
     );
@@ -97,7 +217,6 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
-      Locale.fromSubtags(languageCode: 'ar'),
     ];
   }
 

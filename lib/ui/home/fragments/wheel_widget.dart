@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kilo_bamya/generated/l10n.dart';
 import 'package:kilo_bamya/local_db/database.dart';
 import 'package:kilo_bamya/local_db/game_model.dart';
 import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
-import 'package:kilo_bamya/ui/home/randomChoice/pages/spinning_wheel_page.dart';
+import 'package:kilo_bamya/ui/elements/spinning_wheel.dart';
 
 class WheelWidget extends StatelessWidget {
   Function(int, int, {GameModel gameModel}) aboveWidgetCall;
@@ -26,10 +27,11 @@ class WheelWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              child: Center(child: InkWell(child: AnimatedWheelRow(
-                onWidgetClick: () {
+              child: Center(child: InkWell(child: SpinningWheel(
+                onClick: () {
                   aboveWidgetCall(0, 1);
                 },
+                animDuration: 40,
               ))),
             ),
             InkWell(
@@ -52,7 +54,9 @@ class WheelWidget extends StatelessWidget {
                       ),
                       child: Text(
                         getLocalization(context).btnCreateRoom,
-                        style: const TextStyle(fontSize: 22),
+                        style: GoogleFonts.k2d(
+                          textStyle: const TextStyle(fontSize: 22),
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -97,7 +101,9 @@ class WheelWidget extends StatelessWidget {
                     Container(
                       child: Text(
                         getLocalization(context).recentListTitle,
-                        style: const TextStyle(fontSize: 24),
+                        style: GoogleFonts.k2d(
+                          textStyle: const TextStyle(fontSize: 24),
+                        ),
                       ),
                       margin: const EdgeInsets.symmetric(
                           horizontal: 24, vertical: 8),
@@ -131,7 +137,7 @@ class RecentListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: gameModels.isEmpty
-          ? Center(child: Text(getLocalization(context).emptyListMessage))
+          ? Center(child: Text(getLocalization(context).emptyListMessage, style: GoogleFonts.k2d(),))
           : ListView.builder(
               itemBuilder: (context, index) => RecentItem(
                   gameModel: gameModels[index], onItemClick: onItemClick),

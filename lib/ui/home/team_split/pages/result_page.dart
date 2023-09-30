@@ -1,15 +1,17 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:kilo_bamya/ads/ad_initializer.dart';
 import 'package:kilo_bamya/local_db/database.dart';
 import 'package:kilo_bamya/local_db/game_model.dart';
 import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
-import 'package:kilo_bamya/ui/home/randomChoice/pages/spinning_wheel_page.dart';
-import 'package:kilo_bamya/ui/home/teamSelection/next_page_provider.dart';
-import 'package:kilo_bamya/ui/home/teamSelection/page_model.dart';
+import 'package:kilo_bamya/ui/home/team_split/next_page_provider.dart';
+import 'package:kilo_bamya/ui/elements/page_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../../elements/circular_container.dart';
+import '../../../elements/icon_btn.dart';
 import '../teams_provider.dart';
 
 class ResultPage extends StatefulWidget {
@@ -19,7 +21,7 @@ class ResultPage extends StatefulWidget {
   Function onClose;
   Function(int) onBack;
   Function moveToPrev;
-
+  final AdInitializer adInitializer;
   GameModel? teams;
   ResultPage(
       {Key? key,
@@ -27,7 +29,7 @@ class ResultPage extends StatefulWidget {
       required this.showResultWidget,
       required this.moveToPrev,
       required this.onClose,
-      required this.onBack,
+      required this.onBack, required this.adInitializer,
       this.teams})
       : super(key: key);
 
@@ -43,6 +45,7 @@ class _ResultPageState extends State<ResultPage> {
     super.initState();
     fromPref = widget.showResultWidget;
     fromRecent = fromPref == 1;
+    widget.adInitializer.showInterstitialAd();
   }
 
   late int fromPref;
@@ -154,34 +157,15 @@ class _ResultPageState extends State<ResultPage> {
   }
 
   Widget reSpinBtn() {
-    return Container(
-      margin: const EdgeInsets.only(left: 10),
-      width: 47,
-      height: 47,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(180.0)),
-        boxShadow: [
-          BoxShadow(
-              blurRadius: 22,
-              color: MyColors.darkOrange.withOpacity(.25),
-              spreadRadius: 12)
-        ],
-      ),
-      child: SizedBox(
-        width: 46,
-        height: 46,
-        child: InkWell(
-          onTap: () {
-            setState(() {
-              fromPref = 0;
-            });
-          },
-          child: CircularContainer(
-              contentColor: MyColors.someOrange,
-              shadowColor: MyColors.darkOrange,
-              content: const Icon(Icons.refresh)),
-        ),
-      ),
+    return BtnIconElement(
+      onClick: () {
+        setState(() {
+          fromPref = 0;
+        });
+      },
+      background: MyColors.someOrange,
+      icon: Icons.refresh,
+      size: 28,
     );
   }
 

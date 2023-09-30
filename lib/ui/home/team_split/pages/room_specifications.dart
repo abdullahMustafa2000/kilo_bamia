@@ -3,11 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kilo_bamya/local_db/game_model.dart';
 import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
-import 'package:kilo_bamya/ui/home/teamSelection/page_model.dart';
-import 'package:kilo_bamya/ui/home/teamSelection/teams_provider.dart';
+import 'package:kilo_bamya/ui/elements/page_model.dart';
+import 'package:kilo_bamya/ui/home/team_split/teams_provider.dart';
 import 'package:provider/provider.dart';
 
 class RoomSpecifications extends StatelessWidget {
@@ -46,7 +47,9 @@ class InputContainer extends StatelessWidget {
       children: [
         Text(
           getLocalization(context).nameTheSplit,
-          style: Theme.of(context).textTheme.headline4,
+          style: GoogleFonts.k2d(
+            textStyle: Theme.of(context).textTheme.headline4,
+          ),
         ),
         const Padding(padding: EdgeInsets.symmetric(vertical: 2)),
         Container(

@@ -3,14 +3,16 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/randomChoice/pages/enter_choices_page.dart';
-import 'package:kilo_bamya/ui/home/randomChoice/pages/spinning_wheel_page.dart';
 import 'package:kilo_bamya/ui/home/randomChoice/random_choice_pageview.dart';
-
 import '../../../../models/choice_class_model.dart';
+import '../../../elements/circular_container.dart';
+import '../../../elements/icon_btn.dart';
+import 'package:kilo_bamya/ads/ad_initializer.dart';
 
 class ChoiceResultPage extends StatefulWidget {
   late Function onCloseClick;
-  ChoiceResultPage({required this.onCloseClick});
+  AdInitializer adInitializer;
+  ChoiceResultPage({required this.onCloseClick, required this.adInitializer});
 
   @override
   State<ChoiceResultPage> createState() => _ChoiceResultPageState();
@@ -20,6 +22,7 @@ class _ChoiceResultPageState extends State<ChoiceResultPage> {
   List<ChoiceModel> choices = [];
   @override
   void initState() {
+    widget.adInitializer.showInterstitialAd();
     choices = RandomChoicePageView.mChoicesList;
     for (var i = 0; i < choices.length; i++) {
       var element = choices[i];
@@ -33,42 +36,41 @@ class _ChoiceResultPageState extends State<ChoiceResultPage> {
   @override
   Widget build(BuildContext context) {
     var randomNum = Random().nextInt(choices.length);
-    var element =
-        choices.elementAt(randomNum);
+    var element = choices.elementAt(randomNum);
 
-    print(choices.length);
     return Center(
-      child: MyColumnWidget(
-        onCloseClick: widget.onCloseClick,
-        onSpinClick: () {
-          setState(() {
-          });
-        },
-        resultRow: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/images/kitty.png',
-              width: 96,
-              height: 96,
-            ),
-            Flexible(
-              child: ItemShapeDesign(
-                  contentWidget: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(element.choiceName),
-                  ),
-                  containerColor: element.choiceColor),
-            ),
-          ],
-        ),
-      )
-    );
+        child: MyColumnWidget(
+      onCloseClick: widget.onCloseClick,
+      onSpinClick: () {
+        setState(() {});
+      },
+      resultRow: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/images/kitty.png',
+            width: 96,
+            height: 96,
+          ),
+          Flexible(
+            child: ItemShapeDesign(
+                contentWidget: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(element.choiceName),
+                ),
+                containerColor: element.choiceColor),
+          ),
+        ],
+      ),
+    ));
   }
 }
 
 class MyColumnWidget extends StatefulWidget {
-  MyColumnWidget({required this.onCloseClick, required this.resultRow, required this.onSpinClick});
+  MyColumnWidget(
+      {required this.onCloseClick,
+      required this.resultRow,
+      required this.onSpinClick});
   Function onCloseClick, onSpinClick;
   Widget resultRow;
 
@@ -79,13 +81,22 @@ class MyColumnWidget extends StatefulWidget {
 class _MyColumnWidgetState extends State<MyColumnWidget> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        CloseRow(onCloseClick: widget.onCloseClick),
+        BtnIconElement(
+          onClick: widget.onCloseClick,
+          background: Colors.red,
+          icon: Icons.close,
+          size: 32,
+        ),
         widget.resultRow,
-        SpinAgainRow(onSpinClick: widget.onSpinClick,),
+        BtnIconElement(
+          onClick: widget.onSpinClick,
+          background: MyColors.someOrange,
+          icon: Icons.refresh,
+          size: 28,
+        ),
       ],
     );
   }
@@ -102,23 +113,14 @@ class SpinAgainRow extends StatefulWidget {
 class _SpinAgainRowState extends State<SpinAgainRow> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return InkWell(
       onTap: () {
         widget.onSpinClick();
       },
       child: CircularContainer(
-          contentColor: MyColors.spinnerOrange,
-          shadowColor: MyColors.spinnerLightRed,
-          content: const Text(
-            'Spin Again',
-            style: TextStyle(
-              color: MyColors.white,
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
-            ),
-            textAlign: TextAlign.center,
-          )),
+          contentColor: MyColors.someOrange,
+          shadowColor: MyColors.darkOrange,
+          content: const Icon(Icons.refresh)),
     );
   }
 }

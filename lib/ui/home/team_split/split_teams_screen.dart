@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/local_db/game_model.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
-import 'package:kilo_bamya/ui/home/teamSelection/page_view.dart';
+import 'package:kilo_bamya/ui/home/team_split/page_view.dart';
 
 class DivideTeamsWidget extends StatelessWidget {
   DivideTeamsWidget(
       {required this.onSaveBtnClick,
       required this.showResultWidget,
       this.sharedPrefTeams});
-  Function onSaveBtnClick;
-  int showResultWidget;
-  GameModel? sharedPrefTeams;
+  final Function onSaveBtnClick;
+  final int showResultWidget;
+  final GameModel? sharedPrefTeams;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

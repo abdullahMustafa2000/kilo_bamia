@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/ads/ad_initializer.dart';
+import 'package:kilo_bamya/ui/elements/loading_wheel_screen.dart';
 import 'package:kilo_bamya/ui/home/randomChoice/pages/enter_choices_page.dart';
 import 'package:kilo_bamya/ui/home/randomChoice/pages/result_page.dart';
-import 'package:kilo_bamya/ui/home/randomChoice/pages/spinning_wheel_page.dart';
 
 import '../../../models/choice_class_model.dart';
 
 class RandomChoicePageView extends StatelessWidget {
   RandomChoicePageView({required this.onCloseClick});
-  Function onCloseClick;
+  final Function onCloseClick;
   var currentPage = 0;
   late AdInitializer _adInitializer;
   final _controller = PageController();
@@ -24,19 +24,18 @@ class RandomChoicePageView extends StatelessWidget {
           onCloseClick: onCloseClick,
           onSpinningWheelClick: moveToNextPage,
         ),
-        AnimationPage(
-          adInitializer: _adInitializer,
+        LoadingResultScreen(
           onCloseClick: onCloseClick,
           onBackClick: moveToInitialPage,
           onMoveToNext: moveToNextPage,
         ),
-        ChoiceResultPage(onCloseClick: onCloseClick)
+        ChoiceResultPage(onCloseClick: onCloseClick, adInitializer: _adInitializer)
       ],
     );
   }
 
-  void moveToNextPage(List<ChoiceModel> choices) {
-    if (choices.isNotEmpty) {
+  void moveToNextPage({List<ChoiceModel>? choices}) {
+    if (choices != null && choices.isNotEmpty) {
       mChoicesList = choices;
     }
     _controller.animateToPage(currentPage += 1,

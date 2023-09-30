@@ -3,11 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/ads/ad_initializer.dart';
 import 'package:kilo_bamya/local_db/game_model.dart';
-import 'package:kilo_bamya/ui/home/teamSelection/next_page_provider.dart';
-import 'package:kilo_bamya/ui/home/teamSelection/pages/result_page.dart';
-import 'package:kilo_bamya/ui/home/teamSelection/pages/room_specifications.dart';
-import 'package:kilo_bamya/ui/home/teamSelection/pages/spinning_wheel_page.dart';
-
+import 'package:kilo_bamya/models/choice_class_model.dart';
+import 'package:kilo_bamya/ui/elements/loading_wheel_screen.dart';
+import 'package:kilo_bamya/ui/home/team_split/next_page_provider.dart';
+import 'package:kilo_bamya/ui/home/team_split/pages/result_page.dart';
+import 'package:kilo_bamya/ui/home/team_split/pages/room_specifications.dart';
 import 'pages/take_players_page.dart';
 
 class KiloBamyaPageView extends StatefulWidget {
@@ -55,11 +55,13 @@ class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
               onClose: onSaveBtnClick,
               onPrev: onMoveToPrev,
               gameModel: widget.gameModel),
-          SpinningWheelWidget(
-            onLoadEnd: onMoveToNext,
-            adInitializer: _adInitializer,
+          LoadingResultScreen(
+            onMoveToNext: onMoveToNext,
+            onBackClick: onMoveToPrev,
+            onCloseClick: onSaveBtnClick,
           ),
           ResultPage(
+            adInitializer: _adInitializer,
             onSaveBtnClick: onSaveBtnClick,
             moveToPrev: onMoveToPrev,
             onClose: onSaveBtnClick,
@@ -77,7 +79,7 @@ class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
         duration: const Duration(milliseconds: 400), curve: Curves.bounceOut);
   }
 
-  void onMoveToNext() {
+  void onMoveToNext({List<ChoiceModel>? choices}) {
     _controller.animateToPage(provider.moveToNextPage(),
         duration: const Duration(milliseconds: 400), curve: Curves.bounceOut);
   }

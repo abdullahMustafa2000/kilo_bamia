@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "106386178161",
+    "project_id": "kilo-bamia-658c1",
+    "storage_bucket": "kilo-bamia-658c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106386178161:android:41a8c8716d99736243dbd0",
+        "android_client_info": {
+          "package_name": "com.football.kilo_bamya"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDjm-qD03o_8fWcVbqeepgV7DlD1L9mKI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

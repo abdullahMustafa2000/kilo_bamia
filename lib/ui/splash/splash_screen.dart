@@ -24,12 +24,12 @@ class _SplashScreenState extends State<SplashScreen> {
     return SafeArea(
       child: Scaffold(
           body: Column(
-        children: [
-          TopScreen(screenSize),
-          MidScreen(screenSize),
-          BottomScreen(),
-        ],
-      )),
+            children: [
+              TopScreen(screenSize),
+              MidScreen(screenSize),
+              const BottomScreen(),
+            ],
+          )),
     );
   }
 
@@ -45,6 +45,8 @@ class _SplashScreenState extends State<SplashScreen> {
 }
 
 class BottomScreen extends StatelessWidget {
+  const BottomScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -53,7 +55,7 @@ class BottomScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          NameOfAppTextDesign(name: 'Bamia', color: MyColors.darkBlue),
+          const NameOfAppTextDesign(name: 'Bamia', color: MyColors.darkBlue),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -62,8 +64,8 @@ class BottomScreen extends StatelessWidget {
                   'Created By :',
                   style: TextStyle(color: MyColors.white.withOpacity(.33)),
                 ),
-                DADName('Abdullah'),
-                DADName('Obada'),
+                const DADName('Abdullah'),
+                const DADName('Obada'),
               ],
             ),
           ),
@@ -74,12 +76,12 @@ class BottomScreen extends StatelessWidget {
 }
 
 class NameOfAppTextDesign extends StatelessWidget {
-  String name;
-  Color color;
-  NameOfAppTextDesign({required this.name, required this.color});
+  final String name;
+  final Color color;
+  const NameOfAppTextDesign({Key? key, required this.name, required this.color})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Text(
@@ -95,8 +97,8 @@ class NameOfAppTextDesign extends StatelessWidget {
 }
 
 class DADName extends StatelessWidget {
-  String developerName;
-  DADName(this.developerName);
+  final String developerName;
+  const DADName(this.developerName, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -109,8 +111,8 @@ class DADName extends StatelessWidget {
 }
 
 class MidScreen extends StatelessWidget {
-  Size screenSize;
-  MidScreen(this.screenSize);
+  final Size screenSize;
+  const MidScreen(this.screenSize, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -123,15 +125,15 @@ class MidScreen extends StatelessWidget {
 }
 
 class TopScreen extends StatelessWidget {
-  Size screenSize;
-  TopScreen(this.screenSize);
+  final Size screenSize;
+  const TopScreen(this.screenSize, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
         height: screenSize.height * .4,
         width: double.infinity,
         color: MyColors.darkBlue,
-        child: Align(
+        child: const Align(
           alignment: Alignment.bottomCenter,
           child: NameOfAppTextDesign(name: 'Kilo', color: MyColors.lightBlack),
         ));

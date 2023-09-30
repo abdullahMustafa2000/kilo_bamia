@@ -1,16 +1,17 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
-import 'package:kilo_bamya/ui/home/teamSelection/page_model.dart';
+import 'package:kilo_bamya/ui/elements/page_model.dart';
 
 import '../../../../models/choice_class_model.dart';
 
 class EnterChoicesPage extends StatefulWidget {
   EnterChoicesPage({required this.onCloseClick, required this.onSpinningWheelClick});
-  Function onCloseClick;
-  Function(List<ChoiceModel>) onSpinningWheelClick;
+  final Function onCloseClick;
+  final Function({List<ChoiceModel>? choices}) onSpinningWheelClick;
 
   @override
   State<EnterChoicesPage> createState() => _EnterChoicesPageState();
@@ -58,7 +59,9 @@ class _EnterChoicesPageState extends State<EnterChoicesPage> {
           children: [
             Text(
               getLocalization(context).enterChoicesNames,
-              style: Theme.of(context).textTheme.headline4,
+              style: GoogleFonts.k2d(
+                textStyle: Theme.of(context).textTheme.headline4,
+              ),
             ),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             Expanded(
@@ -83,7 +86,7 @@ class _EnterChoicesPageState extends State<EnterChoicesPage> {
             ),
             InkWell(
               onTap: () {
-                widget.onSpinningWheelClick(choices);
+                widget.onSpinningWheelClick(choices: choices);
               },
               child: Container(
                 width: 47,
@@ -114,8 +117,8 @@ class _EnterChoicesPageState extends State<EnterChoicesPage> {
 }
 
 class AddButtonWidget extends StatelessWidget {
-  Color color;
-  Function onAddBtnClick;
+  final Color color;
+  final Function onAddBtnClick;
 
   AddButtonWidget(this.onAddBtnClick, this.color);
 
