@@ -21,27 +21,5 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "appName": MessageLookupByLibrary.simpleMessage("Kilo Bamia"),
-        "btnCreateRoom": MessageLookupByLibrary.simpleMessage("Let\'s Split"),
-        "coinTabName": MessageLookupByLibrary.simpleMessage("Coin"),
-        "createSplit": MessageLookupByLibrary.simpleMessage("Next"),
-        "emptyListMessage": MessageLookupByLibrary.simpleMessage(
-            "The most 2 recent Splits will appear here."),
-        "enterChoicesNames":
-            MessageLookupByLibrary.simpleMessage("Confused between what?"),
-        "enterPeople": MessageLookupByLibrary.simpleMessage("Enter People :"),
-        "nameTheSplit": MessageLookupByLibrary.simpleMessage("Name it :"),
-        "numberOfParticipants":
-            MessageLookupByLibrary.simpleMessage("People :"),
-        "numberOfTeams": MessageLookupByLibrary.simpleMessage("Teams :"),
-        "recentListTitle":
-            MessageLookupByLibrary.simpleMessage("Recent Splits"),
-        "splitNameHint":
-            MessageLookupByLibrary.simpleMessage("Ex: PlayStation"),
-        "splitPeopleBtn": MessageLookupByLibrary.simpleMessage("Split"),
-        "splitResult": MessageLookupByLibrary.simpleMessage("Result"),
-        "throwCoin": MessageLookupByLibrary.simpleMessage("Flip"),
-        "wheelTabName": MessageLookupByLibrary.simpleMessage("Wheel")
-      };
+  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{};
 }

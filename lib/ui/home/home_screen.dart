@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kilo_bamya/local_db/game_model.dart';
+import 'package:kilo_bamya/models/game_model.dart';
 import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/btm_nav_provider.dart';
@@ -35,14 +35,6 @@ class _HomePageState extends State<HomePage> {
       resizeToAvoidBottomInset: false,
       drawer: const MyDrawerWidget(),
       appBar: AppBar(
-        /*leading: Builder(builder: (context) {
-          return InkWell(
-            child: Image.asset('assets/images/menu_ic.png'),
-            onTap: () {
-              Scaffold.of(context).openDrawer();
-            },
-          );
-        }),*/
         automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,15 +79,17 @@ class _HomePageState extends State<HomePage> {
   }
 
   bool aboveWidgetIsVisible = false;
-  int callResultWidget = -1;
+  bool callResultWidget = false;
   GameModel? clickedRecent;
   // if random choice is 1 then open randomChoice pageView
-  void showAboveWidgetListener(int showWidget, int randomChoice,
-      {GameModel? gameModel}) {
-    if (randomChoice == 1) {
+  void showAboveWidgetListener(
+      {required bool openSplitResult,
+      required bool openRandomChoice,
+      GameModel? gameModel}) {
+    if (openRandomChoice) {
       callRandomChoiceWidget = true;
     } else {
-      callResultWidget = showWidget;
+      callResultWidget = openSplitResult;
       clickedRecent = gameModel;
     }
     aboveWidgetIsVisible = true;
@@ -105,7 +99,7 @@ class _HomePageState extends State<HomePage> {
   void onSaveBtnClick() {
     setState(() {
       aboveWidgetIsVisible = !aboveWidgetIsVisible;
-      callResultWidget = -1;
+      callResultWidget = false;
       callRandomChoiceWidget = false;
     });
   }
@@ -125,6 +119,7 @@ class _HomePageState extends State<HomePage> {
               : DivideTeamsWidget(
                   onSaveBtnClick: onSaveBtnClick,
                   showResultWidget: callResultWidget,
+                  splitRoom: clickedRecent,
                 ),
         )
       ],
@@ -133,9 +128,10 @@ class _HomePageState extends State<HomePage> {
 }
 
 class CustomBottomNav extends StatefulWidget {
-  bool isAboveWidgetVisible;
+  final bool isAboveWidgetVisible;
 
-  CustomBottomNav(this.isAboveWidgetVisible);
+  const CustomBottomNav(this.isAboveWidgetVisible, {Key? key})
+      : super(key: key);
 
   @override
   State<CustomBottomNav> createState() => _CustomBottomNavState();

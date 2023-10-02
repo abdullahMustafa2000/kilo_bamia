@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:kilo_bamya/local_db/game_model.dart';
+import 'package:kilo_bamya/models/game_model.dart';
 
 class TeamProvider extends ChangeNotifier {
   late List<String> teams;

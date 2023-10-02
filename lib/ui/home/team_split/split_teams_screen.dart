@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:kilo_bamya/local_db/game_model.dart';
+import 'package:kilo_bamya/models/game_model.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/team_split/page_view.dart';
 
 class DivideTeamsWidget extends StatelessWidget {
-  DivideTeamsWidget(
-      {required this.onSaveBtnClick,
+  const DivideTeamsWidget(
+      {Key? key, required this.onSaveBtnClick,
       required this.showResultWidget,
-      this.sharedPrefTeams});
+      required this.splitRoom}) : super(key: key);
   final Function onSaveBtnClick;
-  final int showResultWidget;
-  final GameModel? sharedPrefTeams;
+  final bool showResultWidget;
+  final GameModel? splitRoom;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -23,7 +23,7 @@ class DivideTeamsWidget extends StatelessWidget {
             color: MyColors.lightBlack.withOpacity(.86),
           ),
           KiloBamyaPageView(onSaveBtnClick, showResultWidget,
-              gameModel: sharedPrefTeams),
+              splitRoom: splitRoom),
         ],
       ),
     );

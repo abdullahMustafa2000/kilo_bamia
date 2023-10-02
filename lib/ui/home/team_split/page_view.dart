@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/ads/ad_initializer.dart';
-import 'package:kilo_bamya/local_db/game_model.dart';
+import 'package:kilo_bamya/models/game_model.dart';
 import 'package:kilo_bamya/models/choice_class_model.dart';
 import 'package:kilo_bamya/ui/elements/loading_wheel_screen.dart';
 import 'package:kilo_bamya/ui/home/team_split/next_page_provider.dart';
@@ -12,10 +12,10 @@ import 'pages/take_players_page.dart';
 
 class KiloBamyaPageView extends StatefulWidget {
   Function onSaveBtnClick;
-  int showResultWidget;
-  GameModel? gameModel;
+  bool showResultWidget;
+  GameModel? splitRoom;
   KiloBamyaPageView(this.onSaveBtnClick, this.showResultWidget,
-      {this.gameModel});
+      {this.splitRoom});
 
   @override
   State<KiloBamyaPageView> createState() => _KiloBamyaPageViewState();
@@ -35,12 +35,14 @@ class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
   Widget build(BuildContext context) {
     _adInitializer = AdInitializer();
     provider = NextPageProvider();
-    if (widget.showResultWidget == 0) {
-      _controller.jumpToPage(0);
-      provider.currentPage = 0;
-    } else if (widget.showResultWidget == 1) {
-      _controller.jumpToPage(4);
-      provider.currentPage = 4;
+    if (_controller.hasClients) {
+      if (widget.showResultWidget) {
+        _controller.jumpToPage(4);
+        provider.currentPage = 4;
+      } else {
+        _controller.jumpToPage(0);
+        provider.currentPage = 0;
+      }
     }
     return Container(
       margin: const EdgeInsets.only(top: 24),
@@ -48,13 +50,13 @@ class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
         controller: _controller,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          RoomSpecifications(onMoveToNext, widget.gameModel,
+          RoomSpecifications(onMoveToNext, widget.splitRoom,
               onClose: onSaveBtnClick),
           RoomPlayers(
               onBtnClick: onMoveToNext,
               onClose: onSaveBtnClick,
               onPrev: onMoveToPrev,
-              gameModel: widget.gameModel),
+              gameModel: widget.splitRoom),
           LoadingResultScreen(
             onMoveToNext: onMoveToNext,
             onBackClick: onMoveToPrev,
@@ -67,14 +69,14 @@ class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
             onClose: onSaveBtnClick,
             showResultWidget: widget.showResultWidget,
             onBack: onBackBtnPressed,
-            teams: widget.gameModel,
+            teams: widget.splitRoom ?? GameModel.init(),
           ),
         ],
       ),
     );
   }
 
-  void onBackBtnPressed(int backCode) {
+  void onBackBtnPressed() {
     _controller.animateToPage(provider.moveToInitPage(),
         duration: const Duration(milliseconds: 400), curve: Curves.bounceOut);
   }

@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:kilo_bamya/themes/themes.dart';
@@ -48,3 +49,5 @@ class MyApp extends StatelessWidget {
 }
 
 AppLocalizations getLocalization(BuildContext context) => AppLocalizations.of(context)!;
+
+DatabaseReference teamsDatabase() => FirebaseDatabase.instance.ref("teams");

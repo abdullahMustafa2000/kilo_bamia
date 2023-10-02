@@ -2,27 +2,25 @@
 
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/ads/ad_initializer.dart';
-import 'package:kilo_bamya/local_db/database.dart';
-import 'package:kilo_bamya/local_db/game_model.dart';
+import 'package:kilo_bamya/local_db/shared_pref.dart';
+import 'package:kilo_bamya/models/game_model.dart';
 import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/team_split/next_page_provider.dart';
 import 'package:kilo_bamya/ui/elements/page_model.dart';
 import 'package:provider/provider.dart';
-
-import '../../../elements/circular_container.dart';
 import '../../../elements/icon_btn.dart';
 import '../teams_provider.dart';
 
 class ResultPage extends StatefulWidget {
   Function onSaveBtnClick;
-  int showResultWidget;
+  bool showResultWidget;
 
   Function onClose;
-  Function(int) onBack;
+  Function onBack;
   Function moveToPrev;
   final AdInitializer adInitializer;
-  GameModel? teams;
+  GameModel teams;
   ResultPage(
       {Key? key,
       required this.onSaveBtnClick,
@@ -30,7 +28,7 @@ class ResultPage extends StatefulWidget {
       required this.moveToPrev,
       required this.onClose,
       required this.onBack, required this.adInitializer,
-      this.teams})
+      required this.teams})
       : super(key: key);
 
   @override
@@ -38,8 +36,6 @@ class ResultPage extends StatefulWidget {
 }
 
 class _ResultPageState extends State<ResultPage> {
-  GamesDatabase database = GamesDatabase.instance;
-  var fromRecent = false;
   @override
   void initState() {
     super.initState();
@@ -47,8 +43,8 @@ class _ResultPageState extends State<ResultPage> {
     fromRecent = fromPref == 1;
     widget.adInitializer.showInterstitialAd();
   }
-
-  late int fromPref;
+  var fromRecent = false;
+  late bool? fromPref;
   late TeamProvider provider;
   late NextPageProvider nextPageProvider;
   @override
@@ -122,7 +118,7 @@ class _ResultPageState extends State<ResultPage> {
     return InkWell(
       onTap: () {
         saveData();
-        fromPref = -1;
+        fromPref = null;
         widget.onSaveBtnClick();
       },
       child: Container(
@@ -134,7 +130,7 @@ class _ResultPageState extends State<ResultPage> {
         ),
         child: Center(
             child: Text(
-          'Save',
+          getLocalization(context).saveBtn,
           style: Theme.of(context).textTheme.caption,
         )),
         margin: const EdgeInsets.only(right: 10),
@@ -160,7 +156,7 @@ class _ResultPageState extends State<ResultPage> {
     return BtnIconElement(
       onClick: () {
         setState(() {
-          fromPref = 0;
+          fromPref = false;
         });
       },
       background: MyColors.someOrange,
@@ -171,22 +167,25 @@ class _ResultPageState extends State<ResultPage> {
 
   void saveData() {
     if (fromRecent) {
-      database.update(widget.teams!);
+      teamsDatabase().child(widget.teams.id!).update(widget.teams.toJson());
     } else {
-      database.create(widget.teams!);
+      MySharedPref.getNewRoomId().then((value) => {
+        widget.teams.id = value,
+        teamsDatabase().child(value).set(widget.teams.toJson())
+      });
     }
-    provider.newTeamDivided();
   }
 
   Future<List<String>> getPreferences() async {
-    if (fromPref == 1) {
-      provider.players = widget.teams!.players!;
-      return widget.teams!.result!;
-    } else if (fromPref == 0) {
-      return provider.splitPlayers(widget.teams?.players ?? provider.players);
-    } else {
+    if (fromPref == null) {
       fromPref = widget.showResultWidget;
       return [];
+    }
+    if (fromPref!) {
+      provider.players = widget.teams.result!;
+      return widget.teams.result!;
+    } else {
+      return provider.splitPlayers(widget.teams.result ?? provider.players);
     }
   }
 }

@@ -1,9 +1,10 @@
+import 'package:kilo_bamya/local_db/shared_pref.dart';
+
 class GameModel {
-  int? id;
+  String? id;
   String? roomName;
   int? noOfPlayers;
   int? noOfTeams;
-  List<String>? players;
   List<String>? result;
   DateTime? time;
 
@@ -12,7 +13,6 @@ class GameModel {
       required this.roomName,
       required this.noOfPlayers,
       required this.noOfTeams,
-      required this.players,
       required this.result,
       required this.time});
 
@@ -20,24 +20,9 @@ class GameModel {
     roomName = '';
     noOfPlayers = 0;
     noOfTeams = 0;
-    players = [];
     result = [];
     time = DateTime.now();
   }
-
-  static String convertListToString(List<String> list) {
-    String result = '';
-    for (var i = 0; i < list.length; i++) {
-      String item = list[i];
-      if (i != list.length - 1) {
-        item += '?';
-      }
-      result += item;
-    }
-    return result;
-  }
-
-  static List<String> convertStringToList(String result) => result.split('?');
 
   GameModel copy(
           {id, roomName, noOfPlayers, noOfTeams, players, result, time}) =>
@@ -46,29 +31,27 @@ class GameModel {
           roomName: roomName ?? this.roomName,
           noOfPlayers: noOfPlayers ?? this.noOfPlayers,
           noOfTeams: noOfTeams ?? this.noOfTeams,
-          players: players ?? this.players,
           result: result ?? this.result,
           time: time ?? this.time);
 
   Map<String, Object?> toJson() {
     return {
+      GameTable.id: id,
       GameTable.roomName: roomName,
       GameTable.noOfPlayers: noOfPlayers,
       GameTable.noOfTeams: noOfTeams,
-      GameTable.players: convertListToString(players!),
-      GameTable.result: convertListToString(result!),
+      GameTable.result: result,
       GameTable.time: time!.toIso8601String(),
     };
   }
 
-  static GameModel fromJson(Map<String, Object?> json) {
+  static GameModel fromJson(Map<Object?, Object?> json) {
     return GameModel(
-        id: json[GameTable.id] as int?,
-        roomName: json[GameTable.roomName] as String,
-        noOfPlayers: json[GameTable.noOfPlayers] as int,
-        noOfTeams: json[GameTable.noOfTeams] as int,
-        players: convertStringToList(json[GameTable.players] as String),
-        result: convertStringToList(json[GameTable.result] as String),
+        id: json[GameTable.id] as String?,
+        roomName: json[GameTable.roomName] as String?,
+        noOfPlayers: json[GameTable.noOfPlayers] as int?,
+        noOfTeams: json[GameTable.noOfTeams] as int?,
+        result: json[GameTable.result] as List<String>?,
         time: DateTime.parse(json[GameTable.time] as String));
   }
 }

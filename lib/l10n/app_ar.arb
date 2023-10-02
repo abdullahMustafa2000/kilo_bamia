@@ -14,5 +14,6 @@
   "createSplit": "اللي بعده",
   "enterPeople": "اللاعيبه :",
   "splitPeopleBtn": "وزع",
-  "splitResult": "التقسيمة"
+  "splitResult": "التقسيمة",
+  "saveBtn": "حفظ"
 }
