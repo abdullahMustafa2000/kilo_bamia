@@ -1,20 +1,17 @@
 // ignore_for_file: must_be_immutable, use_key_in_widget_constructors
 
-import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
-import 'package:kilo_bamya/ui/app_tour/view_page_provider.dart';
 import 'package:kilo_bamya/ui/home/home_screen.dart';
-import 'package:page_view_indicators/circle_page_indicator.dart';
-import 'package:provider/provider.dart';
+import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
 
 class IntroPage extends StatefulWidget {
   String title;
   String desc;
   String btnTxt;
   Widget view;
-  Function onBtnClick;
+  Function(int) onBtnClick;
   int index;
 
   IntroPage(
@@ -32,8 +29,6 @@ class IntroPage extends StatefulWidget {
 class _IntroPageState extends State<IntroPage> {
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<MyViewPageProvider>(context);
-    var _currentPageNotifier = provider.currentPageNotifier;
     var containerWidth = MediaQuery.of(context).size.width;
     bool isNotFinalPage = widget.btnTxt.contains('x');
     // main view
@@ -63,8 +58,9 @@ class _IntroPageState extends State<IntroPage> {
               textAlign: TextAlign.center,
               style: GoogleFonts.k2d(
                 textStyle: const TextStyle(
-                    fontSize: 34,
-                    decoration: TextDecoration.none,),
+                  fontSize: 34,
+                  decoration: TextDecoration.none,
+                ),
               ),
             ),
           ),
@@ -91,23 +87,22 @@ class _IntroPageState extends State<IntroPage> {
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 16),
-                  child: CirclePageIndicator(
-                    size: 13,
-                    selectedSize: 13,
-                    itemCount: 3,
-                    currentPageNotifier: _currentPageNotifier,
-                    selectedDotColor: MyColors.lightBlue,
-                    dotColor: MyColors.lightGray,
+                  child: PageViewDotIndicator(
+                    currentItem: widget.index,
+                    count: 3,
+                    unselectedColor: MyColors.lightGray,
+                    selectedColor: MyColors.lightBlue,
+                    size: const Size(13, 13),
+                    boxShape: BoxShape.circle,
                   ),
                 ),
-
                 /// btn
                 Container(
                   margin: const EdgeInsets.only(top: 24),
                   width: containerWidth * .3,
                   child: ElevatedButton(
                     onPressed: () {
-                      widget.onBtnClick(widget.btnTxt);
+                      widget.onBtnClick(widget.index);
                     },
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
@@ -136,7 +131,7 @@ class _IntroPageState extends State<IntroPage> {
                           MaterialPageRoute(builder: (_) => const HomePage()));
                     },
                     child: Visibility(
-                      visible: provider.currentPageIndex == 0,
+                      visible: widget.index == 0,
                       child: Container(
                         alignment: Alignment.bottomRight,
                         margin: const EdgeInsets.symmetric(

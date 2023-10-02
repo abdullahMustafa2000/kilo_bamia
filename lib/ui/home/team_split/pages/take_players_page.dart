@@ -5,9 +5,6 @@ import 'package:kilo_bamya/models/game_model.dart';
 import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/elements/page_model.dart';
-import 'package:kilo_bamya/ui/home/team_split/pages/room_specifications.dart';
-import 'package:kilo_bamya/ui/home/team_split/teams_provider.dart';
-import 'package:provider/provider.dart';
 
 class RoomPlayers extends StatefulWidget {
   Function onBtnClick;
@@ -15,25 +12,31 @@ class RoomPlayers extends StatefulWidget {
   Function onPrev;
   GameModel gameModel;
   RoomPlayers(
-      {required this.onBtnClick,
+      {Key? key,
+      required this.onBtnClick,
       required this.onClose,
       required this.onPrev,
-      required this.gameModel});
+      required this.gameModel})
+      : super(key: key);
 
   @override
   State<RoomPlayers> createState() => _RoomPlayersState();
 }
 
 class _RoomPlayersState extends State<RoomPlayers> {
-
   @override
   void initState() {
-    names = List.filled(widget.gameModel.noOfPlayers ?? 0, '');
+    if (widget.gameModel.players.isEmpty) {
+      names = List.filled(widget.gameModel.noOfPlayers ?? 0, '');
+    } else {
+      names = widget.gameModel.players;
+    }
+
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<TeamProvider>(context);
     var size = MediaQuery.of(context).size;
     return MyKiloBamayaPageModel(
       showBackBtn: true,
@@ -53,7 +56,7 @@ class _RoomPlayersState extends State<RoomPlayers> {
                   physics: const BouncingScrollPhysics(),
                   itemCount: widget.gameModel.noOfPlayers,
                   itemBuilder: (BuildContext context, int index) {
-                    return TextInputDesign(onTextChange, index);
+                    return TextInputDesign(onTextChange, index, names[index]);
                   },
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -78,7 +81,6 @@ class _RoomPlayersState extends State<RoomPlayers> {
               child: ElevatedButton(
                 onPressed: () {
                   allNamesInserted(names);
-                  provider.players = names;
                   widget.gameModel.players = names;
                   widget.onBtnClick();
                 },
@@ -118,15 +120,22 @@ class _RoomPlayersState extends State<RoomPlayers> {
 }
 
 class TextInputDesign extends StatefulWidget {
-  TextInputDesign(this.onTxtChange, this.index);
+  TextInputDesign(this.onTxtChange, this.index, this.curName, {Key? key})
+      : super(key: key);
   Function(String, int) onTxtChange;
   int index;
-
+  String curName;
   @override
   State<TextInputDesign> createState() => _TextInputDesignState();
 }
 
 class _TextInputDesignState extends State<TextInputDesign> {
+  String? _curName;
+  @override
+  void initState() {
+    _curName = widget.curName;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -139,6 +148,7 @@ class _TextInputDesignState extends State<TextInputDesign> {
         onChanged: (txt) {
           widget.onTxtChange(txt, widget.index);
         },
+        controller: TextEditingController()..text = _curName ?? "",
         textAlign: TextAlign.center,
         style: const TextStyle(
           color: MyColors.lightBlack,

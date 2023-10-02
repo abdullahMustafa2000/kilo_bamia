@@ -3,9 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/ui/app_tour/page_design.dart';
-import 'package:kilo_bamya/ui/app_tour/view_page_provider.dart';
 import 'package:kilo_bamya/ui/home/home_screen.dart';
-import 'package:provider/provider.dart';
 
 class TourPageView extends StatefulWidget {
   @override
@@ -14,13 +12,14 @@ class TourPageView extends StatefulWidget {
 
 class _TourPageViewState extends State<TourPageView> {
   final _controller = PageController();
-
-  late MyViewPageProvider provider;
-
+  late int curIndex;
+  @override
+  void initState() {
+    curIndex = 0;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
-    provider = Provider.of<MyViewPageProvider>(context);
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -54,7 +53,7 @@ class _TourPageViewState extends State<TourPageView> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 ),
                 onBtnClick: onBtnClick,
-                index: 0),
+                index: 1),
             IntroPage(
                 title: getLocalization(context).tourFinalTitle,
                 desc:
@@ -62,17 +61,16 @@ class _TourPageViewState extends State<TourPageView> {
                 btnTxt: getLocalization(context).startBtn,
                 view: Image.asset('assets/images/kitty.png'),
                 onBtnClick: onBtnClick,
-                index: 0),
+                index: 2),
           ],
         ),
       ),
     );
   }
 
-  void onBtnClick(String txt) {
-    if (txt.toLowerCase() == 'Next'.toLowerCase()) {
-      provider.updateIndex();
-      _controller.animateToPage(provider.currentPageIndex,
+  void onBtnClick(int index) {
+    if (index < 2) {
+      _controller.animateToPage(++curIndex,
           duration: const Duration(milliseconds: 400), curve: Curves.ease);
     } else {
       Navigator.pushReplacement(

@@ -31,12 +31,12 @@ class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
   @override
   void initState() {
     super.initState();
+    _adInitializer = AdInitializer();
+    provider = NextPageProvider();
   }
 
   @override
   Widget build(BuildContext context) {
-    _adInitializer = AdInitializer();
-    provider = NextPageProvider();
     initPage();
     return Container(
       margin: const EdgeInsets.only(top: 24),

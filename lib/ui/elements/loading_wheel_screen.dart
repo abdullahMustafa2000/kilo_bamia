@@ -8,12 +8,14 @@ import 'circular_container.dart';
 import 'icon_btn.dart';
 
 class LoadingResultScreen extends StatelessWidget {
-  LoadingResultScreen(
-      {required this.onCloseClick,
-        required this.onBackClick,
-        required this.onMoveToNext});
-  Function onBackClick, onCloseClick;
-  void Function({List<ChoiceModel>? choices}) onMoveToNext;
+  const LoadingResultScreen(
+      {Key? key,
+      required this.onCloseClick,
+      required this.onBackClick,
+      required this.onMoveToNext})
+      : super(key: key);
+  final Function onBackClick, onCloseClick;
+  final void Function({List<ChoiceModel>? choices}) onMoveToNext;
   @override
   Widget build(BuildContext context) {
     var timer = Timer(const Duration(seconds: 2), () {
@@ -26,7 +28,8 @@ class LoadingResultScreen extends StatelessWidget {
         BtnIconElement(
           onClick: onCloseClick,
           background: Colors.red,
-          icon: Icons.close, size: 40,
+          icon: Icons.close,
+          size: 40,
           timer: timer,
         ),
         SpinningWheel(),
@@ -37,7 +40,8 @@ class LoadingResultScreen extends StatelessWidget {
 }
 
 class BackRow extends StatelessWidget {
-  BackRow({required this.onBackClick, required this.timer});
+  const BackRow({Key? key, required this.onBackClick, required this.timer})
+      : super(key: key);
   final Function onBackClick;
   final Timer timer;
   @override

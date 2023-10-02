@@ -8,13 +8,11 @@ import 'package:kilo_bamya/models/game_model.dart';
 import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/elements/page_model.dart';
-import 'package:kilo_bamya/ui/home/team_split/teams_provider.dart';
-import 'package:provider/provider.dart';
 
 class RoomSpecifications extends StatelessWidget {
   final Function onBtnClick;
   final Function onClose;
-  final GameModel? gameModel;
+  final GameModel gameModel;
   const RoomSpecifications(this.onBtnClick, this.gameModel,
       {required this.onClose});
 
@@ -31,17 +29,11 @@ class RoomSpecifications extends StatelessWidget {
 
 class InputContainer extends StatelessWidget {
   final Function onBtnClick;
-  final GameModel? gameModel;
-  InputContainer(this.onBtnClick, this.gameModel);
-
-  String? roomNameEt;
-  String? teamsNumEt;
-  static String? playersNumEt;
-  late TeamProvider provider;
+  final GameModel gameModel;
+  const InputContainer(this.onBtnClick, this.gameModel);
 
   @override
   Widget build(BuildContext context) {
-    provider = Provider.of<TeamProvider>(context);
     var width = MediaQuery.of(context).size.width;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -61,11 +53,9 @@ class InputContainer extends StatelessWidget {
           ),
           child: TextField(
             controller: TextEditingController()
-              ..text = gameModel?.roomName ?? "",
+              ..text = gameModel.roomName ?? "",
             onChanged: (txt) {
-              roomNameEt = txt;
-              provider.roomName = txt;
-              gameModel?.roomName = txt;
+              gameModel.roomName = txt;
             },
             textAlign: TextAlign.center,
             textInputAction: TextInputAction.done,
@@ -84,9 +74,9 @@ class InputContainer extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             teamsDataTextField(getLocalization(context).numberOfParticipants,
-                onPlayersTxtChange, context, gameModel?.noOfPlayers ?? 0),
+                onPlayersTxtChange, context, gameModel.noOfPlayers ?? 0),
             teamsDataTextField(getLocalization(context).numberOfTeams,
-                onTeamsTxtChange, context, gameModel?.noOfTeams ?? 0),
+                onTeamsTxtChange, context, gameModel.noOfTeams ?? 0),
           ],
         ),
         const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
@@ -157,26 +147,24 @@ class InputContainer extends StatelessWidget {
 
   void onPlayersTxtChange(String txt) {
     if (txt.isNotEmpty) {
-      playersNumEt = txt;
-      provider.noOfPlayers = int.parse(txt);
-      gameModel?.noOfPlayers = int.parse(txt);
+      gameModel.noOfPlayers = int.parse(txt);
     }
   }
 
   void onTeamsTxtChange(String txt) {
     if (txt.isNotEmpty) {
-      teamsNumEt = txt;
-      provider.noOfTeams = int.parse(txt);
-      gameModel?.noOfTeams = int.parse(txt);
+      gameModel.noOfTeams = int.parse(txt);
     }
   }
 
   bool acceptedInput(BuildContext context) {
     // filled text fields,  no zero inputs,  number of players = or > number of teams
     bool accepted = false;
-    if (teamsNumEt != null && playersNumEt != null && roomNameEt != null) {
-      if (int.parse(teamsNumEt!) != 0 && int.parse(playersNumEt!) != 0) {
-        if (int.parse(teamsNumEt!) <= int.parse(playersNumEt!)) {
+    if (gameModel.noOfPlayers != null &&
+        gameModel.noOfTeams != null &&
+        gameModel.roomName != null) {
+      if (gameModel.noOfTeams != 0 && gameModel.noOfPlayers != 0) {
+        if (gameModel.noOfTeams! <= gameModel.noOfPlayers!) {
           accepted = true;
         } else {
           showToast(getLocalization(context).playersLessThanTeamsErrMsg);

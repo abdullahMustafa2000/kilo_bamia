@@ -47,11 +47,9 @@ class _ResultPageState extends State<ResultPage> {
 
   var fromRecent = false;
   late bool? fromPref;
-  late TeamProvider provider;
   late NextPageProvider nextPageProvider;
   @override
   Widget build(BuildContext context) {
-    provider = Provider.of<TeamProvider>(context);
     nextPageProvider = NextPageProvider();
     return MyKiloBamayaPageModel(
       showBackBtn: true,
@@ -78,8 +76,7 @@ class _ResultPageState extends State<ResultPage> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasData) {
-                      provider.teams = snapshot.data as List<String>;
-                      widget.gameModel.teams = provider.teams;
+                      widget.gameModel.teams = snapshot.data as List<String>;
                       return resultListWidget(snapshot.data as List<String>);
                     } else {
                       return const Center(child: Text('Unknown error accrued'));
@@ -184,10 +181,9 @@ class _ResultPageState extends State<ResultPage> {
       return [];
     }
     if (fromPref!) {
-      provider.players = widget.gameModel.players;
       return widget.gameModel.teams;
     } else {
-      return provider.splitPlayers(widget.gameModel);
+      return TeamProvider.splitPlayers(widget.gameModel);
     }
   }
 }
