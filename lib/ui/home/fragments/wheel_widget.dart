@@ -39,7 +39,7 @@ class WheelWidget extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              aboveWidgetCall(openSplitResult: false, openRandomChoice: false);
+              aboveWidgetCall(openSplitResult: false, openRandomChoice: false, gameModel: GameModel.init());
             },
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 8),
@@ -162,7 +162,7 @@ class _RecentListWidgetState extends State<RecentListWidget> {
     _recentGames = [];
     teamsDatabase().onValue.listen((event) {
       if (event.snapshot.exists) {
-        updateRecent(event.snapshot.value as Map<Object?, Object?>);
+        updateRecent(event.snapshot.value as Map);
       }
     });
     super.initState();

@@ -15,5 +15,8 @@
   "enterPeople": "اللاعيبه :",
   "splitPeopleBtn": "وزع",
   "splitResult": "التقسيمة",
-  "saveBtn": "حفظ"
+  "saveBtn": "حفظ",
+  "playersLessThanTeamsErrMsg": "ايه؟ عايز تقسم الناس علي عدد فرق اكتر منهم؟؟",
+  "zeroInputErrMsg": "هقسم الناس ازاي انا دلوقتي؟",
+  "emptyFieldsErrMsg": "هو انا حاطط الحاجات المطلوبه ديكور مثلا؟"
 }

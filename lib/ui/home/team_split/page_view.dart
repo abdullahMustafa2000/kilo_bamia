@@ -13,9 +13,11 @@ import 'pages/take_players_page.dart';
 class KiloBamyaPageView extends StatefulWidget {
   Function onSaveBtnClick;
   bool showResultWidget;
-  GameModel? splitRoom;
-  KiloBamyaPageView(this.onSaveBtnClick, this.showResultWidget,
-      {this.splitRoom});
+  GameModel splitRoom;
+  KiloBamyaPageView(
+      {required this.splitRoom,
+      required this.onSaveBtnClick,
+      required this.showResultWidget});
 
   @override
   State<KiloBamyaPageView> createState() => _KiloBamyaPageViewState();
@@ -35,15 +37,7 @@ class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
   Widget build(BuildContext context) {
     _adInitializer = AdInitializer();
     provider = NextPageProvider();
-    if (_controller.hasClients) {
-      if (widget.showResultWidget) {
-        _controller.jumpToPage(4);
-        provider.currentPage = 4;
-      } else {
-        _controller.jumpToPage(0);
-        provider.currentPage = 0;
-      }
-    }
+    initPage();
     return Container(
       margin: const EdgeInsets.only(top: 24),
       child: PageView(
@@ -69,7 +63,7 @@ class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
             onClose: onSaveBtnClick,
             showResultWidget: widget.showResultWidget,
             onBack: onBackBtnPressed,
-            teams: widget.splitRoom ?? GameModel.init(),
+            gameModel: widget.splitRoom,
           ),
         ],
       ),
@@ -77,21 +71,35 @@ class _KiloBamyaPageViewState extends State<KiloBamyaPageView> {
   }
 
   void onBackBtnPressed() {
-    _controller.animateToPage(provider.moveToInitPage(),
-        duration: const Duration(milliseconds: 400), curve: Curves.bounceOut);
+    moveToPage(provider.moveToInitPage());
   }
 
   void onMoveToNext({List<ChoiceModel>? choices}) {
-    _controller.animateToPage(provider.moveToNextPage(),
-        duration: const Duration(milliseconds: 400), curve: Curves.bounceOut);
+    moveToPage(provider.moveToNextPage());
   }
 
   void onMoveToPrev() {
-    _controller.animateToPage(provider.moveToPrevPage(),
-        duration: const Duration(milliseconds: 400), curve: Curves.bounceIn);
+    moveToPage(provider.moveToPrevPage());
+  }
+
+  void moveToPage(int pageIndex) {
+    _controller.animateToPage(pageIndex,
+        duration: const Duration(milliseconds: 400), curve: Curves.ease);
   }
 
   void onSaveBtnClick() {
     widget.onSaveBtnClick();
+  }
+
+  void initPage() {
+    if (_controller.hasClients) {
+      if (widget.showResultWidget) {
+        _controller.jumpToPage(4);
+        provider.currentPage = 4;
+      } else {
+        _controller.jumpToPage(0);
+        provider.currentPage = 0;
+      }
+    }
   }
 }

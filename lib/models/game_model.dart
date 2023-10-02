@@ -1,37 +1,39 @@
-import 'package:kilo_bamya/local_db/shared_pref.dart';
-
 class GameModel {
   String? id;
   String? roomName;
   int? noOfPlayers;
   int? noOfTeams;
-  List<String>? result;
+  List<String> players = [];
+  List<String> teams = [];
   DateTime? time;
 
   GameModel(
-      {required this.id,
-      required this.roomName,
+      {required this.roomName,
       required this.noOfPlayers,
       required this.noOfTeams,
-      required this.result,
-      required this.time});
+      required this.players,
+      required this.time,
+      required this.teams,
+      this.id});
 
   GameModel.init() {
     roomName = '';
     noOfPlayers = 0;
     noOfTeams = 0;
-    result = [];
+    players = [];
+    teams = [];
     time = DateTime.now();
   }
 
   GameModel copy(
           {id, roomName, noOfPlayers, noOfTeams, players, result, time}) =>
       GameModel(
-          id: id ?? this.id,
+          id: id,
           roomName: roomName ?? this.roomName,
           noOfPlayers: noOfPlayers ?? this.noOfPlayers,
           noOfTeams: noOfTeams ?? this.noOfTeams,
-          result: result ?? this.result,
+          players: result ?? this.players,
+          teams: teams,
           time: time ?? this.time);
 
   Map<String, Object?> toJson() {
@@ -40,7 +42,8 @@ class GameModel {
       GameTable.roomName: roomName,
       GameTable.noOfPlayers: noOfPlayers,
       GameTable.noOfTeams: noOfTeams,
-      GameTable.result: result,
+      GameTable.players: players,
+      GameTable.teams: teams,
       GameTable.time: time!.toIso8601String(),
     };
   }
@@ -51,8 +54,17 @@ class GameModel {
         roomName: json[GameTable.roomName] as String?,
         noOfPlayers: json[GameTable.noOfPlayers] as int?,
         noOfTeams: json[GameTable.noOfTeams] as int?,
-        result: json[GameTable.result] as List<String>?,
+        players: listFromObject(json[GameTable.players] as List<Object?>),
+        teams: listFromObject(json[GameTable.teams] as List<Object?>),
         time: DateTime.parse(json[GameTable.time] as String));
+  }
+
+  static List<String> listFromObject(List<Object?> list) {
+    List<String> result = [];
+    for (var element in list) {
+      result.add(element as String);
+    }
+    return result;
   }
 }
 
@@ -64,7 +76,7 @@ class GameTable {
     noOfPlayers,
     noOfTeams,
     players,
-    result,
+    teams,
     time
   ];
 
@@ -73,6 +85,6 @@ class GameTable {
   static const noOfPlayers = 'noOfPlayers';
   static const noOfTeams = 'noOfTeams';
   static const players = 'players';
-  static const result = 'result';
+  static const teams = 'result';
   static const time = 'time';
 }

@@ -13,15 +13,24 @@ class RoomPlayers extends StatefulWidget {
   Function onBtnClick;
   Function onClose;
   Function onPrev;
-  GameModel? gameModel;
+  GameModel gameModel;
   RoomPlayers(
-      {required this.onBtnClick, required this.onClose, required this.onPrev, this.gameModel});
+      {required this.onBtnClick,
+      required this.onClose,
+      required this.onPrev,
+      required this.gameModel});
 
   @override
   State<RoomPlayers> createState() => _RoomPlayersState();
 }
 
 class _RoomPlayersState extends State<RoomPlayers> {
+
+  @override
+  void initState() {
+    names = List.filled(widget.gameModel.noOfPlayers ?? 0, '');
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<TeamProvider>(context);
@@ -42,7 +51,7 @@ class _RoomPlayersState extends State<RoomPlayers> {
               child: Form(
                 child: GridView.builder(
                   physics: const BouncingScrollPhysics(),
-                  itemCount: widget.gameModel?.noOfPlayers ?? provider.noOfPlayers,
+                  itemCount: widget.gameModel.noOfPlayers,
                   itemBuilder: (BuildContext context, int index) {
                     return TextInputDesign(onTextChange, index);
                   },
@@ -70,6 +79,7 @@ class _RoomPlayersState extends State<RoomPlayers> {
                 onPressed: () {
                   allNamesInserted(names);
                   provider.players = names;
+                  widget.gameModel.players = names;
                   widget.onBtnClick();
                 },
                 style: ElevatedButton.styleFrom(
@@ -86,14 +96,14 @@ class _RoomPlayersState extends State<RoomPlayers> {
                       color: MyColors.lightBlack.withOpacity(0.9)),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
     );
   }
 
-  List<String> names = List.filled(int.parse(InputContainer.playersNumEt!), '');
+  List<String> names = [];
   onTextChange(String name, int index) {
     names[index] = name;
   }
@@ -101,10 +111,10 @@ class _RoomPlayersState extends State<RoomPlayers> {
   void allNamesInserted(List<String?> names) {
     for (var element in names) {
       if (element == null || element.isEmpty) {
-      element = "-";
-    }}
+        element = "-";
+      }
+    }
   }
-
 }
 
 class TextInputDesign extends StatefulWidget {

@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/models/game_model.dart';
 
@@ -25,16 +24,17 @@ class TeamProvider extends ChangeNotifier {
 
 
 
-  List<String> splitPlayers(List<String> unOrderedTeams) {
+  List<String> splitPlayers(GameModel gameModel) {
+    int noOfPlayers = gameModel.noOfPlayers ?? this.noOfPlayers;
+    int noOfTeams = gameModel.noOfTeams ?? this.noOfTeams;
     teams = List.filled(noOfTeams, '');
-    int noOfPlayers = players.length; //5
     List<int> list = teamCount(noOfPlayers, noOfTeams);
-    int noOfPlayersEachTeam = list[0]; //3
+    int noOfPlayersEachTeam = list[0];
     for (var i = 0; i < noOfPlayers;) {
       var randomNum = Random().nextInt(noOfTeams);
       String team = teams[randomNum];
       if(!checkNumOfPlayersFrom(team, noOfPlayersEachTeam)) {
-        teams[randomNum]+='${players[i]},';
+        teams[randomNum] += '${gameModel.players[i]},';
         i++;
       }
     }

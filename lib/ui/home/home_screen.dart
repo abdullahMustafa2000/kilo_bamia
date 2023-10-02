@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> {
               : DivideTeamsWidget(
                   onSaveBtnClick: onSaveBtnClick,
                   showResultWidget: callResultWidget,
-                  splitRoom: clickedRecent,
+                  splitRoom: clickedRecent ?? GameModel.init(),
                 ),
         )
       ],

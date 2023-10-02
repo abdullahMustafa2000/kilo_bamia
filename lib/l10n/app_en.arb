@@ -15,5 +15,8 @@
   "enterPeople": "Enter People :",
   "splitPeopleBtn": "Split",
   "splitResult": "Result",
-  "saveBtn": "Save"
+  "saveBtn": "Save",
+  "playersLessThanTeamsErrMsg": "Number of players should be greater",
+  "zeroInputErrMsg": "Zero is not accepted",
+  "emptyFieldsErrMsg": "Please fill all fields"
 }

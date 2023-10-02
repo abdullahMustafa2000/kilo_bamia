@@ -5,12 +5,14 @@ import 'package:kilo_bamya/ui/home/team_split/page_view.dart';
 
 class DivideTeamsWidget extends StatelessWidget {
   const DivideTeamsWidget(
-      {Key? key, required this.onSaveBtnClick,
+      {Key? key,
+      required this.onSaveBtnClick,
       required this.showResultWidget,
-      required this.splitRoom}) : super(key: key);
+      required this.splitRoom})
+      : super(key: key);
   final Function onSaveBtnClick;
   final bool showResultWidget;
-  final GameModel? splitRoom;
+  final GameModel splitRoom;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -22,7 +24,9 @@ class DivideTeamsWidget extends StatelessWidget {
             height: double.infinity,
             color: MyColors.lightBlack.withOpacity(.86),
           ),
-          KiloBamyaPageView(onSaveBtnClick, showResultWidget,
+          KiloBamyaPageView(
+              onSaveBtnClick: onSaveBtnClick,
+              showResultWidget: showResultWidget,
               splitRoom: splitRoom),
         ],
       ),

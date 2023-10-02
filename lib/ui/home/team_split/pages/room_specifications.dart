@@ -12,10 +12,11 @@ import 'package:kilo_bamya/ui/home/team_split/teams_provider.dart';
 import 'package:provider/provider.dart';
 
 class RoomSpecifications extends StatelessWidget {
-  Function onBtnClick;
-  Function onClose;
-  GameModel? gameModel;
-  RoomSpecifications(this.onBtnClick, this.gameModel, {required this.onClose});
+  final Function onBtnClick;
+  final Function onClose;
+  final GameModel? gameModel;
+  const RoomSpecifications(this.onBtnClick, this.gameModel,
+      {required this.onClose});
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +30,8 @@ class RoomSpecifications extends StatelessWidget {
 }
 
 class InputContainer extends StatelessWidget {
-  Function onBtnClick;
-  GameModel? gameModel;
+  final Function onBtnClick;
+  final GameModel? gameModel;
   InputContainer(this.onBtnClick, this.gameModel);
 
   String? roomNameEt;
@@ -59,10 +60,12 @@ class InputContainer extends StatelessWidget {
             color: MyColors.textFieldFillClr.withOpacity(.45),
           ),
           child: TextField(
-            controller: TextEditingController()..text = "",
+            controller: TextEditingController()
+              ..text = gameModel?.roomName ?? "",
             onChanged: (txt) {
               roomNameEt = txt;
               provider.roomName = txt;
+              gameModel?.roomName = txt;
             },
             textAlign: TextAlign.center,
             textInputAction: TextInputAction.done,
@@ -91,7 +94,7 @@ class InputContainer extends StatelessWidget {
           width: width * .25,
           child: ElevatedButton(
             onPressed: () {
-              if (acceptedInput()) {
+              if (acceptedInput(context)) {
                 onBtnClick();
               }
             },
@@ -128,7 +131,8 @@ class InputContainer extends StatelessWidget {
             color: MyColors.textFieldFillClr.withOpacity(.45),
           ),
           child: TextField(
-            controller: TextEditingController()..text = number.toString(),
+            controller: TextEditingController()
+              ..text = number > 0 ? number.toString() : "",
             onChanged: (txt) {
               onTxtChange(txt);
             },
@@ -155,6 +159,7 @@ class InputContainer extends StatelessWidget {
     if (txt.isNotEmpty) {
       playersNumEt = txt;
       provider.noOfPlayers = int.parse(txt);
+      gameModel?.noOfPlayers = int.parse(txt);
     }
   }
 
@@ -162,10 +167,11 @@ class InputContainer extends StatelessWidget {
     if (txt.isNotEmpty) {
       teamsNumEt = txt;
       provider.noOfTeams = int.parse(txt);
+      gameModel?.noOfTeams = int.parse(txt);
     }
   }
 
-  bool acceptedInput() {
+  bool acceptedInput(BuildContext context) {
     // filled text fields,  no zero inputs,  number of players = or > number of teams
     bool accepted = false;
     if (teamsNumEt != null && playersNumEt != null && roomNameEt != null) {
@@ -173,13 +179,13 @@ class InputContainer extends StatelessWidget {
         if (int.parse(teamsNumEt!) <= int.parse(playersNumEt!)) {
           accepted = true;
         } else {
-          showToast('Number of players should be greater');
+          showToast(getLocalization(context).playersLessThanTeamsErrMsg);
         }
       } else {
-        showToast('Zero is not accepted');
+        showToast(getLocalization(context).zeroInputErrMsg);
       }
     } else {
-      showToast('Please fill all fields');
+      showToast(getLocalization(context).emptyFieldsErrMsg);
     }
     return accepted;
   }

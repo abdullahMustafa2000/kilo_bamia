@@ -20,15 +20,16 @@ class ResultPage extends StatefulWidget {
   Function onBack;
   Function moveToPrev;
   final AdInitializer adInitializer;
-  GameModel teams;
+  GameModel gameModel;
   ResultPage(
       {Key? key,
       required this.onSaveBtnClick,
       required this.showResultWidget,
       required this.moveToPrev,
       required this.onClose,
-      required this.onBack, required this.adInitializer,
-      required this.teams})
+      required this.onBack,
+      required this.adInitializer,
+      required this.gameModel})
       : super(key: key);
 
   @override
@@ -40,9 +41,10 @@ class _ResultPageState extends State<ResultPage> {
   void initState() {
     super.initState();
     fromPref = widget.showResultWidget;
-    fromRecent = fromPref == 1;
+    fromRecent = fromPref ?? false;
     widget.adInitializer.showInterstitialAd();
   }
+
   var fromRecent = false;
   late bool? fromPref;
   late TeamProvider provider;
@@ -52,12 +54,12 @@ class _ResultPageState extends State<ResultPage> {
     provider = Provider.of<TeamProvider>(context);
     nextPageProvider = NextPageProvider();
     return MyKiloBamayaPageModel(
-      showBackBtn: false,
+      showBackBtn: true,
       onClose: () {
         widget.onClose();
       },
       onPrev: () {
-        widget.onBack(fromPref);
+        widget.onBack();
       },
       content: SizedBox(
         height: MediaQuery.of(context).size.height * .3,
@@ -77,6 +79,7 @@ class _ResultPageState extends State<ResultPage> {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasData) {
                       provider.teams = snapshot.data as List<String>;
+                      widget.gameModel.teams = provider.teams;
                       return resultListWidget(snapshot.data as List<String>);
                     } else {
                       return const Center(child: Text('Unknown error accrued'));
@@ -94,7 +97,6 @@ class _ResultPageState extends State<ResultPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  /// save button
                   saveBtn(),
                   reSpinBtn(),
                 ],
@@ -167,12 +169,12 @@ class _ResultPageState extends State<ResultPage> {
 
   void saveData() {
     if (fromRecent) {
-      teamsDatabase().child(widget.teams.id!).update(widget.teams.toJson());
+      teamsDatabase().child(widget.gameModel.id!).update(widget.gameModel.toJson());
     } else {
       MySharedPref.getNewRoomId().then((value) => {
-        widget.teams.id = value,
-        teamsDatabase().child(value).set(widget.teams.toJson())
-      });
+            widget.gameModel.id = value,
+            teamsDatabase().child(value).set(widget.gameModel.toJson())
+          });
     }
   }
 
@@ -182,10 +184,10 @@ class _ResultPageState extends State<ResultPage> {
       return [];
     }
     if (fromPref!) {
-      provider.players = widget.teams.result!;
-      return widget.teams.result!;
+      provider.players = widget.gameModel.players;
+      return widget.gameModel.teams;
     } else {
-      return provider.splitPlayers(widget.teams.result ?? provider.players);
+      return provider.splitPlayers(widget.gameModel);
     }
   }
 }
