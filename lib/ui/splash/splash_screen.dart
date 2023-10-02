@@ -35,12 +35,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _releaseSplashScreen() async {
     await Future.delayed(const Duration(milliseconds: 2500));
-    bool firstRun = await IsFirstRun.isFirstRun();
+    bool firstRun = true;//await IsFirstRun.isFirstRun();
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
             builder: (context) =>
-                firstRun ? MyPageViewController() : const HomePage()));
+                firstRun ? TourPageView() : const HomePage()));
   }
 }
 

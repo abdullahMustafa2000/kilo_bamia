@@ -1,17 +1,18 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/ui/app_tour/page_design.dart';
 import 'package:kilo_bamya/ui/app_tour/view_page_provider.dart';
 import 'package:kilo_bamya/ui/home/home_screen.dart';
 import 'package:provider/provider.dart';
 
-class MyPageViewController extends StatefulWidget {
+class TourPageView extends StatefulWidget {
   @override
-  State<MyPageViewController> createState() => _MyPageViewControllerState();
+  State<TourPageView> createState() => _TourPageViewState();
 }
 
-class _MyPageViewControllerState extends State<MyPageViewController> {
+class _TourPageViewState extends State<TourPageView> {
   final _controller = PageController();
 
   late MyViewPageProvider provider;
@@ -28,18 +29,18 @@ class _MyPageViewControllerState extends State<MyPageViewController> {
           controller: _controller,
           children: [
             IntroPage(
-                title: 'Kilo Bamya',
+                title: getLocalization(context).tour1Title,
                 desc:
-                    'Kilo Bamia is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.',
-                btnTxt: 'Next',
+                    getLocalization(context).tour1Desc,
+                btnTxt: getLocalization(context).createSplit,
                 view: Image.asset('assets/images/hands.png'),
                 onBtnClick: onBtnClick,
                 index: 0),
             IntroPage(
-                title: 'Kilo Bamya',
+                title: getLocalization(context).tour2Title,
                 desc:
-                    'Kilo Bamia is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.',
-                btnTxt: 'Next',
+                    getLocalization(context).tour2Desc,
+                btnTxt: getLocalization(context).createSplit,
                 view: Row(
                   children: [
                     Image.asset('assets/images/spinning_wheel.png',
@@ -55,10 +56,10 @@ class _MyPageViewControllerState extends State<MyPageViewController> {
                 onBtnClick: onBtnClick,
                 index: 0),
             IntroPage(
-                title: 'Kilo Bamya',
+                title: getLocalization(context).tourFinalTitle,
                 desc:
-                    'Kilo Bamia is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.',
-                btnTxt: 'Start',
+                    getLocalization(context).tourFinalDesc,
+                btnTxt: getLocalization(context).startBtn,
                 view: Image.asset('assets/images/kitty.png'),
                 onBtnClick: onBtnClick,
                 index: 0),
@@ -72,7 +73,7 @@ class _MyPageViewControllerState extends State<MyPageViewController> {
     if (txt.toLowerCase() == 'Next'.toLowerCase()) {
       provider.updateIndex();
       _controller.animateToPage(provider.currentPageIndex,
-          duration: const Duration(milliseconds: 400), curve: Curves.bounceOut);
+          duration: const Duration(milliseconds: 400), curve: Curves.ease);
     } else {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (_) => const HomePage()));

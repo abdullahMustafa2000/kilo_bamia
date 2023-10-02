@@ -1,6 +1,8 @@
 // ignore_for_file: must_be_immutable, use_key_in_widget_constructors
 
+import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/app_tour/view_page_provider.dart';
 import 'package:kilo_bamya/ui/home/home_screen.dart';
@@ -59,7 +61,11 @@ class _IntroPageState extends State<IntroPage> {
             child: Text(
               widget.title,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 32),
+              style: GoogleFonts.k2d(
+                textStyle: const TextStyle(
+                    fontSize: 34,
+                    decoration: TextDecoration.none,),
+              ),
             ),
           ),
 
@@ -103,30 +109,31 @@ class _IntroPageState extends State<IntroPage> {
                     onPressed: () {
                       widget.onBtnClick(widget.btnTxt);
                     },
-                    child: Ink(
-                      decoration: BoxDecoration(
-                        color: isNotFinalPage? MyColors.darkBlue.withOpacity(.1): MyColors.darkBlue,
-                        borderRadius: const BorderRadius.all(Radius.circular(80.0)),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20))),
+                      backgroundColor: MaterialStateProperty.all(
+                        isNotFinalPage ? MyColors.lightBlue : MyColors.darkBlue,
                       ),
-                      child: Container(
-                        constraints: const BoxConstraints(minWidth: 88.0, minHeight: 36.0), // min sizes for Material buttons
-                        alignment: Alignment.center,
-                        child: Text(
-                          widget.btnTxt,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
+                    ),
+                    child: Text(
+                      widget.btnTxt,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.k2d(
+                        textStyle: TextStyle(
                             fontSize: 16,
-                            color: isNotFinalPage?MyColors.lightBlack.withOpacity(0.9):MyColors.white
-                          ),
-                        ),
+                            color: isNotFinalPage
+                                ? MyColors.lightBlack.withOpacity(0.9)
+                                : MyColors.white),
                       ),
                     ),
                   ),
                 ),
                 Expanded(
                   child: InkWell(
-                    onTap: (){
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>const HomePage()));
+                    onTap: () {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (_) => const HomePage()));
                     },
                     child: Visibility(
                       visible: provider.currentPageIndex == 0,
@@ -150,3 +157,61 @@ class _IntroPageState extends State<IntroPage> {
     );
   }
 }
+
+/*
+ElevatedButton(
+            onPressed: () {
+              widget.onBtnClick(widget.btnTxt);
+            },
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20))),
+              backgroundColor: MaterialStateProperty.all(MyColors.someOrange),
+            ),
+            child: Text(
+                          widget.btnTxt,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: isNotFinalPage
+                                  ? MyColors.lightBlack.withOpacity(0.9)
+                                  : MyColors.white),
+                        ),
+          ),
+
+
+          ElevatedButton(
+                    onPressed: () {
+                      widget.onBtnClick(widget.btnTxt);
+                    },
+                    style: ButtonStyle(
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20))),
+              backgroundColor: MaterialStateProperty.all(MyColors.someOrange),
+            ),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        color: isNotFinalPage
+                            ? MyColors.darkBlue.withOpacity(.1)
+                            : MyColors.darkBlue,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(80.0)),
+                      ),
+                      child: Container(
+                        constraints: const BoxConstraints(
+                            minWidth: 88.0,
+                            minHeight: 36.0), // min sizes for Material buttons
+                        alignment: Alignment.center,
+                        child: Text(
+                          widget.btnTxt,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: isNotFinalPage
+                                  ? MyColors.lightBlack.withOpacity(0.9)
+                                  : MyColors.white),
+                        ),
+                      ),
+                    ),
+                  )
+ */

@@ -18,5 +18,12 @@
   "saveBtn": "Save",
   "playersLessThanTeamsErrMsg": "Number of players should be greater",
   "zeroInputErrMsg": "Zero is not accepted",
-  "emptyFieldsErrMsg": "Please fill all fields"
+  "emptyFieldsErrMsg": "Please fill all fields",
+  "tour1Title": "Kilo Bamia",
+  "tour1Desc": "\"Kilo okra\" is of French origin, which is \"?Qui est le premier\" and means \"Who first?\",but it was written and developed by the Egyptians until it reached a kilo of okra, as the game is used to select one from multiple choices.",
+  "tour2Title": "How it works",
+  "tour2Desc": "The program works on dividing and distributing a certain number of players into a specified number of teams, and the number of teams and players is determined by the user, there is also a head and tail game in order to complete the game\uD83D\uDE09.",
+  "tourFinalTitle": "Enjoy!",
+  "tourFinalDesc": "We hope that you like the application, and if you have comments please let us know on comments section in app/play store, We look at them:), Enjoy and do not forget to rate\uD83D\uDC4C",
+  "startBtn": "Start"
 }
