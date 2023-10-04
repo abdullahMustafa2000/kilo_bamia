@@ -17,9 +17,11 @@ class MyColors {
   static const Color spinnerLightRed = Color.fromRGBO(226, 128, 134, 1.0);
   static const Color spinnerLightYellow = Color.fromRGBO(255, 224, 125, 1.0);
   static const Color spinnerLightBlue = Color.fromRGBO(190, 221, 243, 1.0);
-  static const Color spinnerDarkBlue = Color.fromRGBO(124, 161, 188, 1.0);
+  static const Color spinnerDarkBlue = Color.fromRGBO(124, 161, 188, 1.0);//
   static const Color spinnerOrange = Color.fromRGBO(255, 194, 80, 1.0);
-  static const Color spinnerLightGreen = Color.fromRGBO(179, 229, 159, 1.0);
+  static const Color spinnerBrown = Color.fromRGBO(31, 39, 42, 0.8);
+  static const Color spinnerLightGray = Color.fromRGBO(214, 214, 214, 1.0);
+  static const Color spinnerLightGreen = Color.fromRGBO(179, 229, 159, 1.0);//
 
   static const Color topGradient = Color.fromRGBO(31, 39, 42, 0.05);
   static const Color bottomGradient = Color.fromRGBO(24, 120, 243, 0.1);
@@ -36,6 +38,8 @@ class MyColors {
     spinnerDarkBlue,
     spinnerOrange,
     spinnerLightGreen,
+    spinnerLightGray,
+    spinnerBrown
   ];
 
 }

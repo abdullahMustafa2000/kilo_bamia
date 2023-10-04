@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
             Align(
               child: Builder(builder: (context) {
                 return InkWell(
-                  child: Image.asset('assets/images/menu_ic.png'),
+                  child: const Icon(Icons.info_outline, color: Colors.white, size: 24,),//Image.asset('assets/images/menu_ic.png'),
                   onTap: () {
                     Scaffold.of(context).openDrawer();
                   },

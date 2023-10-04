@@ -14,6 +14,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
   await Firebase.initializeApp();
+  FirebaseDatabase.instance.setPersistenceEnabled(true);
   runApp(MyApp());
 }
 

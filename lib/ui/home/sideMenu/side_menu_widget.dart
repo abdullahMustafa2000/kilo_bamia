@@ -3,8 +3,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/sideMenu/custom_border.dart';
+
 ///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
 class MyDrawerWidget extends StatefulWidget {
   const MyDrawerWidget({Key? key}) : super(key: key);
@@ -14,10 +16,6 @@ class MyDrawerWidget extends StatefulWidget {
 }
 
 class _MyDrawerWidgetState extends State<MyDrawerWidget> {
-  bool isAboutClicked = false;
-
-  bool isOtherAppsClicked = false;
-
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -30,14 +28,15 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
             filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
             child: Container(
               decoration: BoxDecoration(
-                color: MyColors.blueShadowClr.withOpacity(.4),
+                  color: MyColors.blueShadowClr.withOpacity(.4),
                   borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(30),
-                bottomRight: Radius.circular(30),
-              )),
+                    topRight: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  )),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  //kitty image
                   Container(
                     margin: const EdgeInsets.all(8),
                     child: Center(
@@ -48,66 +47,24 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
                       ),
                     ),
                   ),
+                  //About
                   MenuItem(
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const Center(
-                            child: Text(
-                              'About',
-                              style: TextStyle(
-                                  color: MyColors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16),
-                            ),
-                          ),
-                          Offstage(
-                            offstage: isAboutClicked,
-                            child: const Center(
-                              child: Text(
-                                'Kilo Bamia is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.',
-                                style:
-                                    TextStyle(color: MyColors.white, fontSize: 14),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      onAboutClick),
+                    title: "About",
+                    desc: "About Description",
+                    onClick: () {},
+                  ),
+                  //other apps
                   MenuItem(
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                           const Center(
-                            child: Text(
-                              'Other Apps',
-                              style: TextStyle(
-                                  color: MyColors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16),
-                            ),
-                          ),
-                          Offstage(
-                            offstage: isOtherAppsClicked,
-                            child: const Center(
-                              child: Text(
-                                'Alfurqan',
-                                style:
-                                    TextStyle(color: MyColors.white, fontSize: 14),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      onOtherAppsClick),
+                      title: "Other Apps",
+                      desc: "Al Furkan",
+                      onClick: () {}),
+
                   Expanded(
                     child: ClipPath(
                       clipper: MyUpCustomClipper(),
                     ),
                   ),
+                  //DesignerDeveloperInfo(),
                 ],
               ),
             ),
@@ -116,33 +73,80 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
       ),
     );
   }
-
-  void onAboutClick() {
-    setState(() {
-      isAboutClicked = !isAboutClicked;
-    });
-  }
-
-  void onDeveloperClick() {}
-
-  void onOtherAppsClick() {
-    setState(() {
-      isOtherAppsClicked = !isOtherAppsClicked;
-    });
-  }
 }
 
-class MenuItem extends StatelessWidget {
-  Widget content;
-  Function onClick;
+class DesignerDeveloperInfo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => Container(
+        decoration: const BoxDecoration(
+            border: Border(top: BorderSide(color: Colors.white, width: 2.5))),
+        child: Row(
+          children: [
+            card('Developer', 'Abdullah', () {}, context),
+            separatorWidget(),
+            card('Designer', 'Obada', () {}, context),
+          ],
+        ),
+      );
 
-  MenuItem(this.content, this.onClick);
+  Widget card(String title, String name, Function onNameClick,
+          BuildContext context) =>
+      Expanded(
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 12),
+          child: Column(
+            children: [
+              Text(
+                title,
+                style: GoogleFonts.k2d(
+                    textStyle: const TextStyle(
+                        fontSize: 16, color: MyColors.someOrange)),
+              ),
+              Text(
+                name,
+                style: GoogleFonts.k2d(
+                  textStyle: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: MyColors.spinnerLightBlue),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+  Widget separatorWidget() => Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        height: 20,
+        width: 2.5,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
+        ),
+      );
+}
+
+class MenuItem extends StatefulWidget {
+  Function onClick;
+  String title, desc;
+  MenuItem({required this.title, required this.desc, required this.onClick});
+
+  @override
+  State<MenuItem> createState() => _MenuItemState();
+}
+
+class _MenuItemState extends State<MenuItem> {
+  bool widgetTaped = false;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        onClick();
+        widget.onClick();
+        setState(() {
+          widgetTaped = !widgetTaped;
+        });
       },
       child: Center(
         child: Stack(
@@ -150,7 +154,31 @@ class MenuItem extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: content,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Center(
+                    child: Text(
+                      widget.title,
+                      style: const TextStyle(
+                          color: MyColors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                    ),
+                  ),
+                  Offstage(
+                    offstage: !widgetTaped,
+                    child: Center(
+                      child: Text(
+                        widget.desc,
+                        style: const TextStyle(
+                            color: MyColors.white, fontSize: 14),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             Positioned.fill(
                 child: ClipPath(
