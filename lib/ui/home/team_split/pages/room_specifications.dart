@@ -53,7 +53,7 @@ class InputContainer extends StatelessWidget {
           ),
           child: TextField(
             controller: TextEditingController()
-              ..text = gameModel.roomName ?? "",
+              ..text = gameModel.roomName,
             onChanged: (txt) {
               gameModel.roomName = txt;
             },
@@ -73,10 +73,10 @@ class InputContainer extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            teamsDataTextField(getLocalization(context).numberOfParticipants,
-                onPlayersTxtChange, context, gameModel.noOfPlayers ?? 0),
-            teamsDataTextField(getLocalization(context).numberOfTeams,
-                onTeamsTxtChange, context, gameModel.noOfTeams ?? 0),
+            teamsDataTextField(getLocalization(context).playersLabel,
+                onPlayersTxtChange, context, gameModel.noOfPlayers),
+            teamsDataTextField(getLocalization(context).teamsLabel,
+                onTeamsTxtChange, context, gameModel.noOfTeams),
           ],
         ),
         const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
@@ -160,11 +160,11 @@ class InputContainer extends StatelessWidget {
   bool acceptedInput(BuildContext context) {
     // filled text fields,  no zero inputs,  number of players = or > number of teams
     bool accepted = false;
-    if (gameModel.noOfPlayers != null &&
-        gameModel.noOfTeams != null &&
-        gameModel.roomName != null) {
+    if (gameModel.noOfPlayers == 0 ||
+        gameModel.noOfTeams == 0 ||
+        gameModel.roomName != '') {
       if (gameModel.noOfTeams != 0 && gameModel.noOfPlayers != 0) {
-        if (gameModel.noOfTeams! <= gameModel.noOfPlayers!) {
+        if (gameModel.noOfTeams <= gameModel.noOfPlayers) {
           accepted = true;
         } else {
           showToast(getLocalization(context).playersLessThanTeamsErrMsg);

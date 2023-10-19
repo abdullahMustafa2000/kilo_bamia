@@ -2,11 +2,18 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/models/game_model.dart';
 
-class TeamProvider {
+class TeamProvider with ChangeNotifier {
+
+  bool? fromDB = null;
+
+  void changeResultProvider(bool fromDb) {
+    fromDB = fromDb;
+    notifyListeners();
+  }
 
   static List<String> splitPlayers(GameModel gameModel) {
-    int noOfPlayers = gameModel.noOfPlayers ?? 0;
-    int noOfTeams = gameModel.noOfTeams ?? 0;
+    int noOfPlayers = gameModel.noOfPlayers;
+    int noOfTeams = gameModel.noOfTeams;
     List<String> teams = List.filled(noOfTeams, '');
     List<int> list = teamCount(noOfPlayers, noOfTeams);
     int noOfPlayersEachTeam = list[0];

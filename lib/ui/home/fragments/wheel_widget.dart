@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:kilo_bamya/models/game_model.dart';
 import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
@@ -23,12 +27,12 @@ class WheelWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 3,
             child: Center(
               child: InkWell(
                 child: SpinningWheel(
                   onClick: () {
-                    // aboveWidgetCall(0, 1);
                     aboveWidgetCall(
                         openSplitResult: false, openRandomChoice: true);
                   },
@@ -39,7 +43,10 @@ class WheelWidget extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              aboveWidgetCall(openSplitResult: false, openRandomChoice: false, gameModel: GameModel.init());
+              aboveWidgetCall(
+                  openSplitResult: false,
+                  openRandomChoice: false,
+                  gameModel: GameModel.init());
             },
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 8),
@@ -90,8 +97,7 @@ class WheelWidget extends StatelessWidget {
           ),
 
           /// recent design
-          SizedBox(
-            height: 110,
+          Expanded(
             child: Stack(children: [
               Image.asset(
                 'assets/images/lasts_bg.png',
@@ -100,7 +106,7 @@ class WheelWidget extends StatelessWidget {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 24),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -114,7 +120,6 @@ class WheelWidget extends StatelessWidget {
                       height: 14,
                     ),
                     RecentListWidget(onItemClick: (gameModel) {
-                      // aboveWidgetCall(1, 0, gameModel: gameModel);
                       aboveWidgetCall(
                           openSplitResult: true,
                           openRandomChoice: false,
@@ -147,117 +152,151 @@ class RecentListWidget extends StatefulWidget {
 }
 
 class _RecentListWidgetState extends State<RecentListWidget> {
-  late List<GameModel> _recentGames;
-
-  void updateRecent(Map<Object?, Object?> recent) {
-    _recentGames.clear();
-    recent.forEach((key, value) {
-      _recentGames.add(GameModel.fromJson(value as Map));
-    });
-    setState(() {});
-  }
+  late Box<GameModel> allSplits;
 
   @override
   void initState() {
-    _recentGames = [];
-    teamsDatabase().onValue.listen((event) {
-      if (event.snapshot.exists) {
-        updateRecent(event.snapshot.value as Map);
-      }
-    });
+    allSplits = teamsHiveDB();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: _recentGames.isEmpty
-          ? Center(
+      child: ValueListenableBuilder(
+        valueListenable: allSplits.listenable(),
+        builder: (context, Box<GameModel> box, _) {
+          if (box.isNotEmpty) {
+            return ListView.builder(
+              itemBuilder: (context, index) => RecentItem(
+                box: box,
+                gameModel: box.getAt(index)!,
+                onItemClick: widget.onItemClick,
+                index: index,
+                recentLength: box.length,
+              ),
+              itemCount: box.length,
+            );
+          } else {
+            return Center(
               child: Text(
                 getLocalization(context).emptyListMessage,
                 style: GoogleFonts.k2d(),
               ),
-            )
-          : ListView.builder(
-              itemBuilder: (context, index) => RecentItem(
-                  gameModel: _recentGames[index],
-                  onItemClick: widget.onItemClick),
-              itemCount: _recentGames.length,
-            ),
+            );
+          }
+        },
+      ),
     );
   }
 }
 
-class RecentItem extends StatelessWidget {
+class RecentItem extends StatefulWidget {
   final Function(GameModel) onItemClick;
   final GameModel gameModel;
+  final int index;
+  final int recentLength;
+  final Box<GameModel> box;
   const RecentItem(
-      {Key? key, required this.gameModel, required this.onItemClick})
+      {Key? key,
+      required this.gameModel,
+      required this.onItemClick,
+      required this.index,
+      required this.recentLength, required this.box})
       : super(key: key);
+
+  @override
+  State<RecentItem> createState() => _RecentItemState();
+}
+
+class _RecentItemState extends State<RecentItem> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        onItemClick(gameModel);
+    return Dismissible(
+      background: Container(
+        child: Center(child: Icon(Icons.delete_forever_rounded, color: Colors.white,),),
+        color: MyColors.spinnerLightRed,
+      ),
+      onDismissed: (DismissDirection direction) {
+        setState(() {
+           widget.gameModel.delete();
+        });
       },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      key: ValueKey<String?>(widget.gameModel.id),
+      child: InkWell(
+        onTap: () {
+          widget.onItemClick(widget.gameModel);
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(180),
-                      child: Container(
-                        width: 45,
-                        height: 45,
-                        color: MyColors.spinnerColorsArray[0],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
+                  Column(
                     children: [
-                      Text(
-                        gameModel.roomName ?? 'Game',
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      Text(
-                        '${gameModel.noOfPlayers} Players, ${gameModel.noOfTeams} Teams',
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                      Center(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(180),
+                          child: Container(
+                            width: 45,
+                            height: 45,
+                            color: MyColors.spinnerColorsArray[_curClr(widget.index)],
+                          ),
+                        ),
+                      )
                     ],
                   ),
-                ),
-              ),
-              Column(
-                children: [
-                  Text('${gameModel.time?.day}/${gameModel.time?.month}')
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 4),
+                            child: Text(
+                              widget.gameModel.roomName,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Text(
+                            '${widget.gameModel.noOfPlayers} ${getLocalization(context).playersLabel}, ${widget.gameModel.noOfTeams} ${getLocalization(context).teamsLabel}',
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Text('${widget.gameModel.time.day}/${widget.gameModel.time.month}')
+                    ],
+                  ),
                 ],
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                height: 1,
+                color: MyColors.topGradient,
               ),
             ],
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 8),
-            height: 1,
-            color: MyColors.topGradient,
-          ),
-        ],
+        ),
       ),
     );
+  }
+
+  int _curClr(int index) {
+    if (index == MyColors.spinnerColorsArray.length) {
+      return 0;
+    } else {
+      return index++;
+    }
   }
 }
 

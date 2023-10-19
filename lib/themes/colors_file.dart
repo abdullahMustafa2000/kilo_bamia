@@ -42,4 +42,14 @@ class MyColors {
     spinnerBrown
   ];
 
+  static const List<Color> teamsColorsArray = [
+    darkBlue,
+    spinnerLightRed,
+    spinnerDarkBlue,
+    spinnerLightGreen,
+    spinnerBrown,
+    Colors.black,
+    topGradient
+  ];
+
 }

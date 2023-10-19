@@ -7,10 +7,8 @@ class HomeClicksProvider extends ChangeNotifier {
     btmIndex = 0;
   }
 
-  updateBtnNavIndex(int index) {
-    if (index == btmIndex) {
-      return;
-    }
+  void updateBtnNavIndex(int index) {
+    if (index == btmIndex) return;
     btmIndex = index;
     notifyListeners();
   }

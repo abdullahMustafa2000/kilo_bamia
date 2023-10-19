@@ -1,27 +1,38 @@
 import 'package:flutter/material.dart';
 
 class SpinningWheel extends StatefulWidget {
-  Function? onClick;
+  Function? onClick, wheelAnimController;
   int? animDuration;
-  SpinningWheel({this.onClick, this.animDuration});
+  double? kittyPerc, wheelPerc;
+  Animation<double>? kittyFadeOutAnimation;
+  SpinningWheel(
+      {this.onClick,
+      this.animDuration,
+      this.kittyPerc,
+      this.wheelPerc,
+      this.wheelAnimController,
+      this.kittyFadeOutAnimation});
 
   @override
   State<SpinningWheel> createState() => _SpinningWheel();
 }
 
 class _SpinningWheel extends State<SpinningWheel>
-  with TickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController _animController;
+
   late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
-    _animController =
-        AnimationController(vsync: this,
-            duration: Duration(seconds: widget.animDuration ?? 2));
+    _animController = AnimationController(
+        vsync: this, duration: Duration(seconds: widget.animDuration ?? 2));
     _animation = CurvedAnimation(parent: _animController, curve: Curves.easeIn);
     _animController.repeat();
+    if (widget.wheelAnimController != null) {
+      widget.wheelAnimController!(_animController);
+    }
   }
 
   @override
@@ -43,18 +54,27 @@ class _SpinningWheel extends State<SpinningWheel>
         alignment: Alignment.center,
         children: [
           RotationTransition(
-              turns: _animation,
-              alignment: Alignment.center,
-              child: Image.asset(
-                'assets/images/spinning_wheel.png',
-                width: size.width * .8,
-              )),
-          Image.asset(
-            'assets/images/kitty.png',
-            width: size.width * .25,
+            turns: _animation,
+            alignment: Alignment.center,
+            child: _wheelImage(size),
           ),
+          widget.kittyFadeOutAnimation == null
+              ? _kittyImage(size)
+              : FadeTransition(
+                  opacity: widget.kittyFadeOutAnimation!,
+                  child: _kittyImage(size),
+                ),
         ],
       ),
     );
   }
+
+  Widget _kittyImage(Size size) => Image.asset(
+      'assets/images/kitty.png',
+      width: size.width * (widget.kittyPerc ?? .25));
+
+  Widget _wheelImage(Size size) => Image.asset(
+    'assets/images/spinning_wheel.png',
+    width: size.width * (widget.wheelPerc ?? .8),
+  );
 }

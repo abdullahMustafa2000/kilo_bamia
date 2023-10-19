@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/home_screen.dart';
 import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
@@ -125,19 +126,19 @@ class _IntroPageState extends State<IntroPage> {
                   ),
                 ),
                 Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (_) => const HomePage()));
-                    },
-                    child: Visibility(
-                      visible: widget.index == 0,
-                      child: Container(
-                        alignment: Alignment.bottomRight,
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 12),
-                        child: const Text(
-                          'Skip',
+                  child: Visibility(
+                    visible: widget.index < 2,
+                    child: Container(
+                      alignment: Alignment.bottomRight,
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 12),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (_) => const HomePage()));
+                        },
+                        child: Text(
+                          getLocalization(context).skipTour,
                           style: TextStyle(color: MyColors.lightGray),
                         ),
                       ),

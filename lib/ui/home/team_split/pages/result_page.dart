@@ -1,12 +1,10 @@
 // ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/ads/ad_initializer.dart';
 import 'package:kilo_bamya/local_db/shared_pref.dart';
 import 'package:kilo_bamya/models/game_model.dart';
 import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
-import 'package:kilo_bamya/ui/home/team_split/next_page_provider.dart';
 import 'package:kilo_bamya/ui/elements/page_model.dart';
 import 'package:provider/provider.dart';
 import '../../../elements/icon_btn.dart';
@@ -15,7 +13,6 @@ import '../teams_provider.dart';
 class ResultPage extends StatefulWidget {
   Function onSaveBtnClick;
   bool showResultWidget;
-
   Function onClose;
   Function onBack;
   Function moveToPrev;
@@ -37,26 +34,23 @@ class ResultPage extends StatefulWidget {
 }
 
 class _ResultPageState extends State<ResultPage> {
+  bool backClicked = false;
+
   @override
   void initState() {
     super.initState();
-    fromPref = widget.showResultWidget;
-    fromRecent = fromPref ?? false;
     widget.adInitializer.showInterstitialAd();
   }
-
-  var fromRecent = false;
-  late bool? fromPref;
-  late NextPageProvider nextPageProvider;
   @override
   Widget build(BuildContext context) {
-    nextPageProvider = NextPageProvider();
     return MyKiloBamayaPageModel(
       showBackBtn: true,
       onClose: () {
+        widget.gameModel.firstSplit = null;
         widget.onClose();
       },
       onPrev: () {
+        backClicked = true;
         widget.onBack();
       },
       content: SizedBox(
@@ -71,22 +65,9 @@ class _ResultPageState extends State<ResultPage> {
               margin: const EdgeInsets.all(8),
             ),
             Expanded(
-              child: FutureBuilder(
-                future: getPreferences(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasData) {
-                      widget.gameModel.teams = snapshot.data as List<String>;
-                      return resultListWidget(snapshot.data as List<String>);
-                    } else {
-                      return const Center(child: Text('Unknown error accrued'));
-                    }
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
+              child: TeamsResult(
+                gameModel: widget.gameModel,
+                fromDB: widget.showResultWidget && !backClicked,
               ),
             ),
             Padding(
@@ -94,8 +75,11 @@ class _ResultPageState extends State<ResultPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  saveBtn(),
-                  reSpinBtn(),
+                  saveBtn(context),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  reSpinBtn(context),
                 ],
               ),
             )
@@ -105,19 +89,11 @@ class _ResultPageState extends State<ResultPage> {
     );
   }
 
-  var colorsArr = [
-    MyColors.darkBlue,
-    MyColors.spinnerLightRed,
-    MyColors.darkOrange,
-    MyColors.darkYellow,
-    MyColors.bottomGradient,
-  ];
-
-  Widget saveBtn() {
+  Widget saveBtn(BuildContext context) {
     return InkWell(
       onTap: () {
+        widget.gameModel.firstSplit = null;
         saveData();
-        fromPref = null;
         widget.onSaveBtnClick();
       },
       child: Container(
@@ -137,26 +113,12 @@ class _ResultPageState extends State<ResultPage> {
     );
   }
 
-  Widget resultListWidget(List<String> list) {
-    return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      itemCount: list.length,
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (context, index) {
-        return TeamDesign(
-            teamMembers: list[index].split(','),
-            teamColor: colorsArr[index],
-            teamIndex: index);
-      },
-    );
-  }
-
-  Widget reSpinBtn() {
+  Widget reSpinBtn(BuildContext context) {
     return BtnIconElement(
       onClick: () {
-        setState(() {
-          fromPref = false;
-        });
+        widget.gameModel.firstSplit = false;
+        Provider.of<TeamProvider>(context, listen: false)
+            .changeResultProvider(false);
       },
       background: MyColors.someOrange,
       icon: Icons.refresh,
@@ -164,27 +126,79 @@ class _ResultPageState extends State<ResultPage> {
     );
   }
 
-  void saveData() {
-    if (fromRecent) {
-      teamsDatabase().child(widget.gameModel.id!).update(widget.gameModel.toJson());
+  void saveData() async {
+    if (widget.gameModel.id != null) {
+      await widget.gameModel.save();
     } else {
-      MySharedPref.getNewRoomId().then((value) => {
-            widget.gameModel.id = value,
-            teamsDatabase().child(value).set(widget.gameModel.toJson())
+      MySharedPref.getNewRoomId().then((id) => {
+            widget.gameModel.id = id,
+            teamsHiveDB().put(id, widget.gameModel),
           });
     }
   }
+}
+
+class TeamsResult extends StatefulWidget {
+  GameModel gameModel;
+  bool fromDB;
+  TeamsResult({required this.gameModel, required this.fromDB});
+  @override
+  State<TeamsResult> createState() => _TeamsResultState();
+}
+
+class _TeamsResultState extends State<TeamsResult> {
+  late TeamProvider _provider;
+  @override
+  void initState() {
+    widget.gameModel.firstSplit = widget.fromDB;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _provider = Provider.of<TeamProvider>(context);
+    return FutureBuilder<List<String>>(
+      future: getPreferences(),
+      builder: (context, AsyncSnapshot<List<String>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
+            widget.gameModel.teams = snapshot.data!;
+            return resultListWidget(snapshot.data!);
+          } else {
+            return Center(child: Text(getLocalization(context).unknownErr));
+          }
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
 
   Future<List<String>> getPreferences() async {
-    if (fromPref == null) {
-      fromPref = widget.showResultWidget;
-      return [];
-    }
-    if (fromPref!) {
+    bool? tst = _provider.fromDB;
+    if (widget.gameModel.firstSplit == null || widget.gameModel.firstSplit!) {
       return widget.gameModel.teams;
     } else {
       return TeamProvider.splitPlayers(widget.gameModel);
     }
+  }
+
+  Widget resultListWidget(List<String> list) {
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      itemCount: list.length,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (context, index) {
+        int clrsLength = MyColors.teamsColorsArray.length;
+        return TeamDesign(
+            teamMembers: list[index].split(','),
+            teamColor: MyColors.teamsColorsArray[
+                index == clrsLength ? index -= clrsLength : index],
+            teamIndex: index);
+      },
+    );
   }
 }
 
@@ -211,7 +225,7 @@ class TeamDesign extends StatelessWidget {
           children: [
             Container(
               child: Text(
-                'Team ${teamIndex + 1}',
+                '${getLocalization(context).teamTitle} ${teamIndex + 1}',
                 style: TextStyle(color: teamColor, fontSize: 16),
                 textAlign: TextAlign.center,
               ),
@@ -230,7 +244,7 @@ class TeamDesign extends StatelessWidget {
                       child: Text(
                         teamMembers[index],
                         style: TextStyle(
-                            fontSize: 14, color: teamColor.withOpacity(.5)),
+                            fontSize: 14, color: teamColor.withOpacity(.7)),
                         textAlign: TextAlign.center,
                       ),
                     );

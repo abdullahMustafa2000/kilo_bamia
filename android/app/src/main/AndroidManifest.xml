@@ -2,7 +2,7 @@
     package="com.football.kilo_bamya">
    <application
         android:label="kilo_bamya"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
        android:supportsRtl="true">
         <activity
             android:name=".MainActivity"

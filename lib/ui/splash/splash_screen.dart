@@ -1,8 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/app_tour/page_view_widget.dart';
 import 'package:is_first_run/is_first_run.dart';
+import 'package:kilo_bamya/ui/elements/spinning_wheel.dart';
 import 'package:kilo_bamya/ui/home/home_screen.dart';
+
+int _wheelSpinSeconds = 3;
+int _fadeOutMilliSeconds = 1000;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -11,67 +19,104 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
+  late Animation<double> _fadeOutAnimation;
+
+  late AnimationController _fadeOutController;
+
+  late AnimationController _offsetAnimationController;
+  late Animation<Offset> _upOffsetAnimation, _downOffsetAnimation;
+
+  late Future<bool> _isFirstRunFut;
+
+  Future<bool> _getFirstRunFuture() async {
+    return await IsFirstRun.isFirstRun();
+  }
+
   @override
   void initState() {
-    _releaseSplashScreen();
+    _isFirstRunFut = _getFirstRunFuture();
     super.initState();
+    _fadeOutController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: _fadeOutMilliSeconds));
+    _fadeOutAnimation =
+        Tween<double>(begin: 1, end: 0).animate(_fadeOutController);
+
+    _offsetAnimationController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: _fadeOutMilliSeconds));
+    _downOffsetAnimation =
+        Tween<Offset>(begin: Offset.zero, end: const Offset(0.0, 2.0))
+            .animate(_offsetAnimationController);
+    _upOffsetAnimation =
+        Tween<Offset>(begin: Offset.zero, end: const Offset(0.0, -2.0))
+            .animate(_offsetAnimationController);
+
+    Future.delayed(Duration(seconds: _wheelSpinSeconds + 1), () {
+      _fadeOutController.forward();
+      _offsetAnimationController.forward();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
-          body: Column(
+    return Scaffold(
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          FutureBuilder<bool>(
+              future: _isFirstRunFut,
+              builder: (context, snap) {
+                return _afterAnimWidget(snap.data ?? true);
+              }),
+          Column(
             children: [
-              TopScreen(screenSize),
-              MidScreen(screenSize),
-              const BottomScreen(),
+              TopScreen(
+                fadeOutAnimation: _fadeOutAnimation,
+                slideUpAnimation: _upOffsetAnimation,
+              ),
+              BottomScreen(
+                fadeOutAnimation: _fadeOutAnimation,
+                slideDownAnimation: _downOffsetAnimation,
+              ),
             ],
-          )),
+          ),
+          OverlayContent(
+            fadeOutAnimation: _fadeOutAnimation,
+          ),
+        ],
+      ),
     );
   }
 
-  void _releaseSplashScreen() async {
-    await Future.delayed(const Duration(milliseconds: 2500));
-    bool firstRun = true;//await IsFirstRun.isFirstRun();
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                firstRun ? TourPageView() : const HomePage()));
+  Widget _afterAnimWidget(bool firstRun) {
+    return firstRun ? TourPageView() : const HomePage();
   }
 }
 
 class BottomScreen extends StatelessWidget {
-  const BottomScreen({Key? key}) : super(key: key);
+  final Animation<double> fadeOutAnimation;
+  final Animation<Offset> slideDownAnimation;
+  BottomScreen(
+      {required this.fadeOutAnimation,
+      required this.slideDownAnimation,
+      Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        child: Container(
-      color: MyColors.lightBlack,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const NameOfAppTextDesign(name: 'Bamia', color: MyColors.darkBlue),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Text(
-                  'Created By :',
-                  style: TextStyle(color: MyColors.white.withOpacity(.33)),
-                ),
-                const DADName('Abdullah'),
-                const DADName('Obada'),
-              ],
-            ),
+      child: SlideTransition(
+        position: slideDownAnimation,
+        child: FadeTransition(
+          opacity: fadeOutAnimation,
+          child: Container(
+            color: MyColors.lightBlack,
+            width: double.infinity,
           ),
-        ],
+        ),
       ),
-    ));
+    );
   }
 }
 
@@ -86,56 +131,105 @@ class NameOfAppTextDesign extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Text(
         name,
-        style: TextStyle(
-            color: color,
-            fontSize: 60,
-            fontStyle: FontStyle.italic,
-            fontWeight: FontWeight.bold),
+        style: GoogleFonts.k2d(
+          textStyle: TextStyle(
+              color: color,
+              fontSize: 50,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }
 }
 
-class DADName extends StatelessWidget {
-  final String developerName;
-  const DADName(this.developerName, {Key? key}) : super(key: key);
+class OverlayContent extends StatefulWidget {
+  OverlayContent({super.key, required this.fadeOutAnimation});
+  final Animation<double> fadeOutAnimation;
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        '-$developerName',
-        style: TextStyle(color: MyColors.darkBlue.withOpacity(.33)),
-      ),
-    );
-  }
+  State<OverlayContent> createState() => _OverlayContentState();
 }
 
-class MidScreen extends StatelessWidget {
-  final Size screenSize;
-  const MidScreen(this.screenSize, {Key? key}) : super(key: key);
+class _OverlayContentState extends State<OverlayContent>
+    with TickerProviderStateMixin {
+  late Animation<double> _fadeInAnimation;
+
+  late AnimationController _fadeInController;
+
+  @override
+  void initState() {
+    super.initState();
+    _fadeInController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: _fadeOutMilliSeconds));
+    _fadeInAnimation =
+        Tween<double>(begin: 0, end: 1).animate(_fadeInController);
+
+    Future.delayed(Duration(milliseconds: _wheelSpinSeconds * 1000 + 50), () {
+      _fadeInController.forward();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<String> nameOfApp = getLocalization(context).appName.split(' ');
     return Container(
-      width: double.infinity,
-      height: screenSize.height * .03,
-      color: MyColors.white,
+      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .2),
+      child: Column(
+        children: [
+          FadeTransition(
+            opacity: widget.fadeOutAnimation,
+            child: SpinningWheel(
+              animDuration: _wheelSpinSeconds,
+              wheelPerc: .5,
+              kittyPerc: .4,
+              wheelAnimController: (AnimationController controller) {
+                Future.delayed(Duration(seconds: _wheelSpinSeconds), () {
+                  controller.stop();
+                });
+              },
+              kittyFadeOutAnimation: _fadeInAnimation,
+            ),
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          FadeTransition(
+            opacity: widget.fadeOutAnimation,
+            child: Column(
+              children: [
+                NameOfAppTextDesign(
+                    name: nameOfApp[0], color: MyColors.darkBlue),
+                NameOfAppTextDesign(name: nameOfApp[1], color: Colors.white),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
 
 class TopScreen extends StatelessWidget {
-  final Size screenSize;
-  const TopScreen(this.screenSize, {Key? key}) : super(key: key);
+  final Animation<double> fadeOutAnimation;
+  final Animation<Offset> slideUpAnimation;
+  TopScreen(
+      {required this.fadeOutAnimation,
+      required this.slideUpAnimation,
+      Key? key})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: screenSize.height * .4,
-        width: double.infinity,
-        color: MyColors.darkBlue,
-        child: const Align(
-          alignment: Alignment.bottomCenter,
-          child: NameOfAppTextDesign(name: 'Kilo', color: MyColors.lightBlack),
-        ));
+    var screenSize = MediaQuery.of(context).size;
+    return SlideTransition(
+      position: slideUpAnimation,
+      child: FadeTransition(
+        opacity: fadeOutAnimation,
+        child: Container(
+          height: screenSize.height * .3,
+          width: double.infinity,
+          color: MyColors.darkBlue,
+        ),
+      ),
+    );
   }
 }

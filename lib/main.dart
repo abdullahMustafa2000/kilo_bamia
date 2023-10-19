@@ -1,11 +1,14 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:kilo_bamya/classes/app_strings.dart';
+import 'package:kilo_bamya/models/game_model.dart';
 import 'package:kilo_bamya/themes/themes.dart';
 import 'package:kilo_bamya/ui/home/btm_nav_provider.dart';
+import 'package:kilo_bamya/ui/home/team_split/teams_provider.dart';
 import 'package:kilo_bamya/ui/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,7 +17,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
   await Firebase.initializeApp();
-  FirebaseDatabase.instance.setPersistenceEnabled(true);
+  await Hive.initFlutter();
+  Hive.registerAdapter(GameModelAdapter());
+  await Hive.openBox<GameModel>(ApplicationStrings.boxName);
   runApp(MyApp());
 }
 
@@ -24,12 +29,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => HomeClicksProvider()),
+        ChangeNotifierProvider(create: (_) => TeamProvider()),
       ],
       child: MaterialApp(
-        locale: const Locale(
-          'en',
-          'ar'
-        ),
         supportedLocales: AppLocalizations.supportedLocales,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         themeMode: ThemeMode.light,
@@ -45,6 +47,10 @@ class MyApp extends StatelessWidget {
   }
 }
 
-AppLocalizations getLocalization(BuildContext context) => AppLocalizations.of(context)!;
+AppLocalizations getLocalization(BuildContext context) =>
+    AppLocalizations.of(context)!;
 
-DatabaseReference teamsDatabase() => FirebaseDatabase.instance.ref("teams");
+Box<GameModel> teamsHiveDB() => Hive.box<GameModel>(ApplicationStrings.boxName);
+
+bool isRTL(BuildContext context) =>
+    Directionality.of(context) == TextDirection.rtl;

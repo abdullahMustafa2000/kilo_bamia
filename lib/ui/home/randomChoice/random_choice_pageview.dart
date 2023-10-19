@@ -7,15 +7,14 @@ import 'package:kilo_bamya/ui/home/randomChoice/pages/result_page.dart';
 import '../../../models/choice_class_model.dart';
 
 class RandomChoicePageView extends StatelessWidget {
-  RandomChoicePageView({required this.onCloseClick});
+  RandomChoicePageView({required this.onCloseClick, required this.adInitializer});
   final Function onCloseClick;
-  var currentPage = 0;
-  late AdInitializer _adInitializer;
+  int currentPage = 0;
+  final AdInitializer adInitializer;
   final _controller = PageController();
   static List<ChoiceModel> mChoicesList = [];
   @override
   Widget build(BuildContext context) {
-    _adInitializer = AdInitializer();
     return PageView(
       physics: const NeverScrollableScrollPhysics(),
       controller: _controller,
@@ -29,7 +28,7 @@ class RandomChoicePageView extends StatelessWidget {
           onBackClick: moveToInitialPage,
           onMoveToNext: moveToNextPage,
         ),
-        ChoiceResultPage(onCloseClick: onCloseClick, adInitializer: _adInitializer)
+        ChoiceResultPage(onCloseClick: onCloseClick, adInitializer: adInitializer)
       ],
     );
   }

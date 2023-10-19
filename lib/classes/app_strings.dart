@@ -1,5 +1,5 @@
 class ApplicationStrings {
-
+  static const String boxName = 'teams';
   /*String appTourPage1 = '';
   String appTourPage2 = '';
   String appTourPage3 = '';

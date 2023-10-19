@@ -11,7 +11,8 @@ class CoinWidget extends StatefulWidget {
 }
 
 class _CoinWidgetState extends State<CoinWidget> with TickerProviderStateMixin {
-  var verticalSpin = 0.0;
+
+  double verticalSpin = 0.0;
   var counter = 0;
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -95,14 +96,15 @@ class _CoinWidgetState extends State<CoinWidget> with TickerProviderStateMixin {
                             height: width * .22,
                             color: MyColors.darkOrange,
                             child: Center(
-                                child: Text(
-                              getLocalization(context).throwCoin,
-                              style: const TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: MyColors.white),
-                            )),
+                              child: Text(
+                                getLocalization(context).throwCoin,
+                                style: const TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: MyColors.white),
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -152,21 +154,18 @@ class _CoinWidgetState extends State<CoinWidget> with TickerProviderStateMixin {
           });
     _controller.forward();
     counter = 0;
-    setState(() {
-    });
+    setState(() {});
   }
 
   void startAnimation() {
     _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
       counter++;
-      if (counter == arr[num > arr.length -1 ? 1: num]) {
-        print(arr[num]);
+      if (counter == arr[num > arr.length - 1 ? 1 : num]) {
         num = Random().nextInt(2);
         onSpinningEnd();
         _timer.cancel();
         return;
       }
-
       onSpinning(counter);
     });
   }

@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/sideMenu/custom_border.dart';
 
@@ -29,10 +30,13 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
             child: Container(
               decoration: BoxDecoration(
                   color: MyColors.blueShadowClr.withOpacity(.4),
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(30),
-                    bottomRight: Radius.circular(30),
-                  )),
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(isRTL(context)? 0 : 30),
+                    bottomRight: Radius.circular(isRTL(context)? 0 : 30),
+                    topLeft: Radius.circular(isRTL(context)? 30 : 0),
+                    bottomLeft: Radius.circular(isRTL(context)? 30 : 0)
+                  ),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [

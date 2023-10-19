@@ -1,5 +1,5 @@
 {
-  "appName": "كيلو باميه",
+  "appName": "كيلو بامية",
   "btnCreateRoom": "يلا نقسم",
   "enterChoicesNames": "محتار بين ايه؟",
   "recentListTitle": "اخر تقسيمه",
@@ -7,12 +7,12 @@
   "wheelTabName": "العجلة",
   "coinTabName": "العملة",
   "throwCoin": "ارمي",
-  "nameTheSplit": "سمي التقسيمه :",
+  "nameTheSplit": "سمي التقسيمة",
   "splitNameHint": "مثلا:كوره، افلام...",
-  "numberOfParticipants": "عدد الناس :",
-  "numberOfTeams": "كام فرقه :",
+  "playersLabel": "عدد الناس",
+  "teamsLabel": "عدد الفرق",
   "createSplit": "اللي بعده",
-  "enterPeople": "اللاعيبه :",
+  "enterPeople": "اللاعيبة",
   "splitPeopleBtn": "وزع",
   "splitResult": "التقسيمة",
   "saveBtn": "حفظ",
@@ -25,5 +25,9 @@
   "tour2Desc": "الابليكيشن بياخد اسامي الناس اللي مشاركه في اللعب و يفرقهم علي عدد الفرق اللي انت كتبته وتقدر تلعب ملك وكتابة او تختار واحد من كذا اختاير ملخبطك\uD83D\uDE09.",
   "tourFinalTitle": "يلا نبدا؟",
   "tourFinalDesc": "نأمل أن يعجبك التطبيق، وإذا كان لديك تعليقات يرجى إعلامنا بذلك في قسم التعليقات في متجر التطبيقات/البلاي، ونحن نطلع عليها :)، استمتع ولا تنسى التقييم \uD83D\uDC4C",
-  "startBtn": "ابدأ"
+  "startBtn": "ابدأ",
+  "unknownErr": "خطا مش مقصود ، عيد المحاولة",
+  "teamTitle": "فريق",
+  "skipTour": "تخطي",
+  "hintNameOfPlayer": "اسم"
 }

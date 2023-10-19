@@ -8,7 +8,7 @@ import 'circular_container.dart';
 import 'icon_btn.dart';
 
 class LoadingResultScreen extends StatelessWidget {
-  const LoadingResultScreen(
+   LoadingResultScreen(
       {Key? key,
       required this.onCloseClick,
       required this.onBackClick,
@@ -16,9 +16,10 @@ class LoadingResultScreen extends StatelessWidget {
       : super(key: key);
   final Function onBackClick, onCloseClick;
   final void Function({List<ChoiceModel>? choices}) onMoveToNext;
+  Timer? timer;
   @override
   Widget build(BuildContext context) {
-    var timer = Timer(const Duration(seconds: 2), () {
+    timer = Timer(const Duration(seconds: 2), () {
       onMoveToNext(choices: []);
     });
     return Column(
@@ -43,14 +44,14 @@ class BackRow extends StatelessWidget {
   const BackRow({Key? key, required this.onBackClick, required this.timer})
       : super(key: key);
   final Function onBackClick;
-  final Timer timer;
+  final Timer? timer;
   @override
   Widget build(BuildContext context) {
     return Center(
       child: InkWell(
         onTap: () {
           onBackClick();
-          timer.cancel();
+          timer?.cancel();
         },
         child: CircularContainer(
           contentColor: Colors.transparent,

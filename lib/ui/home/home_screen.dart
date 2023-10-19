@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kilo_bamya/ads/ad_initializer.dart';
 import 'package:kilo_bamya/models/game_model.dart';
 import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
@@ -22,10 +25,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late HomeClicksProvider provider;
   bool callRandomChoiceWidget = false;
-
+  late AdInitializer _adInitializer;
   @override
   void initState() {
     super.initState();
+    _adInitializer = AdInitializer();
   }
 
   @override
@@ -42,7 +46,9 @@ class _HomePageState extends State<HomePage> {
             Align(
               child: Builder(builder: (context) {
                 return InkWell(
-                  child: const Icon(Icons.info_outline, color: Colors.white, size: 24,),//Image.asset('assets/images/menu_ic.png'),
+                  child: Transform.flip(
+                      flipX: isRTL(context),
+                      child: Image.asset('assets/images/menu_ic.png')),
                   onTap: () {
                     Scaffold.of(context).openDrawer();
                   },
@@ -115,11 +121,13 @@ class _HomePageState extends State<HomePage> {
           child: callRandomChoiceWidget
               ? RandomChoiceWidget(
                   onClickClose: onSaveBtnClick,
+                  adInitializer: _adInitializer,
                 )
               : DivideTeamsWidget(
                   onSaveBtnClick: onSaveBtnClick,
                   showResultWidget: callResultWidget,
                   splitRoom: clickedRecent ?? GameModel.init(),
+                  adInitializer: _adInitializer,
                 ),
         )
       ],
@@ -164,7 +172,7 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
         child: Row(
           children: [
             Expanded(
-              child: wheelOrCoinWidget(getLocalization(context).wheelTabName,
+              child: wheelOrCoinWidget(0, getLocalization(context).wheelTabName,
                   provider.btmIndex == 0 ? MyColors.darkBlue : MyColors.white),
             ),
             Container(
@@ -176,6 +184,7 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
             ),
             Expanded(
               child: wheelOrCoinWidget(
+                  1,
                   getLocalization(context).coinTabName,
                   provider.btmIndex == 1
                       ? MyColors.darkOrange
@@ -194,14 +203,11 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
     ]);
   }
 
-  Widget wheelOrCoinWidget(String title, Color color) {
+  //index = 0 => means wheel
+  Widget wheelOrCoinWidget(int index, String title, Color color) {
     return InkWell(
       onTap: () {
-        if (title.toLowerCase() == 'Wheel'.toLowerCase()) {
-          provider.updateBtnNavIndex(0);
-        } else {
-          provider.updateBtnNavIndex(1);
-        }
+        provider.updateBtnNavIndex(index);
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

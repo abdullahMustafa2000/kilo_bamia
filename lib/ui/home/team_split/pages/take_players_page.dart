@@ -27,9 +27,12 @@ class _RoomPlayersState extends State<RoomPlayers> {
   @override
   void initState() {
     if (widget.gameModel.players.isEmpty) {
-      names = List.filled(widget.gameModel.noOfPlayers ?? 0, '');
+      names = List.filled(widget.gameModel.noOfPlayers, '');
     } else {
-      names = widget.gameModel.players;
+      names = List.filled(widget.gameModel.noOfPlayers, '');
+      for (int i = 0; i < widget.gameModel.players.length; i++) {
+        names[i] = widget.gameModel.players[i];
+      }
     }
 
     super.initState();
@@ -136,6 +139,7 @@ class _TextInputDesignState extends State<TextInputDesign> {
     _curName = widget.curName;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -158,7 +162,7 @@ class _TextInputDesignState extends State<TextInputDesign> {
         decoration: InputDecoration(
           border: InputBorder.none,
           hintStyle: Theme.of(context).textTheme.subtitle1,
-          hintText: 'name',
+          hintText: getLocalization(context).hintNameOfPlayer,
         ),
       ),
     );
