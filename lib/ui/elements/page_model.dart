@@ -18,7 +18,7 @@ class MyKiloBamayaPageModel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SpinningWheel(animDuration: 50,),
+          SpinningWheel(animDurationInSec: 50,),
           MyInputResultBox(content, onClose, onPrev, showBackBtn),
         ],
       ),

@@ -3,10 +3,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/home/sideMenu/custom_border.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 ///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
 class MyDrawerWidget extends StatefulWidget {
@@ -29,13 +31,12 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
             filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
             child: Container(
               decoration: BoxDecoration(
-                  color: MyColors.blueShadowClr.withOpacity(.4),
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(isRTL(context)? 0 : 30),
-                    bottomRight: Radius.circular(isRTL(context)? 0 : 30),
-                    topLeft: Radius.circular(isRTL(context)? 30 : 0),
-                    bottomLeft: Radius.circular(isRTL(context)? 30 : 0)
-                  ),
+                color: MyColors.blueShadowClr.withOpacity(.4),
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(isRTL(context) ? 0 : 30),
+                    bottomRight: Radius.circular(isRTL(context) ? 0 : 30),
+                    topLeft: Radius.circular(isRTL(context) ? 30 : 0),
+                    bottomLeft: Radius.circular(isRTL(context) ? 30 : 0)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -53,22 +54,20 @@ class _MyDrawerWidgetState extends State<MyDrawerWidget> {
                   ),
                   //About
                   MenuItem(
-                    title: "About",
-                    desc: "About Description",
+                    title: getLocalization(context).sideMenuAboutTitle,
+                    desc: getLocalization(context).sideMenuAboutDesc,
                     onClick: () {},
                   ),
                   //other apps
-                  MenuItem(
-                      title: "Other Apps",
-                      desc: "Al Furkan",
-                      onClick: () {}),
+                  // MenuItem(
+                  //     title: "Other Apps", desc: "Al Furkan", onClick: () {}),
 
                   Expanded(
                     child: ClipPath(
                       clipper: MyUpCustomClipper(),
                     ),
                   ),
-                  //DesignerDeveloperInfo(),
+                  DesignerDeveloperInfo(),
                 ],
               ),
             ),
@@ -83,39 +82,62 @@ class DesignerDeveloperInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         decoration: const BoxDecoration(
-            border: Border(top: BorderSide(color: Colors.white, width: 2.5))),
+          border: Border(
+            top: BorderSide(color: Colors.white, width: 2.5),
+          ),
+        ),
         child: Row(
           children: [
-            card('Developer', 'Abdullah', () {}, context),
+            card(
+                'Developer',
+                'Abdullah',
+                Uri.parse(
+                    'https://www.linkedin.com/in/abdoalla-mostafa-935938175/'),
+                context),
             separatorWidget(),
-            card('Designer', 'Obada', () {}, context),
+            card(
+                'Designer',
+                'Obada',
+                Uri.parse('https://www.linkedin.com/in/obada-mohamed/'),
+                context),
           ],
         ),
       );
 
-  Widget card(String title, String name, Function onNameClick,
-          BuildContext context) =>
+  Future<void> _gotoLinkedIn(Uri url) async {
+    if (!await launchUrl(url)) {
+      Fluttertoast.showToast(msg: 'Could not reach site');
+    }
+  }
+
+  Widget card(
+          String title, String name, Uri accountUrl, BuildContext context) =>
       Expanded(
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 12),
-          child: Column(
-            children: [
-              Text(
-                title,
-                style: GoogleFonts.k2d(
-                    textStyle: const TextStyle(
-                        fontSize: 16, color: MyColors.someOrange)),
-              ),
-              Text(
-                name,
-                style: GoogleFonts.k2d(
-                  textStyle: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: MyColors.spinnerLightBlue),
+        child: InkWell(
+          onTap: () {
+            _gotoLinkedIn(accountUrl);
+          },
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 12),
+            child: Column(
+              children: [
+                Text(
+                  title,
+                  style: GoogleFonts.k2d(
+                      textStyle: const TextStyle(
+                          fontSize: 16, color: MyColors.someOrange)),
                 ),
-              ),
-            ],
+                Text(
+                  name,
+                  style: GoogleFonts.k2d(
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: MyColors.spinnerLightBlue),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );

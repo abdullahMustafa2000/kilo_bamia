@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kilo_bamya/main.dart';
@@ -9,8 +8,8 @@ import 'package:is_first_run/is_first_run.dart';
 import 'package:kilo_bamya/ui/elements/spinning_wheel.dart';
 import 'package:kilo_bamya/ui/home/home_screen.dart';
 
-int _wheelSpinSeconds = 3;
-int _fadeOutMilliSeconds = 1000;
+int _wheelSpinMilliseconds = 2000;
+int _fadeOutMilliseconds = 1000;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -23,9 +22,8 @@ class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   late Animation<double> _fadeOutAnimation;
 
-  late AnimationController _fadeOutController;
+  late AnimationController _fadeOutController, _offsetAnimationController;
 
-  late AnimationController _offsetAnimationController;
   late Animation<Offset> _upOffsetAnimation, _downOffsetAnimation;
 
   late Future<bool> _isFirstRunFut;
@@ -38,13 +36,13 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     _isFirstRunFut = _getFirstRunFuture();
     super.initState();
-    _fadeOutController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: _fadeOutMilliSeconds));
+    _fadeOutController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: _fadeOutMilliseconds));
     _fadeOutAnimation =
         Tween<double>(begin: 1, end: 0).animate(_fadeOutController);
 
     _offsetAnimationController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: _fadeOutMilliSeconds));
+        vsync: this, duration: Duration(milliseconds: _fadeOutMilliseconds));
     _downOffsetAnimation =
         Tween<Offset>(begin: Offset.zero, end: const Offset(0.0, 2.0))
             .animate(_offsetAnimationController);
@@ -52,7 +50,9 @@ class _SplashScreenState extends State<SplashScreen>
         Tween<Offset>(begin: Offset.zero, end: const Offset(0.0, -2.0))
             .animate(_offsetAnimationController);
 
-    Future.delayed(Duration(seconds: _wheelSpinSeconds + 1), () {
+    //start background animation
+    Future.delayed(
+        Duration(milliseconds: (_wheelSpinMilliseconds * 2.1).round()), () {
       _fadeOutController.forward();
       _offsetAnimationController.forward();
     });
@@ -81,9 +81,7 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ],
           ),
-          OverlayContent(
-            fadeOutAnimation: _fadeOutAnimation,
-          ),
+          OverlayContent(),
         ],
       ),
     );
@@ -144,28 +142,35 @@ class NameOfAppTextDesign extends StatelessWidget {
 }
 
 class OverlayContent extends StatefulWidget {
-  OverlayContent({super.key, required this.fadeOutAnimation});
-  final Animation<double> fadeOutAnimation;
+  OverlayContent({super.key});
   @override
   State<OverlayContent> createState() => _OverlayContentState();
 }
 
 class _OverlayContentState extends State<OverlayContent>
     with TickerProviderStateMixin {
-  late Animation<double> _fadeInAnimation;
+  late Animation<double> _fadeInAnimation, _fadeOutAnimation;
 
-  late AnimationController _fadeInController;
+  late AnimationController _fadeInController, _fadeOutController;
 
   @override
   void initState() {
     super.initState();
-    _fadeInController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: _fadeOutMilliSeconds));
+    _fadeInController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: _fadeOutMilliseconds));
     _fadeInAnimation =
         Tween<double>(begin: 0, end: 1).animate(_fadeInController);
 
-    Future.delayed(Duration(milliseconds: _wheelSpinSeconds * 1000 + 50), () {
+    _fadeOutController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: _fadeOutMilliseconds));
+    _fadeOutAnimation =
+        Tween<double>(begin: 1, end: 0).animate(_fadeOutController);
+
+    Future.delayed(Duration(milliseconds: _wheelSpinMilliseconds + 200), () {
       _fadeInController.forward();
+      Future.delayed(Duration(milliseconds: 1000), () {
+        _fadeOutController.forward();
+      });
     });
   }
 
@@ -177,13 +182,14 @@ class _OverlayContentState extends State<OverlayContent>
       child: Column(
         children: [
           FadeTransition(
-            opacity: widget.fadeOutAnimation,
+            opacity: _fadeOutAnimation,
             child: SpinningWheel(
-              animDuration: _wheelSpinSeconds,
+              animDurationInSec: 3,
               wheelPerc: .5,
               kittyPerc: .4,
               wheelAnimController: (AnimationController controller) {
-                Future.delayed(Duration(seconds: _wheelSpinSeconds), () {
+                Future.delayed(Duration(milliseconds: _wheelSpinMilliseconds),
+                    () {
                   controller.stop();
                 });
               },
@@ -194,12 +200,12 @@ class _OverlayContentState extends State<OverlayContent>
             height: 24,
           ),
           FadeTransition(
-            opacity: widget.fadeOutAnimation,
+            opacity: _fadeOutAnimation,
             child: Column(
               children: [
                 NameOfAppTextDesign(
-                    name: nameOfApp[0], color: MyColors.darkBlue),
-                NameOfAppTextDesign(name: nameOfApp[1], color: Colors.white),
+                    name: '${nameOfApp[0]} ${nameOfApp[1]}', color: MyColors.darkBlue),
+                NameOfAppTextDesign(name: nameOfApp[2], color: Colors.white),
               ],
             ),
           ),
@@ -233,3 +239,10 @@ class TopScreen extends StatelessWidget {
     );
   }
 }
+/*
+1- spin the wheel for 1500 milliseconds //1500
+2- delay stop spinning the wheel in 1500 milliseconds //1500
+3- delay 1600 milliseconds to start cat fadeIn //1600
+4- delay 2100 milliseconds to fadeout overlay widget //2600
+5- delay 2500 milliseconds to start background animation // 2500
+*/

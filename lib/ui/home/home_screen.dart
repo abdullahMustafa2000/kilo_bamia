@@ -12,7 +12,6 @@ import 'package:kilo_bamya/ui/home/randomChoice/random_choice_screen.dart';
 import 'package:kilo_bamya/ui/home/sideMenu/side_menu_widget.dart';
 import 'package:kilo_bamya/ui/home/fragments/wheel_widget.dart';
 import 'package:provider/provider.dart';
-
 import 'team_split//split_teams_screen.dart';
 
 class HomePage extends StatefulWidget {

@@ -21,9 +21,12 @@ class KiloBamyaPageView extends StatelessWidget {
   final _controller = PageController();
   int curPage = 0;
 
+
   @override
   Widget build(BuildContext context) {
-    initPage();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      initPage();
+    });
     return Container(
       margin: const EdgeInsets.only(top: 24),
       child: PageView(
@@ -69,8 +72,8 @@ class KiloBamyaPageView extends StatelessWidget {
   }
 
   void moveToPage(int pageIndex) {
-    _controller.animateToPage(pageIndex,
-        duration: const Duration(milliseconds: 400), curve: Curves.ease);
+    _controller.jumpToPage(pageIndex);
+        //duration: const Duration(milliseconds: 400), curve: Curves.ease);
   }
 
   void initPage() {

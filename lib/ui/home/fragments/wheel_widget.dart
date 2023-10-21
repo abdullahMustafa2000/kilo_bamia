@@ -36,7 +36,7 @@ class WheelWidget extends StatelessWidget {
                     aboveWidgetCall(
                         openSplitResult: false, openRandomChoice: true);
                   },
-                  animDuration: 40,
+                  animDurationInSec: 40,
                 ),
               ),
             ),
@@ -119,12 +119,15 @@ class WheelWidget extends StatelessWidget {
                     const SizedBox(
                       height: 14,
                     ),
-                    RecentListWidget(onItemClick: (gameModel) {
-                      aboveWidgetCall(
+                    RecentListWidget(
+                      onItemClick: (gameModel) {
+                        aboveWidgetCall(
                           openSplitResult: true,
                           openRandomChoice: false,
-                          gameModel: gameModel);
-                    })
+                          gameModel: gameModel,
+                        );
+                      },
+                    )
                   ],
                 ),
               ),
@@ -202,7 +205,8 @@ class RecentItem extends StatefulWidget {
       required this.gameModel,
       required this.onItemClick,
       required this.index,
-      required this.recentLength, required this.box})
+      required this.recentLength,
+      required this.box})
       : super(key: key);
 
   @override
@@ -214,12 +218,17 @@ class _RecentItemState extends State<RecentItem> {
   Widget build(BuildContext context) {
     return Dismissible(
       background: Container(
-        child: Center(child: Icon(Icons.delete_forever_rounded, color: Colors.white,),),
+        child: Center(
+          child: Icon(
+            Icons.delete_forever_rounded,
+            color: Colors.white,
+          ),
+        ),
         color: MyColors.spinnerLightRed,
       ),
       onDismissed: (DismissDirection direction) {
         setState(() {
-           widget.gameModel.delete();
+          widget.gameModel.delete();
         });
       },
       key: ValueKey<String?>(widget.gameModel.id),
@@ -244,7 +253,8 @@ class _RecentItemState extends State<RecentItem> {
                           child: Container(
                             width: 45,
                             height: 45,
-                            color: MyColors.spinnerColorsArray[_curClr(widget.index)],
+                            color: MyColors
+                                .spinnerColorsArray[_curClr(widget.index)],
                           ),
                         ),
                       )
@@ -274,7 +284,8 @@ class _RecentItemState extends State<RecentItem> {
                   ),
                   Column(
                     children: [
-                      Text('${widget.gameModel.time.day}/${widget.gameModel.time.month}')
+                      Text(
+                          '${widget.gameModel.time.day}/${widget.gameModel.time.month}')
                     ],
                   ),
                 ],

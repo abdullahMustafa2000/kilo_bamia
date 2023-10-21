@@ -1,9 +1,9 @@
 {
-  "appName": "كيلو بامية",
+  "appName": "كي لو بريميي",
   "btnCreateRoom": "يلا نقسم",
   "enterChoicesNames": "محتار بين ايه؟",
-  "recentListTitle": "اخر تقسيمه",
-  "emptyListMessage": "اخر تقسيمتين هيظهروا هنا",
+  "recentListTitle": "تقسيمات سابقة",
+  "emptyListMessage": "اخر تقسيمات هيظهروا هنا",
   "wheelTabName": "العجلة",
   "coinTabName": "العملة",
   "throwCoin": "ارمي",
@@ -29,5 +29,7 @@
   "unknownErr": "خطا مش مقصود ، عيد المحاولة",
   "teamTitle": "فريق",
   "skipTour": "تخطي",
-  "hintNameOfPlayer": "اسم"
+  "hintNameOfPlayer": "اسم",
+  "sideMenuAboutTitle": "بقولك!!",
+  "sideMenuAboutDesc": "الابليكيشن هيتطور و هيبقا ببميزات احسن ، بس استمتع بالنسخه دي دلوقتي\uD83D\uDE0E"
 }

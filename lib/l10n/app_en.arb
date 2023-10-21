@@ -1,5 +1,5 @@
 {
-  "appName": "Kilo Bamia",
+  "appName": "Qui est premier",
   "btnCreateRoom": "Let's Split",
   "enterChoicesNames": "Confused between what?",
   "recentListTitle": "Recent Splits",
@@ -29,5 +29,7 @@
   "unknownErr": "Unknown error",
   "teamTitle": "Team",
   "skipTour": "Skip",
-  "hintNameOfPlayer": "name"
+  "hintNameOfPlayer": "name",
+  "sideMenuAboutTitle": "Let me tell you something!!",
+  "sideMenuAboutDesc": "This application will be updated as soon as possible with new stronger features, But have fun with this version."
 }

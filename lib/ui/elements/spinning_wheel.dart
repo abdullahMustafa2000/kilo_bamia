@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class SpinningWheel extends StatefulWidget {
   Function? onClick, wheelAnimController;
-  int? animDuration;
+  int? animDurationInSec;
   double? kittyPerc, wheelPerc;
   Animation<double>? kittyFadeOutAnimation;
   SpinningWheel(
       {this.onClick,
-      this.animDuration,
+      this.animDurationInSec,
       this.kittyPerc,
       this.wheelPerc,
       this.wheelAnimController,
@@ -27,7 +27,8 @@ class _SpinningWheel extends State<SpinningWheel>
   void initState() {
     super.initState();
     _animController = AnimationController(
-        vsync: this, duration: Duration(seconds: widget.animDuration ?? 2));
+        vsync: this,
+        duration: Duration(seconds: widget.animDurationInSec ?? 2));
     _animation = CurvedAnimation(parent: _animController, curve: Curves.easeIn);
     _animController.repeat();
     if (widget.wheelAnimController != null) {
@@ -69,12 +70,11 @@ class _SpinningWheel extends State<SpinningWheel>
     );
   }
 
-  Widget _kittyImage(Size size) => Image.asset(
-      'assets/images/kitty.png',
+  Widget _kittyImage(Size size) => Image.asset('assets/images/kitty.png',
       width: size.width * (widget.kittyPerc ?? .25));
 
   Widget _wheelImage(Size size) => Image.asset(
-    'assets/images/spinning_wheel.png',
-    width: size.width * (widget.wheelPerc ?? .8),
-  );
+        'assets/images/spinning_wheel.png',
+        width: size.width * (widget.wheelPerc ?? .8),
+      );
 }
