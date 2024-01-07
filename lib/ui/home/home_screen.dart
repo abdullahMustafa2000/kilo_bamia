@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kilo_bamya/ads/ad_initializer.dart';
@@ -35,7 +33,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     provider = Provider.of<HomeClicksProvider>(context);
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       drawer: const MyDrawerWidget(),
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -44,13 +42,16 @@ class _HomePageState extends State<HomePage> {
           children: [
             Align(
               child: Builder(builder: (context) {
-                return InkWell(
-                  child: Transform.flip(
-                      flipX: isRTL(context),
-                      child: Image.asset('assets/images/menu_ic.png')),
-                  onTap: () {
-                    Scaffold.of(context).openDrawer();
-                  },
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
+                    child: Transform.flip(
+                        flipX: isRTL(context),
+                        child: Image.asset('assets/images/menu_ic.png')),
+                    onTap: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                  ),
                 );
               }),
             ),

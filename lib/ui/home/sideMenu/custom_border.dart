@@ -9,23 +9,17 @@ class MyCustomClipper extends CustomClipper<Path> {
     var width = size.width;
     var height = size.height;
     double point = 10;
-    /*path.lineTo(0, point);
-    path.lineTo(point, 5);
-    path.lineTo(width-point, 5);
-    path.lineTo(width, point);
-    path.lineTo(width, 0);
-    path.close();*/
-    double strockH = 1;
-    double strockW = 10;
+    double strokeH = 1;
+    double strokeW = 10;
     path.lineTo(0, point);
-    path.lineTo(strockW, strockH);
-    path.lineTo(width-strockW, strockH);
+    path.lineTo(strokeW, strokeH);
+    path.lineTo(width-strokeW, strokeH);
     path.lineTo(width, point);
     path.lineTo(width, 0);
     path.close();
     path.moveTo(0, height-point);
-    path.lineTo(strockW, height-strockH);
-    path.lineTo(width-strockW, height-strockH);
+    path.lineTo(strokeW, height-strokeH);
+    path.lineTo(width-strokeW, height-strokeH);
     path.lineTo(width, height-point);
     path.lineTo(width, height);
     path.lineTo(0, height);
@@ -46,28 +40,15 @@ class MyUpCustomClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     var path = Path();
     var width = size.width;
-    var height = size.height;
     double point = 10;
-    /*path.lineTo(0, point);
-    path.lineTo(point, 5);
-    path.lineTo(width-point, 5);
-    path.lineTo(width, point);
-    path.lineTo(width, 0);
-    path.close();*/
-    double strockH = 1;
-    double strockW = 10;
+    double strokeH = 1;
+    double strokeW = 10;
     path.lineTo(0, point);
-    path.lineTo(strockW, strockH);
-    path.lineTo(width-strockW, strockH);
+    path.lineTo(strokeW, strokeH);
+    path.lineTo(width-strokeW, strokeH);
     path.lineTo(width, point);
     path.lineTo(width, 0);
     path.close();
-    /*path.moveTo(0, height-point);
-    path.lineTo(strockW, height-strockH);
-    path.lineTo(width-strockW, height-strockH);
-    path.lineTo(width, height-point);
-    path.lineTo(width, height);
-    path.lineTo(0, height);*/
     path.close();
     return path;
   }
@@ -87,23 +68,11 @@ class MyDownCustomClipper extends CustomClipper<Path> {
     var width = size.width;
     var height = size.height;
     double point = 10;
-    /*path.lineTo(0, point);
-    path.lineTo(point, 5);
-    path.lineTo(width-point, 5);
-    path.lineTo(width, point);
-    path.lineTo(width, 0);
-    path.close();*/
-    double strockH = 1;
-    double strockW = 10;
-    /*path.lineTo(0, point);
-    path.lineTo(strockW, strockH);
-    path.lineTo(width-strockW, strockH);
-    path.lineTo(width, point);
-    path.lineTo(width, 0);
-    path.close();*/
+    double strokeH = 1;
+    double strokeW = 10;
     path.moveTo(0, height-point);
-    path.lineTo(strockW, height-strockH);
-    path.lineTo(width-strockW, height-strockH);
+    path.lineTo(strokeW, height-strokeH);
+    path.lineTo(width-strokeW, height-strokeH);
     path.lineTo(width, height-point);
     path.lineTo(width, height);
     path.lineTo(0, height);

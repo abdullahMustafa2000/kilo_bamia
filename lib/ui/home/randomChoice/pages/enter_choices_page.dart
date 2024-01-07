@@ -9,7 +9,8 @@ import 'package:kilo_bamya/ui/elements/page_model.dart';
 import '../../../../models/choice_class_model.dart';
 
 class EnterChoicesPage extends StatefulWidget {
-  EnterChoicesPage({required this.onCloseClick, required this.onSpinningWheelClick});
+  EnterChoicesPage(
+      {required this.onCloseClick, required this.onSpinningWheelClick});
   final Function onCloseClick;
   final Function({List<ChoiceModel>? choices}) onSpinningWheelClick;
 
@@ -18,10 +19,12 @@ class EnterChoicesPage extends StatefulWidget {
 }
 
 class _EnterChoicesPageState extends State<EnterChoicesPage> {
-  var maxInput = 6;
-  List<Color?> colorsArray = List.filled(MyColors.spinnerColorsArray.length, null);
+  var maxInput = MyColors.spinnerColorsArray.length;
+  List<Color?> colorsArray =
+      List.filled(MyColors.spinnerColorsArray.length, null);
   List<ChoiceModel> choices = [];
-  List<bool> checkSelected = List.filled(MyColors.spinnerColorsArray.length, false);
+  List<bool> checkSelected =
+      List.filled(MyColors.spinnerColorsArray.length, false);
   var currentColorIndex = 0;
   @override
   void initState() {
@@ -51,6 +54,7 @@ class _EnterChoicesPageState extends State<EnterChoicesPage> {
         choices[index].choiceName = text;
       });
     }
+
     return MyKiloBamayaPageModel(
       showBackBtn: false,
       content: SizedBox(
@@ -60,22 +64,24 @@ class _EnterChoicesPageState extends State<EnterChoicesPage> {
             Text(
               getLocalization(context).enterChoicesNames,
               style: GoogleFonts.k2d(
-                textStyle: Theme.of(context).textTheme.headline4,
+                textStyle: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             Expanded(
               child: GridView.builder(
-                itemCount: choices.length < maxInput? choices.length + 1 : choices.length,
+                itemCount: choices.length < maxInput
+                    ? choices.length + 1
+                    : choices.length,
                 itemBuilder: (BuildContext context, int index) {
                   if (index == colorsArray.length) {
-                    return TextInputDesign(onTextChange, index, choices[index].choiceColor);
+                    return TextInputDesign(
+                        onTextChange, index, choices[index].choiceColor);
                   } else if (index == choices.length) {
                     return AddButtonWidget(onAddBtnClick, colorsArray[index]!);
-                  }
-                  else {
-                    return TextInputDesign(onTextChange, index,
-                        choices[index].choiceColor);
+                  } else {
+                    return TextInputDesign(
+                        onTextChange, index, choices[index].choiceColor);
                   }
                 },
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -142,9 +148,10 @@ class AddButtonWidget extends StatelessWidget {
 }
 
 class ItemShapeDesign extends StatelessWidget {
-  Widget contentWidget;
-  Color containerColor;
-  ItemShapeDesign({required this.contentWidget, required this.containerColor});
+  final Widget contentWidget;
+  final Color containerColor;
+  const ItemShapeDesign(
+      {required this.contentWidget, required this.containerColor});
 
   @override
   Widget build(BuildContext context) {
@@ -161,29 +168,33 @@ class ItemShapeDesign extends StatelessWidget {
 }
 
 class TextInputDesign extends StatelessWidget {
-  TextInputDesign(this.onTxtChange, this.index, this.color);
-  Function(String, int) onTxtChange;
-  int index;
-  Color color;
+  const TextInputDesign(this.onTxtChange, this.index, this.color);
+  final Function(String, int) onTxtChange;
+  final int index;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return ItemShapeDesign(
       containerColor: color,
-      contentWidget: TextField(
-        onChanged: (txt) {
-          onTxtChange(txt, index);
-        },
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          color: Colors.white,
-        ),
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintStyle: Theme.of(context).textTheme.subtitle1,
-          hintText: 'xxxx',
+      contentWidget: Padding(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: TextField(
+          onChanged: (txt) {
+            onTxtChange(txt, index);
+          },
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: Colors.white,
+          ),
+          textInputAction: TextInputAction.next,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintStyle: Theme.of(context).textTheme.titleMedium,
+            hintText: 'xxxx',
+          ),
         ),
       ),
     );

@@ -15,12 +15,14 @@ class MyKiloBamayaPageModel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SpinningWheel(animDurationInSec: 50,),
-          MyInputResultBox(content, onClose, onPrev, showBackBtn),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SpinningWheel(animDurationInSec: 50, wheelPerc: .5,),
+            MyInputResultBox(content, onClose, onPrev, showBackBtn),
+          ],
+        ),
       ),
     );
   }

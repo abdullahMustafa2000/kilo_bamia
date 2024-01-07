@@ -33,122 +33,125 @@ class _IntroPageState extends State<IntroPage> {
     var containerWidth = MediaQuery.of(context).size.width;
     bool isNotFinalPage = widget.btnTxt.contains('x');
     // main view
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: Container(
-              width: containerWidth * 0.7,
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(12),
-                      bottomLeft: Radius.circular(12)),
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [MyColors.topGradient, MyColors.bottomGradient])),
-              child: widget.view,
+    return SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: Container(
+                width: containerWidth * 0.7,
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(12),
+                        bottomLeft: Radius.circular(12)),
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [MyColors.topGradient, MyColors.bottomGradient])),
+                child: widget.view,
+              ),
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 12),
-            child: Text(
-              widget.title,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.k2d(
-                textStyle: const TextStyle(
-                  fontSize: 34,
-                  decoration: TextDecoration.none,
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 12),
+              child: Text(
+                widget.title,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.k2d(
+                  textStyle: const TextStyle(
+                    fontSize: 34,
+                    decoration: TextDecoration.none,
+                  ),
                 ),
               ),
             ),
-          ),
 
-          /// bottom view
-          Expanded(
-              child: Container(
-            padding: const EdgeInsets.all(12),
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12)),
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [MyColors.bottomGradient, MyColors.topGradient])),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  widget.desc,
-                  style: const TextStyle(fontSize: 16),
-                  textAlign: TextAlign.center,
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 16),
-                  child: PageViewDotIndicator(
-                    currentItem: widget.index,
-                    count: 3,
-                    unselectedColor: MyColors.lightGray,
-                    selectedColor: MyColors.lightBlue,
-                    size: const Size(13, 13),
-                    boxShape: BoxShape.circle,
+            /// bottom view
+            Expanded(
+                child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12)),
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [MyColors.bottomGradient, MyColors.topGradient])),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    widget.desc,
+                    style: const TextStyle(fontSize: 16),
+                    textAlign: TextAlign.center,
                   ),
-                ),
-                /// btn
-                Container(
-                  margin: const EdgeInsets.only(top: 24),
-                  width: containerWidth * .3,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      widget.onBtnClick(widget.index);
-                    },
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20))),
-                      backgroundColor: MaterialStateProperty.all(
-                        isNotFinalPage ? MyColors.lightBlue : MyColors.darkBlue,
-                      ),
-                    ),
-                    child: Text(
-                      widget.btnTxt,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.k2d(
-                        textStyle: TextStyle(
-                            fontSize: 16,
-                            color: isNotFinalPage
-                                ? MyColors.lightBlack.withOpacity(0.9)
-                                : MyColors.white),
-                      ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 16),
+                    child: PageViewDotIndicator(
+                      currentItem: widget.index,
+                      count: 3,
+                      unselectedColor: MyColors.lightGray,
+                      selectedColor: MyColors.lightBlue,
+                      size: const Size(13, 13),
+                      boxShape: BoxShape.circle,
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Visibility(
-                    visible: widget.index < 2,
-                    child: Container(
-                      alignment: Alignment.bottomRight,
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 12),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (_) => const HomePage()));
-                        },
-                        child: Text(
-                          getLocalization(context).skipTour,
-                          style: TextStyle(color: MyColors.lightGray),
+                  /// btn
+                  Container(
+                    margin: const EdgeInsets.only(top: 24),
+                    width: containerWidth * .3,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        widget.onBtnClick(widget.index);
+                      },
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20))),
+                        backgroundColor: MaterialStateProperty.all(
+                          isNotFinalPage ? MyColors.lightBlue : MyColors.darkBlue,
+                        ),
+                      ),
+                      child: Text(
+                        widget.btnTxt,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.k2d(
+                          textStyle: TextStyle(
+                              fontSize: 16,
+                              color: isNotFinalPage
+                                  ? MyColors.lightBlack.withOpacity(0.9)
+                                  : MyColors.white),
                         ),
                       ),
                     ),
                   ),
-                )
-              ],
-            ),
-          ))
-        ],
+                  Expanded(
+                    child: Visibility(
+                      visible: widget.index < 2,
+                      child: Container(
+                        alignment: Alignment.bottomRight,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 12),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(builder: (_) => const HomePage()));
+                          },
+                          child: Text(
+                            getLocalization(context).skipTour,
+                            style: TextStyle(color: MyColors.lightGray),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ))
+          ],
+        ),
       ),
     );
   }

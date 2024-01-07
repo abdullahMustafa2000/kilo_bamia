@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 
 class CoinWidget extends StatefulWidget {
   @override
@@ -51,7 +52,7 @@ class _CoinWidgetState extends State<CoinWidget> with TickerProviderStateMixin {
                 ..setEntry(3, 2, .001)
                 ..rotateX(verticalSpin / 180 * pi),
               child: Center(
-                child: img,
+                child: Shimmer(child: img),
               ),
             ),
           ),

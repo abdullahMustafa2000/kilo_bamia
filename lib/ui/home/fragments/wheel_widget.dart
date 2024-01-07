@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:kilo_bamya/models/game_model.dart';
 import 'package:kilo_bamya/main.dart';
@@ -21,122 +18,127 @@ class WheelWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14),
       decoration: const BoxDecoration(
-          gradient: LinearGradient(colors: [MyColors.homeBg, MyColors.white])),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height / 3,
-            child: Center(
-              child: InkWell(
-                child: SpinningWheel(
-                  onClick: () {
-                    aboveWidgetCall(
-                        openSplitResult: false, openRandomChoice: true);
-                  },
-                  animDurationInSec: 40,
+        gradient: LinearGradient(colors: [MyColors.homeBg, MyColors.white]),
+      ),
+      child: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height / 3,
+                margin: const EdgeInsets.only(top: 24),
+                child: InkWell(
+                  child: SpinningWheel(
+                    onClick: () {
+                      aboveWidgetCall(
+                          openSplitResult: false, openRandomChoice: true);
+                    },
+                    animDurationInSec: 40,
+                  ),
                 ),
               ),
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              aboveWidgetCall(
-                  openSplitResult: false,
-                  openRandomChoice: false,
-                  gameModel: GameModel.init());
-            },
-            child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Image.asset('assets/images/create_room_bg.png'),
-                  Container(
+              InkWell(
+                onTap: () {
+                  aboveWidgetCall(
+                      openSplitResult: false,
+                      openRandomChoice: false,
+                      gameModel: GameModel.init());
+                },
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  child: Stack(
                     alignment: Alignment.center,
-                    width: 90,
-                    height: 90,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: MyColors.lightBlack.withOpacity(.07),
-                    ),
-                    child: Text(
-                      getLocalization(context).btnCreateRoom,
-                      style: GoogleFonts.k2d(
-                        textStyle: const TextStyle(fontSize: 22),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 30,
-                    child: Center(
-                      child: Container(
-                        width: 32,
-                        height: 32,
+                    children: [
+                      Image.asset('assets/images/create_room_bg.png'),
+                      Container(
+                        alignment: Alignment.center,
+                        width: 90,
+                        height: 90,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(180),
-                          color: MyColors.darkBlue,
+                          borderRadius: BorderRadius.circular(20),
+                          color: MyColors.lightBlack.withOpacity(.07),
                         ),
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: const Icon(
-                            Icons.add_rounded,
-                            size: 28,
-                            color: MyColors.white,
+                        child: Text(
+                          getLocalization(context).btnCreateRoom,
+                          style: GoogleFonts.k2d(
+                            textStyle: const TextStyle(fontSize: 22),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 30,
+                        child: Center(
+                          child: Container(
+                            width: 32,
+                            height: 32,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(180),
+                              color: MyColors.darkBlue,
+                            ),
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: const Icon(
+                                Icons.add_rounded,
+                                size: 28,
+                                color: MyColors.white,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ),
-
-          /// recent design
-          Expanded(
-            child: Stack(children: [
-              Image.asset(
-                'assets/images/lasts_bg.png',
-                width: double.infinity,
-                fit: BoxFit.fill,
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      getLocalization(context).recentListTitle,
-                      style: GoogleFonts.k2d(
-                        textStyle: const TextStyle(fontSize: 24),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 14,
-                    ),
-                    RecentListWidget(
-                      onItemClick: (gameModel) {
-                        aboveWidgetCall(
-                          openSplitResult: true,
-                          openRandomChoice: false,
-                          gameModel: gameModel,
-                        );
-                      },
-                    )
-                  ],
                 ),
               ),
-            ]),
+
+              /// recent design
+              Expanded(
+                child: Stack(children: [
+                  Image.asset(
+                    'assets/images/lasts_bg.png',
+                    width: double.infinity,
+                    fit: BoxFit.fill,
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          getLocalization(context).recentListTitle,
+                          style: GoogleFonts.k2d(
+                            textStyle: const TextStyle(fontSize: 24),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 14,
+                        ),
+                        RecentListWidget(
+                          onItemClick: (gameModel) {
+                            aboveWidgetCall(
+                              openSplitResult: true,
+                              openRandomChoice: false,
+                              gameModel: gameModel,
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ]),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+            ],
           ),
-          const SizedBox(
-            height: 15,
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -275,7 +277,7 @@ class _RecentItemState extends State<RecentItem> {
                             ),
                           ),
                           Text(
-                            '${widget.gameModel.noOfPlayers} ${getLocalization(context).playersLabel}, ${widget.gameModel.noOfTeams} ${getLocalization(context).teamsLabel}',
+                            '${widget.gameModel.noOfPlayers} ${getLocalization(context).playersLabel}(s), ${widget.gameModel.noOfTeams} ${getLocalization(context).teamsLabel}(s)',
                             overflow: TextOverflow.ellipsis,
                           ),
                         ],

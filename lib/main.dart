@@ -16,8 +16,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
-  await Firebase.initializeApp();
-  await Hive.initFlutter();
+  await Future.wait([
+    Firebase.initializeApp(),
+    Hive.initFlutter()]);
   Hive.registerAdapter(GameModelAdapter());
   await Hive.openBox<GameModel>(ApplicationStrings.boxName);
   runApp(MyApp());

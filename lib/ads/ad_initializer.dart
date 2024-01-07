@@ -28,18 +28,19 @@ class AdInitializer {
 
   void _createInterstitialAd() {
     InterstitialAd.load(
-        adUnitId: interstitialAdUnitId,
-        request: const AdRequest(),
-        adLoadCallback: InterstitialAdLoadCallback(onAdLoaded: (ad) {
-          _interstitialAd = ad;
-          _interstitialLoadAttempt = 0;
-        }, onAdFailedToLoad: (error) {
-          _interstitialAd = null;
-          _interstitialLoadAttempt++;
-          if (_interstitialLoadAttempt <= 2) {
-            _createInterstitialAd();
-          }
-        }));
+      adUnitId: interstitialAdUnitId,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(onAdLoaded: (ad) {
+        _interstitialAd = ad;
+        _interstitialLoadAttempt = 0;
+      }, onAdFailedToLoad: (error) {
+        _interstitialAd = null;
+        _interstitialLoadAttempt++;
+        if (_interstitialLoadAttempt <= 2) {
+          _createInterstitialAd();
+        }
+      }),
+    );
   }
 
   void showInterstitialAd() {

@@ -2,12 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kilo_bamya/models/game_model.dart';
 import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
 import 'package:kilo_bamya/ui/elements/page_model.dart';
+import 'package:toast/toast.dart';
 
 class RoomSpecifications extends StatelessWidget {
   final Function onBtnClick;
@@ -41,7 +41,7 @@ class InputContainer extends StatelessWidget {
         Text(
           getLocalization(context).nameTheSplit,
           style: GoogleFonts.k2d(
-            textStyle: Theme.of(context).textTheme.headline4,
+            textStyle: Theme.of(context).textTheme.headlineMedium,
           ),
         ),
         const Padding(padding: EdgeInsets.symmetric(vertical: 2)),
@@ -51,21 +51,25 @@ class InputContainer extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             color: MyColors.textFieldFillClr.withOpacity(.45),
           ),
-          child: TextField(
-            controller: TextEditingController()
-              ..text = gameModel.roomName,
-            onChanged: (txt) {
-              gameModel.roomName = txt;
-            },
-            textAlign: TextAlign.center,
-            textInputAction: TextInputAction.done,
-            style: const TextStyle(
-              color: MyColors.lightBlack,
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintStyle: Theme.of(context).textTheme.subtitle1,
-              hintText: getLocalization(context).splitNameHint,
+            child: TextField(
+              controller: TextEditingController()..text = gameModel.roomName,
+              onChanged: (txt) {
+                gameModel.roomName = txt;
+              },
+              textAlign: TextAlign.center,
+              textInputAction: TextInputAction.done,
+              style: const TextStyle(
+                color: MyColors.lightBlack,
+              ),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintStyle: Theme.of(context).textTheme.titleMedium,
+                hintText: getLocalization(context).splitNameHint,
+              ),
             ),
           ),
         ),
@@ -111,7 +115,7 @@ class InputContainer extends StatelessWidget {
       children: [
         Text(
           label,
-          style: Theme.of(context).textTheme.caption,
+          style: Theme.of(context).textTheme.bodySmall,
         ),
         const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
         Container(
@@ -120,24 +124,32 @@ class InputContainer extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             color: MyColors.textFieldFillClr.withOpacity(.45),
           ),
-          child: TextField(
-            controller: TextEditingController()
-              ..text = number > 0 ? number.toString() : "",
-            onChanged: (txt) {
-              onTxtChange(txt);
-            },
-            style: const TextStyle(color: Colors.black),
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp("[0-9]")),
-            ],
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.number,
-            textAlign: TextAlign.center,
-            cursorColor: MyColors.spinnerLightRed,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintStyle: Theme.of(context).textTheme.subtitle1,
-              hintText: '04',
+          child: Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: TextField(
+                controller: TextEditingController()
+                  ..text = number > 0 ? number.toString() : "",
+                onChanged: (txt) {
+                  onTxtChange(txt);
+                },
+                style: const TextStyle(color: Colors.black),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+                ],
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.number,
+                textAlign: TextAlign.center,
+                cursorColor: MyColors.spinnerLightRed,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintStyle: Theme.of(context).textTheme.titleMedium,
+                  hintText: '04',
+                ),
+              ),
             ),
           ),
         ),
@@ -167,22 +179,23 @@ class InputContainer extends StatelessWidget {
         if (gameModel.noOfTeams <= gameModel.noOfPlayers) {
           accepted = true;
         } else {
-          showToast(getLocalization(context).playersLessThanTeamsErrMsg);
+          showToast(
+              getLocalization(context).playersLessThanTeamsErrMsg, context);
         }
       } else {
-        showToast(getLocalization(context).zeroInputErrMsg);
+        showToast(getLocalization(context).zeroInputErrMsg, context);
       }
     } else {
-      showToast(getLocalization(context).emptyFieldsErrMsg);
+      showToast(getLocalization(context).emptyFieldsErrMsg, context);
     }
     return accepted;
   }
 
-  void showToast(String message) {
-    Fluttertoast.showToast(
-        msg: message,
+  void showToast(String message, BuildContext context) {
+    ToastContext().init(context);
+    Toast.show(message,
         backgroundColor: MyColors.spinnerLightRed,
-        timeInSecForIosWeb: 3,
-        gravity: ToastGravity.CENTER);
+        duration: Toast.lengthShort,
+        gravity: Toast.center);
   }
 }

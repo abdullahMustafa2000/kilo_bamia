@@ -61,9 +61,11 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         alignment: Alignment.center,
         children: [
+          //get sharedPref to choose between moving to home or landing page
           FutureBuilder<bool>(
               future: _isFirstRunFut,
               builder: (context, snap) {
@@ -172,45 +174,60 @@ class _OverlayContentState extends State<OverlayContent>
         _fadeOutController.forward();
       });
     });
+    _fadeOutController.addStatusListener((status) {
+      if (status == AnimationStatus.completed)
+        setState(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    print('rebuilt');
     List<String> nameOfApp = getLocalization(context).appName.split(' ');
     return Container(
       margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .2),
-      child: Column(
-        children: [
-          FadeTransition(
-            opacity: _fadeOutAnimation,
-            child: SpinningWheel(
-              animDurationInSec: 3,
-              wheelPerc: .5,
-              kittyPerc: .4,
-              wheelAnimController: (AnimationController controller) {
-                Future.delayed(Duration(milliseconds: _wheelSpinMilliseconds),
-                    () {
-                  controller.stop();
-                });
-              },
-              kittyFadeOutAnimation: _fadeInAnimation,
+      child: _fadeOutController.status == AnimationStatus.completed
+          ? SizedBox.shrink()
+          : SingleChildScrollView(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                  children: [
+                    FadeTransition(
+                      opacity: _fadeOutAnimation,
+                      child: SpinningWheel(
+                        animDurationInSec: 3,
+                        wheelPerc: .5,
+                        kittyPerc: .4,
+                        wheelAnimController: (AnimationController controller) {
+                          Future.delayed(
+                              Duration(milliseconds: _wheelSpinMilliseconds),
+                              () {
+                            controller.stop();
+                          });
+                        },
+                        kittyFadeOutAnimation: _fadeInAnimation,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    FadeTransition(
+                      opacity: _fadeOutAnimation,
+                      child: Column(
+                        children: [
+                          NameOfAppTextDesign(
+                              name: '${nameOfApp[0]} ${nameOfApp[1]}',
+                              color: MyColors.darkBlue),
+                          NameOfAppTextDesign(
+                              name: nameOfApp[2], color: Colors.white),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          FadeTransition(
-            opacity: _fadeOutAnimation,
-            child: Column(
-              children: [
-                NameOfAppTextDesign(
-                    name: '${nameOfApp[0]} ${nameOfApp[1]}', color: MyColors.darkBlue),
-                NameOfAppTextDesign(name: nameOfApp[2], color: Colors.white),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

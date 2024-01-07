@@ -41,6 +41,7 @@ class _ResultPageState extends State<ResultPage> {
     super.initState();
     widget.adInitializer.showInterstitialAd();
   }
+
   @override
   Widget build(BuildContext context) {
     return MyKiloBamayaPageModel(
@@ -60,7 +61,7 @@ class _ResultPageState extends State<ResultPage> {
             Container(
               child: Text(
                 getLocalization(context).splitResult,
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
               margin: const EdgeInsets.all(8),
             ),
@@ -106,7 +107,7 @@ class _ResultPageState extends State<ResultPage> {
         child: Center(
             child: Text(
           getLocalization(context).saveBtn,
-          style: Theme.of(context).textTheme.caption,
+          style: Theme.of(context).textTheme.bodySmall,
         )),
         margin: const EdgeInsets.only(right: 10),
       ),
@@ -119,6 +120,7 @@ class _ResultPageState extends State<ResultPage> {
         widget.gameModel.firstSplit = false;
         Provider.of<TeamProvider>(context, listen: false)
             .changeResultProvider(false);
+        setState(() {});
       },
       background: MyColors.someOrange,
       icon: Icons.refresh,
@@ -147,7 +149,6 @@ class TeamsResult extends StatefulWidget {
 }
 
 class _TeamsResultState extends State<TeamsResult> {
-  late TeamProvider _provider;
   @override
   void initState() {
     widget.gameModel.firstSplit = widget.fromDB;
@@ -156,7 +157,6 @@ class _TeamsResultState extends State<TeamsResult> {
 
   @override
   Widget build(BuildContext context) {
-    _provider = Provider.of<TeamProvider>(context);
     return FutureBuilder<List<String>>(
       future: getPreferences(),
       builder: (context, AsyncSnapshot<List<String>> snapshot) {
@@ -177,7 +177,6 @@ class _TeamsResultState extends State<TeamsResult> {
   }
 
   Future<List<String>> getPreferences() async {
-    bool? tst = _provider.fromDB;
     if (widget.gameModel.firstSplit == null || widget.gameModel.firstSplit!) {
       return widget.gameModel.teams;
     } else {

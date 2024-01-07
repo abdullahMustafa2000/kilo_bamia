@@ -3,7 +3,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kilo_bamya/main.dart';
 import 'package:kilo_bamya/themes/colors_file.dart';
@@ -106,7 +105,7 @@ class DesignerDeveloperInfo extends StatelessWidget {
 
   Future<void> _gotoLinkedIn(Uri url) async {
     if (!await launchUrl(url)) {
-      Fluttertoast.showToast(msg: 'Could not reach site');
+      //Fluttertoast.showToast(msg: 'Could not reach site');
     }
   }
 

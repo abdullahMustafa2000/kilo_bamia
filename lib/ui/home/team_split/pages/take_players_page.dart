@@ -51,7 +51,7 @@ class _RoomPlayersState extends State<RoomPlayers> {
           children: [
             Text(
               getLocalization(context).enterPeople,
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
             Expanded(
               child: Form(
@@ -161,7 +161,7 @@ class _TextInputDesignState extends State<TextInputDesign> {
         autofocus: true,
         decoration: InputDecoration(
           border: InputBorder.none,
-          hintStyle: Theme.of(context).textTheme.subtitle1,
+          hintStyle: Theme.of(context).textTheme.titleMedium,
           hintText: getLocalization(context).hintNameOfPlayer,
         ),
       ),

@@ -5,8 +5,8 @@ import 'package:kilo_bamya/ui/home/randomChoice/random_choice_pageview.dart';
 
 class RandomChoiceWidget extends StatelessWidget {
   RandomChoiceWidget({required this.onClickClose, required this.adInitializer});
-  Function onClickClose;
-  AdInitializer adInitializer;
+  final Function onClickClose;
+  final AdInitializer adInitializer;
   @override
   Widget build(BuildContext context) {
     return Stack(

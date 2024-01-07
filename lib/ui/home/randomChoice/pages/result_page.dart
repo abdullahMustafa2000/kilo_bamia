@@ -10,8 +10,8 @@ import '../../../elements/icon_btn.dart';
 import 'package:kilo_bamya/ads/ad_initializer.dart';
 
 class ChoiceResultPage extends StatefulWidget {
-  late Function onCloseClick;
-  AdInitializer adInitializer;
+  final Function onCloseClick;
+  final AdInitializer adInitializer;
   ChoiceResultPage({required this.onCloseClick, required this.adInitializer});
 
   @override
@@ -71,8 +71,8 @@ class MyColumnWidget extends StatefulWidget {
       {required this.onCloseClick,
       required this.resultRow,
       required this.onSpinClick});
-  Function onCloseClick, onSpinClick;
-  Widget resultRow;
+  final Function onCloseClick, onSpinClick;
+  final Widget resultRow;
 
   @override
   State<MyColumnWidget> createState() => _MyColumnWidgetState();
@@ -103,8 +103,8 @@ class _MyColumnWidgetState extends State<MyColumnWidget> {
 }
 
 class SpinAgainRow extends StatefulWidget {
-  Function onSpinClick;
-  SpinAgainRow({required this.onSpinClick});
+  final Function onSpinClick;
+  const SpinAgainRow({required this.onSpinClick});
 
   @override
   State<SpinAgainRow> createState() => _SpinAgainRowState();
