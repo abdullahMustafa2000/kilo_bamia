@@ -1,6 +1,7 @@
 # Qui est premier - كي لو بريميي
 
-Not all life is serious
+Not all life is serious.<br/>
+Android: https://play.google.com/store/apps/details?id=com.football.kilo_bamya
 
 ## Description
 
