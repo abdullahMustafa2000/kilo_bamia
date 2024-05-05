@@ -1,16 +1,21 @@
-# kilo_bamya
+# Qui est premier - كي لو بريميي
 
-A new Flutter application.
+Not all life is serious
 
-## Getting Started
+## Description
 
-This project is a starting point for a Flutter application.
+This app published to public to use this Brilliant App.
+This app collected all the random selections we do in games and gave the users access to it.
 
-A few resources to get you started if this is your first Flutter project:
+## Features
+&#46; Split Players: It Takes the most import component in any game (the players, the count of teams)
+&#46; Toss the coin: Let the coin flip and see what you got, we don't have coins all the time you know!
+&#46; Random Selection: Are you confused between two or more choices? then let the app help you choose
+## How to use
+![image](https://github.com/abdullahMustafa2000/kilo_bamia/assets/83887203/a0940b87-9c8f-42dc-b05c-e7620b360b64)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+![image](https://github.com/abdullahMustafa2000/kilo_bamia/assets/83887203/7465111f-31dd-41a8-aa33-b36c0c316eeb)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![image](https://github.com/abdullahMustafa2000/kilo_bamia/assets/83887203/9baaa4ed-1856-4215-8e0a-ab601b666abf)
+
+![image](https://github.com/abdullahMustafa2000/kilo_bamia/assets/83887203/30e94e7d-8149-451c-94dd-d5c76962197c)
